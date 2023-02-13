@@ -46,6 +46,7 @@ def simple_flight_wo_obs():
 
     setup.t_steps_scvx = 100
     setup.t_steps_komo = 100
+    setup.t_steps_croco = 100
 
     setup.noise = 0.01
 
@@ -79,6 +80,7 @@ def complex_flight_spheres():
 
     setup.t_steps_scvx = 30
     setup.t_steps_komo = 30
+    setup.t_steps_croco = 30
 
     obs1 = ou.Obstacle("sphere", [0.4], [0., -0.7, 1.], [1, 0, 0, 0])
     obs2 = ou.Obstacle("sphere", [0.4], [1., 0., 1.], [1, 0, 0, 0])
@@ -113,6 +115,7 @@ def recovery_flight():
 
     setup.t_steps_scvx = 100
     setup.t_steps_komo = 100
+    setup.t_steps_croco = 100
 
     setup.noise = 0.01
 

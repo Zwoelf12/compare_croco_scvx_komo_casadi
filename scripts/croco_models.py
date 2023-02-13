@@ -821,7 +821,6 @@ class FeatBoundsX():
             r_lb = jnp.minimum(0, xx - self.lb)  # x >= lb
             return self.weight * jnp.concatenate((r_lb, r_ub))
 
-
 class OCP_abstract():
 
     def __init__(self, **kwargs):

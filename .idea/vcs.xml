@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/deps/fcl" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/deps/libMultiRobotPlanning" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/deps/ompl" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/deps/pybind11" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/deps/rai" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/deps/sbpl" vcs="Git" />
+  </component>
+</project>

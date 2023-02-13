@@ -1,5 +1,5 @@
 import sys
-sys.path += ['../../Master_Thesis_Welf/build']
+sys.path += ['../deps/rai/build']
 import libry as ry
 import numpy as np
 

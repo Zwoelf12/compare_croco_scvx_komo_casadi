@@ -2,6 +2,7 @@ import numpy as np
 from physics.multirotor_models.multirotor_full_model import calc_rot_vel, qrotate, qmultiply, qconjugate
 import pickle
 import rowan
+import yaml
 
 class OptSolution():
     def __init__(self, states, actions, time=None, nu=None, opt_val=None, num_iter=None, tdil=None, time_cvxpy=None, time_cvx_solver=None, constr_viol = 0):
@@ -24,6 +25,14 @@ class Obstacle():
         self.quat = quat # orientation of Obstacle
 
 class Parameter_scvx():
+    def __init__(self):
+        self.max_num_iter = None # maximum number of iterations
+        self.num_time_steps = None # number of time steps
+        self.tf_min = None # minimum final time dilation
+        self.tf_max = None # maximum final time dilation
+        self.noise = None # noise used for initialization
+
+class Parameter_croco():
     def __init__(self):
         self.max_num_iter = None # maximum number of iterations
         self.num_time_steps = None # number of time steps
@@ -246,6 +255,36 @@ def load_opt_output(prob_name,robot_type, nrMotors):
     sol_komo = load_object(path + filename_komo)
 
     return sol_scvx, sol_komo
+
+def gen_yaml_files(init_x,init_u,obs,x0,xf,robot):
+    init_x = init_x.tolist()
+    init_u = init_u.tolist()
+    dat = [{"result": [{'states': init_x},
+                      {'actions': init_u}]}]
+
+    with open("../scripts/temp/guess.yaml", mode="wt", encoding="utf-8") as file:
+        yaml.dump(dat, file, default_flow_style=None, sort_keys=False)
+
+    x0 = x0.tolist()
+    xf = xf.tolist()
+    r_type = robot.type
+    min_x = robot.min_x[:3].tolist()
+    max_x = robot.max_x[:3].tolist()
+
+    o_l = []
+    for o in obs:
+        o_l.append({'type': o.type, 'center': o.pos, 'size': o.shape})
+
+    env = {'environment': [{'min' : min_x}, {'max': max_x}, {'obstacles': o_l}]}
+    rob = {'robots': [{'type': r_type, 'start': x0,'goal': xf}]}
+
+    dat = [env, rob]
+
+    with open("../scripts/temp/env.yaml", mode="wt", encoding="utf-8") as file:
+        yaml.dump(dat, file, default_flow_style=None, sort_keys=False)
+
+
+
 
 def calc_initial_guess(robot, timesteps, noise_factor, xf, x0, tf_min, tf_max):
 

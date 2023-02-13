@@ -55,6 +55,7 @@ if only_visualize == False:
     # define number of timesteps
     t_steps_scvx = prob_setup.t_steps_scvx  # dI simple flight 30 ,full model only z 30
     t_steps_komo = prob_setup.t_steps_komo  # dI simple flight 30 ,full model only z 30
+    t_steps_croco = prob_setup.t_steps_croco
 
     optProb.initial_x, optProb.initial_u, optProb.initial_p = ou.calc_initial_guess(optProb.robot,
                                                                                    t_steps_scvx,
@@ -98,17 +99,13 @@ if only_visualize == False:
 
     # define SCVX Parameter
     par = ou.Parameter_scvx()
-    if optProb.robot.type == "dI":
-        par.max_num_iter = 50
-    else:
-        par.max_num_iter = 50
+    par.max_num_iter = 50
     par.num_time_steps = t_steps_scvx
     optProb.robot.dt = 1/(par.num_time_steps-1)
     print("dt SCVX: {}".format(optProb.robot.dt))
-
-    # solve Problem with scvx
     optProb.par = par
 
+    # solve Problem with scvx
     print("solving optimization problem with SCVX...")
     solution_scvx = optProb.solve_problem()
 
@@ -119,6 +116,19 @@ if only_visualize == False:
 
     print("SCVX solution correct?: {}".format(check))
 
+    ######## solve problem with CROCO ########
+    optProb.algorithm = "CROCO"
+
+    # define croco parameter
+    par = ou.Parameter_croco()
+    par.max_num_iter = 10
+    par.num_time_steps = t_steps_croco
+    #optProb.robot.dt = 1/(par.num_time_steps-1)
+    optProb.par = par
+
+    # solve problem with croco
+    print("solving optimization problem with CROCO...")
+    solution_croco = optProb.solve_problem()
 
 
     ou.save_opt_output(optProb,

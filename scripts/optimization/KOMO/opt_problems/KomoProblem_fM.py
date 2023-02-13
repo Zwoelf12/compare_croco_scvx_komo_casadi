@@ -1,5 +1,5 @@
 import sys
-sys.path += ['../../Master_Thesis_Welf/build',"../../Master_Thesis_Welf/quadcopter_Models"]
+sys.path += ['../deps/rai/build']
 import libry as ry
 import numpy as np
 from physics.multirotor_models import multirotor_flex_komo

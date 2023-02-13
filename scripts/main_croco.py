@@ -18,7 +18,7 @@ sys.path.append(os.getcwd())
 from motionplanningutils import CollisionChecker
 from croco_models import *
 
-from scp import SCP
+#from scp import SCP
 import robots
 import inspect
 
@@ -29,9 +29,9 @@ currentdir = os.path.dirname(
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir)
 
-import benchmark.unicycle_first_order_0.visualize as vis1
-import benchmark.unicycle_second_order_0.visualize as vis2
-import benchmark.car_first_order_with_1_trailers_0.visualize as vis3
+#import benchmark.unicycle_first_order_0.visualize as vis1
+#import benchmark.unicycle_second_order_0.visualize as vis2
+#import benchmark.car_first_order_with_1_trailers_0.visualize as vis3
 # import faulthandler
 # faulthandler.enable()
 import checker
@@ -172,7 +172,7 @@ def croc_problem_from_env(D):
                       max_v, max_v, max_v,
                       max_omega, max_omega, max_omega]
 
-        cro = OCP_quadrotor(**D, use_jit=True)
+        cro = OCP_quadrotor(**D, use_jit=False)
 
     return cro
 
@@ -248,17 +248,21 @@ def run_croco(filename_env, filename_initial_guess,
 
     robot_node = env["robots"][0]
 
+    # define initial and final state
+    # format: (13,), (13,)
     goal = np.array(robot_node["goal"])
+    print("shape xf: ", goal.shape)
     x0 = np.array(robot_node["start"])
+    print("shape x0: ", x0.shape)
 
     vis = None
     name = env["robots"][0]["type"]
-    if name == "unicycle_first_order_0" or name == "unicycle_first_order_0_time":
-        vis = vis1
-    elif name == "unicycle_second_order_0":
-        vis = vis2
-    elif name == "car_first_order_with_1_trailers_0":
-        vis = vis3
+    #if name == "unicycle_first_order_0" or name == "unicycle_first_order_0_time":
+    #    vis = vis1
+    #elif name == "unicycle_second_order_0":
+    #    vis = vis2
+    #elif name == "car_first_order_with_1_trailers_0":
+    #    vis = vis3
 
     cc = CollisionChecker()
     cc.load(filename_env)
@@ -267,28 +271,12 @@ def run_croco(filename_env, filename_initial_guess,
     for obstacle in env["environment"]["obstacles"]:
         obs.append([obstacle["center"], obstacle["size"]])
 
-    def extra_plot():
-        plt.scatter(goal[0], goal[1], facecolors='none', edgecolors='b')
-
-        for o in obs:
-            ax = plt.gca()
-            vis.draw_box_patch(ax, o[0], o[1], angle=0, fill=False, color="b")
-
-    check_free_space_unicycle = False
-    if check_free_space_unicycle:
-        test_col(cc)
-
-    print("showing intial guess")
-    if visualize and vis is not None:
-        print(
-            f"filename_env {filename_env} filename_initial_guess {filename_initial_guess}")
-        aa = vis.Animation(filename_env, filename_initial_guess)
-        aa.show()
-        plt.clf()
-    print("showing intial guess -- done")
-
+    # define initial guess
+    # format: X: (50,13), U: (49,4)
     X = guess["result"][0]["states"]
+    print("shape inital X: ", np.array(X).shape)
     U = guess["result"][0]["actions"]
+    print("shape initial U: ", np.array(U).shape)
 
     assert len(X) == len(U) + 1
     Xl = [np.array(x) for x in X]
@@ -324,6 +312,8 @@ def run_croco(filename_env, filename_initial_guess,
         plt.show()
 
     joint_optimization = not horizon
+    # define number of timesteps
+    # Format: 49
     T = len(guess["result"][0]["states"]) - \
         1  # number of steps = num of actions
     name = env["robots"][0]["type"]
@@ -341,7 +331,7 @@ def run_croco(filename_env, filename_initial_guess,
         D = {"goal": goal, "x0": x0, "cc": cc, "T": T, "free_time": free_time,
              "name": name}
         if name == "quadrotor_0":
-            D["col"] = False
+            D["col"] = True
         else:
             D["col"] = True
 
@@ -768,12 +758,12 @@ def data_generation(free_time=False):
             "use_jit": False,
             "weight_regx": 0.}
 
-        if name == "unicycle_first_order_0" or name == "unicycle_first_order_0_time":
-            vis = vis1
-        elif name == "unicycle_second_order_0":
-            vis = vis2
-        elif name == "car_first_order_with_1_trailers_0":
-            vis = vis3
+        #if name == "unicycle_first_order_0" or name == "unicycle_first_order_0_time":
+        #    vis = vis1
+        #elif name == "unicycle_second_order_0":
+        #    vis = vis2
+        #elif name == "car_first_order_with_1_trailers_0":
+        #    vis = vis3
 
         problem = croc_problem_from_env(D)
         problem.recompute_init_guess(Xl, Ul)

@@ -6,6 +6,8 @@
 #include <ompl/base/spaces/SO3StateSpace.h>
 #include <ompl/tools/config/MagicConstants.h>
 
+#include <iostream>
+
 namespace ob = ompl::base;
 namespace oc = ompl::control;
 
@@ -672,7 +674,9 @@ public:
     J_ << 16.571710e-6, 16.655602e-6, 29.261652e-6;
     inverseJ_ << 1 / J_(0), 1 / J_(1), 1 / J_(2);
 
-    geom_.emplace_back(new fcl::Ellipsoidf(0.15, 0.15, 0.3)); // includes safety margins for downwash
+    std::cout << "!!!!!!!!!!!!!!! we are here !!!!!!!!!!!!!!!!";
+
+    geom_.emplace_back(new fcl::Ellipsoidf(0.15, 0.15, 0.15)); // includes safety margins for downwash
 
 
     auto space(std::make_shared<StateSpace>());
