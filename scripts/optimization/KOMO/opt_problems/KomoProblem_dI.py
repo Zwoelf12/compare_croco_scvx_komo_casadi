@@ -1,5 +1,5 @@
 import sys
-sys.path += ['../deps/rai/build']
+sys.path += ['deps/rai']
 import libry as ry
 import numpy as np
 

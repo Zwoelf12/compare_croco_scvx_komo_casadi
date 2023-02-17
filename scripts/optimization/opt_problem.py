@@ -1,7 +1,7 @@
 from physics.collision.collisionHandler import collisionHandler
+from main_croco import run_croco
 from optimization.KOMO.opt_problems import KomoProblem
 from optimization.SCP.SCvx import SCvx
-from main_croco import run_croco
 
 class OptProblem():
     def __init__(self):

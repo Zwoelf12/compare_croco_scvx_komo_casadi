@@ -18,7 +18,8 @@ set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -Wall -Wextra")
 add_subdirectory(deps/fcl EXCLUDE_FROM_ALL)
 add_subdirectory(deps/sbpl)# EXCLUDE_FROM_ALL)
 add_subdirectory(deps/ompl EXCLUDE_FROM_ALL)
-add_subdirectory(deps/rai EXCLUDE_FROM_ALL)
+add_subdirectory(deps/rai)# EXCLUDE_FROM_ALL)
+#add_subdirectory(deps/assimp)# EXCLUDE_FROM_ALL)
 
 # external projects
 # include(ExternalProject)
@@ -34,6 +35,10 @@ include_directories(
   ${CMAKE_SOURCE_DIR}/deps/ompl/src
   ${CMAKE_BINARY_DIR}/deps/ompl/src
   ${CMAKE_SOURCE_DIR}/deps/rai/rai
+  #${CMAKE_SOURCE_DIR}/deps/assimp/include
+  #${CMAKE_SOURCE_DIR}/deps/assimp/code
+  #${CMAKE_SOURCE_DIR}/deps/assimp/contrib
+  #${CMAKE_SOURCE_DIR}/deps/assimp/scripts
 )
 
 add_library(motion_planning_common
