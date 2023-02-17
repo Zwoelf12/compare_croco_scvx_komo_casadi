@@ -1,15 +1,17 @@
 # TODO
-- check that collision spheres, masses, etc are the same (where is collision sphere defined make sure it is not in cpp function)
+- check that collision spheres, masses, limits, etc are the same
 - make dt accessible from outside for croc or give croc my robot model
-- save output from croco in same format as in my framework
+- what integration scheme is Croco using internally (determine to know how to check feasibility)
+- 
 
 # BACKLOG
 - if Quim is ready write python bindings for c++ version before starting experiments
 
 # IN PROGRESS
-- include croco solver in compare_komo_scp_croco.py
+- save output from croco in same format as in my framework
 
 # DONE
 - write function to gen yaml files from problem description to bridge between my framework and croc
+- include croco solver in compare_komo_scp_croco.py
 
 # DISCUSSION
