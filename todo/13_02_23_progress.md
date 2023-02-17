@@ -7,6 +7,7 @@
 
 # BACKLOG
 - if Quim is ready write python bindings for c++ version before starting experiments
+- change forked repo to branch of imrc repo
 
 # IN PROGRESS
 - save output from croco in same format as in my framework
