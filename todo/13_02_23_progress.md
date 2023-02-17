@@ -1,6 +1,7 @@
 # TODO
 - check that collision spheres, masses, limits, etc are the same
-- make dt accessible from outside for croc or give croc my robot model
+- make dt accessible from outside for croc
+- give croco my step function and carry robot object through the whole process
 - what integration scheme is Croco using internally (determine to know how to check feasibility)
 - 
 
