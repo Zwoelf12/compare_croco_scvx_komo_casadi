@@ -2,6 +2,7 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/deps/assimp" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/deps/fcl" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/deps/libMultiRobotPlanning" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/deps/ompl" vcs="Git" />

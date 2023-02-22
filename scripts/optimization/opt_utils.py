@@ -258,16 +258,17 @@ def load_opt_output(prob_name,robot_type, nrMotors):
 
 def gen_yaml_files(init_x,init_u,obs,x0,xf,robot):
     init_x = init_x.tolist()
-    init_u = init_u.tolist()
-    dat = [{"result": [{'states': init_x},
-                      {'actions': init_u}]}]
+    init_u = init_u.tolist()[:-1]
+    dat = {"result": [{'states': init_x,
+                      'actions': init_u}]}
 
     with open("../scripts/temp/guess.yaml", mode="wt", encoding="utf-8") as file:
         yaml.dump(dat, file, default_flow_style=None, sort_keys=False)
 
     x0 = x0.tolist()
     xf = xf.tolist()
-    r_type = robot.type
+    # to match robot type in croco repo
+    r_type = "quadrotor_0"
     min_x = robot.min_x[:3].tolist()
     max_x = robot.max_x[:3].tolist()
 
@@ -275,13 +276,12 @@ def gen_yaml_files(init_x,init_u,obs,x0,xf,robot):
     for o in obs:
         o_l.append({'type': o.type, 'center': o.pos, 'size': o.shape})
 
-    env = {'environment': [{'min' : min_x}, {'max': max_x}, {'obstacles': o_l}]}
+    env = {'environment': {'min' : min_x, 'max': max_x, 'obstacles': o_l}}
     rob = {'robots': [{'type': r_type, 'start': x0,'goal': xf}]}
 
-    dat = [env, rob]
-
     with open("../scripts/temp/env.yaml", mode="wt", encoding="utf-8") as file:
-        yaml.dump(dat, file, default_flow_style=None, sort_keys=False)
+        yaml.dump(env, file, default_flow_style=None, sort_keys=False)
+        yaml.dump(rob, file, default_flow_style=None, sort_keys=False)
 
 
 

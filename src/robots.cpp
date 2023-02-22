@@ -674,10 +674,9 @@ public:
     J_ << 16.571710e-6, 16.655602e-6, 29.261652e-6;
     inverseJ_ << 1 / J_(0), 1 / J_(1), 1 / J_(2);
 
-    std::cout << "!!!!!!!!!!!!!!! we are here !!!!!!!!!!!!!!!!";
+    //std::cout << "second checkpoint C++ models";
 
-    geom_.emplace_back(new fcl::Ellipsoidf(0.15, 0.15, 0.15)); // includes safety margins for downwash
-
+    geom_.emplace_back(new fcl::Spheref(0.15)); // includes safety margins for downwash
 
     auto space(std::make_shared<StateSpace>());
     space->setPositionBounds(position_bounds);
@@ -1147,6 +1146,8 @@ std::shared_ptr<Robot> create_robot(
   }
   else if (robotType == "quadrotor_0")
   {
+    //std::cout << "first checkpoint C++ models";
+
     robot.reset(new RobotQuadrotor(
         positionBounds));
   }

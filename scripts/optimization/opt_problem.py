@@ -1,7 +1,8 @@
 from physics.collision.collisionHandler import collisionHandler
-from main_croco import run_croco
+from optimization.CROCO.croco_AuLa import run_croco
 from optimization.KOMO.opt_problems import KomoProblem
 from optimization.SCP.SCvx import SCvx
+from optimization import opt_utils as ou
 
 class OptProblem():
     def __init__(self):
@@ -55,16 +56,11 @@ class OptProblem():
 
         elif self.algorithm == "CROCO":
 
-            # TODO: generate yaml file
+            ou.gen_yaml_files(self.initial_x, self.initial_u, self.obs, self.x0, self.xf, self.robot)
 
-            solution = run_croco(self.par.num_time_steps,
-                                 self.tf_max,
-                                 self.x0,
-                                 self.xf,
-                                 self.obs,
-                                 self.robot,
-                                 self.initial_x,
-                                 self.initial_u)
+            self.robot.t_dil_croco = self.tf_max
+
+            solution = run_croco("../scripts/temp/env.yaml","../scripts/temp/guess.yaml",self.robot,True)
 
         else:
             print("unknown algorithm")

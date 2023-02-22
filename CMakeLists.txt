@@ -53,104 +53,104 @@ set_property(TARGET motion_planning_common PROPERTY POSITION_INDEPENDENT_CODE ON
 # Applications
 
 ## ompl
-add_executable(main_ompl
-  src/main_ompl.cpp
-)
-target_include_directories(main_ompl
-  PRIVATE ${CMAKE_BINARY_DIR}/deps/fcl/include
-  PRIVATE ${CMAKE_SOURCE_DIR}/deps/fcl/include
-)
-target_link_libraries(main_ompl
-  motion_planning_common
-  ${Boost_LIBRARIES}
-  # ${OMPL_LIBRARIES}
-  ompl
-  fcl
-  yaml-cpp
-)
+#add_executable(main_ompl
+#  src/main_ompl.cpp
+#)
+#target_include_directories(main_ompl
+#  PRIVATE ${CMAKE_BINARY_DIR}/deps/fcl/include
+#  PRIVATE ${CMAKE_SOURCE_DIR}/deps/fcl/include
+#)
+#target_link_libraries(main_ompl
+#  motion_planning_common
+#  ${Boost_LIBRARIES}
+#  # ${OMPL_LIBRARIES}
+#  ompl
+#  fcl
+#  yaml-cpp
+#)
 
 ## main_ompl_geometric
-add_executable(main_ompl_geometric
-  src/main_ompl_geometric.cpp
-)
-target_include_directories(main_ompl_geometric
-  PRIVATE ${CMAKE_BINARY_DIR}/deps/fcl/include
-  PRIVATE ${CMAKE_SOURCE_DIR}/deps/fcl/include
-)
-target_link_libraries(main_ompl_geometric
-  motion_planning_common
-  ${Boost_LIBRARIES}
-  # ${OMPL_LIBRARIES}
-  ompl
-  fcl
-  yaml-cpp
-)
+#add_executable(main_ompl_geometric
+#  src/main_ompl_geometric.cpp
+#)
+#target_include_directories(main_ompl_geometric
+#  PRIVATE ${CMAKE_BINARY_DIR}/deps/fcl/include
+#  PRIVATE ${CMAKE_SOURCE_DIR}/deps/fcl/include
+#)
+#target_link_libraries(main_ompl_geometric
+#  motion_planning_common
+#  ${Boost_LIBRARIES}
+#  # ${OMPL_LIBRARIES}
+#  ompl
+#  fcl
+#  yaml-cpp
+#)
 
 ## test_fcl
-add_executable(test_fcl
-  src/main_fcl.cpp
-)
-target_include_directories(test_fcl
-  PRIVATE ${CMAKE_BINARY_DIR}/deps/fcl/include
-  PRIVATE ${CMAKE_SOURCE_DIR}/deps/fcl/include
-)
-target_link_libraries(test_fcl
-  ${Boost_LIBRARIES}
-  fcl
-  yaml-cpp
-)
+#add_executable(test_fcl
+#  src/main_fcl.cpp
+#)
+#target_include_directories(test_fcl
+#  PRIVATE ${CMAKE_BINARY_DIR}/deps/fcl/include
+#  PRIVATE ${CMAKE_SOURCE_DIR}/deps/fcl/include
+#)
+#target_link_libraries(test_fcl
+#  ${Boost_LIBRARIES}
+#  fcl
+#  yaml-cpp
+#)
 
 ## main_sbpl
-add_executable(main_sbpl
-  src/main_sbpl.cpp
-)
-target_include_directories(main_sbpl
-  PRIVATE ${CMAKE_BINARY_DIR}/deps/fcl/include
-  PRIVATE ${CMAKE_SOURCE_DIR}/deps/fcl/include
-)
-target_link_libraries(main_sbpl
-  ${Boost_LIBRARIES}
-  fcl
-  yaml-cpp
-  sbpl
-)
+#add_executable(main_sbpl
+#  src/main_sbpl.cpp
+#)
+#target_include_directories(main_sbpl
+#  PRIVATE ${CMAKE_BINARY_DIR}/deps/fcl/include
+#  PRIVATE ${CMAKE_SOURCE_DIR}/deps/fcl/include
+#)
+#target_link_libraries(main_sbpl
+#  ${Boost_LIBRARIES}
+#  fcl
+#  yaml-cpp
+#  sbpl
+#)
 
 ## dbastar
-add_executable(dbastar
-  src/main_dbastar.cpp
-)
-target_include_directories(dbastar
-  PRIVATE ${CMAKE_BINARY_DIR}/deps/fcl/include
-  PRIVATE ${CMAKE_SOURCE_DIR}/deps/fcl/include
-)
-target_link_libraries(dbastar
-  motion_planning_common
-  ${Boost_LIBRARIES}
-  ompl
-  fcl
-  yaml-cpp
-)
+#add_executable(dbastar
+#  src/main_dbastar.cpp
+#)
+#target_include_directories(dbastar
+#  PRIVATE ${CMAKE_BINARY_DIR}/deps/fcl/include
+#  PRIVATE ${CMAKE_SOURCE_DIR}/deps/fcl/include
+#)
+#target_link_libraries(dbastar
+#  motion_planning_common
+#  ${Boost_LIBRARIES}
+#  ompl
+#  fcl
+#  yaml-cpp
+#)
 
 ## main_rai
-add_executable(main_rai
-  src/main_rai.cpp
-  src/rai/car_utils.cpp
-  src/rai/unicycle.cpp
-  src/rai/trailer.cpp
-  src/rai/quadrotor.cpp
-)
-target_link_libraries(main_rai
-  rai
-  yaml-cpp
-)
+#add_executable(main_rai
+#  src/main_rai.cpp
+#  src/rai/car_utils.cpp
+#  src/rai/unicycle.cpp
+#  src/rai/trailer.cpp
+#  src/rai/quadrotor.cpp
+#)
+#target_link_libraries(main_rai
+#  rai
+#  yaml-cpp
+#)
 
 ## kinedit
-add_executable(kinedit
-  deps/rai/bin/src_kinEdit/main.cpp
-)
-target_link_libraries(kinedit
-  rai
-)
+#add_executable(kinedit
+#  deps/rai/bin/src_kinEdit/main.cpp
+#)
+#target_link_libraries(kinedit
+#  rai
+#)
 
 # Python bindings
 add_subdirectory(deps/pybind11 EXCLUDE_FROM_ALL)

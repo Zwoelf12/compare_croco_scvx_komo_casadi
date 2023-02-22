@@ -65,6 +65,7 @@ if only_visualize == False:
                                                                                    optProb.tf_min,
                                                                                    optProb.tf_max)
 
+    """
     ######## solve problem with KOMO #######
     optProb.algorithm = "KOMO"
 
@@ -115,6 +116,7 @@ if only_visualize == False:
     check, data_scvx, real_traj_scvx, int_error_scvx, int_error_scvx_small_dt, _, _ = check_solution(solution_scvx, optProb)
 
     print("SCVX solution correct?: {}".format(check))
+    """
 
     ######## solve problem with CROCO ########
     optProb.algorithm = "CROCO"
@@ -123,14 +125,15 @@ if only_visualize == False:
     par = ou.Parameter_croco()
     par.max_num_iter = 10
     par.num_time_steps = t_steps_croco
-    #optProb.robot.dt = 1/(par.num_time_steps-1)
+    optProb.robot.dt = 1/(par.num_time_steps-1)
     optProb.par = par
 
     # solve problem with croco
     print("solving optimization problem with CROCO...")
     solution_croco = optProb.solve_problem()
+    solution_croco.time_dil = optProb.tf_max
 
-
+"""
     ou.save_opt_output(optProb,
                        prob_name,
                        solution_scvx,
@@ -157,6 +160,7 @@ report_compare(sol_scvx.robot,
                   sol_komo.int_err,
                   sol_komo.int_err_small_dt,
                   sol_scvx.x0, sol_scvx.xf, sol_scvx.t_dil)
+"""
 
 
 

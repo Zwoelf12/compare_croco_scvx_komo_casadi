@@ -58,6 +58,7 @@ class QuadrotorAutograd():
 		self.nrMotors = nrMotors
 		self.t2w = t2w
 		self.dt = None
+		self.t_dil_croco = None
 		self.g = 9.81  # not signed
 
 		self.min_x = np.array([-1.5, -1.5, 0,
@@ -75,10 +76,6 @@ class QuadrotorAutograd():
 
 		self.min_u = np.ones(nrMotors) * 0
 		self.max_u = np.ones(nrMotors) * (self.t2w * self.mass * self.g)/self.nrMotors
-
-		print("t2w: ", self.t2w)
-		print("weight force: ", self.mass * self.g)
-		print("fmax: ", sum(self.max_u))
 
 		self.arm_length = arm_length
 
@@ -238,30 +235,35 @@ class QuadrotorAutograd():
 
 		return np.concatenate((pos_next, vel_next, q_next, omega_next))
 
-	def step_(self, state, force, t_dil):
+	def step_CROCO(self, state, force):
 		# compute next state
 		pos = state[:3]
 		vel = state[3:6]
 		q = state[6:10]
 		omega = state[10:]
-		dt = self.dt * t_dil
+		dt = self.dt * self.t_dil_croco
 
 		eta = np.dot(self.B0, force)
 		f_u = np.array([0, 0, eta[0]])
 		tau_u = np.array([eta[1], eta[2], eta[3]])
 
-		# dynamics
+		## dynamics ##
+		# velocity
 		# v(t) = v(t-1) + (g + R(f(t))/m)*dt = v(t-1) + a(t)*dt
-		vel_next = vel + (np.array([0, 0, -self.g]) + qrotate(q, f_u) / self.mass) * dt
-		# x(t) = x(t-1) + v(t)*dt
-		pos_next = pos + vel_next * dt
+		acc = (np.array([0, 0, -self.g]) + qrotate(q, f_u) / self.mass)
+		vel_next = vel + acc * dt
 
+		# positions
+		# x(t) = x(t-1) + v(t)*dt
+		pos_next = pos + vel * dt
+
+		# rotational velocity
 		# w(t) = w(t-1) + J⁻¹(Tau(t-1) - w(t-1)xJw(t-1))*dt = w(t-1) + w_dot(t-1)
-		omega_next = omega + (self.inv_J * (tau_u - np.cross(self.J * omega, omega))) * dt
-		# to integrate the dynamics, see
-		# https://www.ashwinnarayan.com/post/how-to-integrate-quaternions/, and
-		# https://arxiv.org/pdf/1604.08139.pdf
+		omega_dot = (self.inv_J * (tau_u - np.cross(self.J * omega, omega)))
+		omega_next = omega + omega_dot * dt
+
+		# quaternions
 		# q(t) = q(t-1) + 0.5*w(t)q(t-1)
-		q_next = qnormalize(qintegrate(q, qrotate(q, omega_next), self.dt * t_dil))
+		q_next = qnormalize(qintegrate(q, qrotate(q, omega), dt))
 
 		return np.concatenate((pos_next, vel_next, q_next, omega_next))
