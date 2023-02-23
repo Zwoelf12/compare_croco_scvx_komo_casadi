@@ -3,7 +3,7 @@ from optimization.KOMO.opt_problems import KomoProblem_dI
 from optimization.opt_utils import extract_sol_dI, extract_sol_fM
 import time
 
-def solve_komo(phases, time_steps_per_phase,
+def solve(phases, time_steps_per_phase,
                time_per_phase, x0, xf, obs,
                robot, initial_x, initial_u):
 

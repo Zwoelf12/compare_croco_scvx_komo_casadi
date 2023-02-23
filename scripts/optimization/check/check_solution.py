@@ -10,10 +10,6 @@ def check_solution(solution, optProb):
 
     robot = optProb.robot
 
-    check_dt = 0.2 # substepsize with which every state is checked
-    robot_small_dt = copy.deepcopy(robot)
-    robot_small_dt.dt = check_dt
-
     def check_array(a, b, msg, check_quat_diff = False):
         if check_quat_diff:
             quat_diff = rowan.geometry.distance(a[6:10], b[6:10])
@@ -50,37 +46,30 @@ def check_solution(solution, optProb):
     real_traj = [np.array(optProb.x0)]
     T = states.shape[0]
 
-    # check with finer stepsize
-    int_err_small_grid = []
-
     print("propagating data ...")
     for t in range(T - 1):
         # calculate integration error
         if optProb.algorithm == "SCVX":
             state_desired_big_grid = robot.step(states[t], actions[t], t_dil)
+        elif optProb.algorithm == "CASADI":
+            if optProb.par.discretization_method == "RK":
+                state_desired_big_grid = robot.step_RK(states[t], actions[t])
+            elif optProb.par.discretization_method == "euler":
+                state_desired_big_grid = robot.step_RK(states[t], actions[t])
+            else:
+                print("unknown discretization scheme")
         else:
             state_desired_big_grid = robot.step_KOMO(states[t], states[t+1], actions[t], t_dil)
-
-        state_desired_small_grid = calc_desired_state(robot_small_dt, states[t], actions[t], t_dil/(T-1))
 
         if robot.type == "dI":
             success &= check_array(states[t + 1], state_desired_big_grid, "Wrong dynamics at t={}".format(t + 1))
             int_err.append(states[t + 1] - state_desired_big_grid)
-            int_err_small_grid.append(states[t + 1] - state_desired_small_grid)
         else:
             success &= check_array(states[t + 1], state_desired_big_grid, "Wrong dynamics at t={}".format(t + 1), True)
             quat_diff = rowan.geometry.sym_distance(states[t+1, 6:10], state_desired_big_grid[6:10])
             err = np.array(states[t + 1] - state_desired_big_grid)
             err[6:10] = quat_diff
             int_err.append(err)
-
-            quat_diff_small_grid = rowan.geometry.sym_distance(states[t + 1, 6:10], state_desired_small_grid[6:10])
-            err_small_grid = np.array(states[t + 1] - state_desired_small_grid)
-            err_small_grid[6:10] = quat_diff_small_grid
-            int_err_small_grid.append(err_small_grid)
-
-        # calculate real trajectory
-        real_traj.append(robot.step(real_traj[-1], actions[t], t_dil))
 
     # state limits
     for t in range(T):
@@ -115,14 +104,5 @@ def check_solution(solution, optProb):
 
     data = np.hstack((states, actions))
 
-    return success, data, np.array(real_traj), np.array(int_err), np.array(int_err_small_grid), false_success, solution.constr_viol
-
-def calc_desired_state(robot, state, action, t_dil):
-    num_timesteps = int(np.ceil(1/robot.dt))
-
-    state_now = state
-    for t in range(num_timesteps):
-        state_now = robot.step(state_now, action, t_dil)
-
-    return state_now
+    return success, data, np.array(int_err), false_success, solution.constr_viol
 

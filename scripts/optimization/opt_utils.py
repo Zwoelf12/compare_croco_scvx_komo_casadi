@@ -1,5 +1,5 @@
 import numpy as np
-from physics.multirotor_models.multirotor_full_model import calc_rot_vel, qrotate, qmultiply, qconjugate
+from physics.multirotor_models.multirotor_full_model_komo_scp import calc_rot_vel, qrotate, qmultiply, qconjugate
 import pickle
 import rowan
 import yaml
@@ -28,19 +28,13 @@ class Parameter_scvx():
     def __init__(self):
         self.max_num_iter = None # maximum number of iterations
         self.num_time_steps = None # number of time steps
-        self.tf_min = None # minimum final time dilation
-        self.tf_max = None # maximum final time dilation
-        self.noise = None # noise used for initialization
 
-class Parameter_croco():
+class Parameter_casadi():
     def __init__(self):
-        self.max_num_iter = None # maximum number of iterations
         self.num_time_steps = None # number of time steps
-        self.tf_min = None # minimum final time dilation
-        self.tf_max = None # maximum final time dilation
-        self.noise = None # noise used for initialization
+        self.discretization_method = None # discretization method
 
-class Parameter_KOMO():
+class Parameter_komo():
     def __init__(self):
         self.phases = None # number of Phases the problem has
         self.time_steps_per_phase = None # number of time steps per phase
@@ -175,18 +169,18 @@ def save_object(filename, sol):
     with open(filename, "wb") as outp:
         pickle.dump(sol, outp, pickle.HIGHEST_PROTOCOL)
 
-def save_opt_output(optProb,
-                    prob_name,
-                    solution_scvx,
-                    solution_komo,
-                    data_scvx,
-                    data_komo,
-                    real_traj_scvx,
-                    real_traj_komo,
-                    int_error_scvx,
-                    int_error_small_dt_scvx,
-                    int_error_komo,
-                    int_error_small_dt_komo):
+def save_opt_output_all(optProb,
+                        prob_name,
+                        solution_scvx,
+                        solution_komo,
+                        data_scvx,
+                        data_komo,
+                        real_traj_scvx,
+                        real_traj_komo,
+                        int_error_scvx,
+                        int_error_small_dt_scvx,
+                        int_error_komo,
+                        int_error_small_dt_komo):
 
     opt_processData_scvx = Opt_processData()
     opt_processData_scvx.robot = optProb.robot
@@ -213,9 +207,44 @@ def save_opt_output(optProb,
     opt_processData_komo.t_dil = solution_komo.time_dil
     opt_processData_komo.time = solution_komo.time
 
-    if optProb.robot.type == "dI":
-        prob_name += "_dI"
+    if optProb.robot.nrMotors == 2:
+        prob_name += "_fM_2m"
+    elif optProb.robot.nrMotors == 3:
+        prob_name += "_fM_3m"
+    elif optProb.robot.nrMotors == 4:
+        prob_name += "_fM_4m"
+    elif optProb.robot.nrMotors == 6:
+        prob_name += "_fM_6m"
     else:
+        prob_name += "_fM_8m"
+
+    # save data
+    path = "./data_scvx_komo_comparision/"
+
+    filename = path + prob_name
+
+    save_object(filename + "_scvx", opt_processData_scvx)
+    save_object(filename + "_komo", opt_processData_komo)
+
+def save_opt_output(optProb,
+                    prob_name,
+                    solution,
+                    data,
+                    int_error):
+
+        opt_processData = Opt_processData()
+        opt_processData.robot = optProb.robot
+        opt_processData.data = data
+        opt_processData.int_err = int_error
+        opt_processData.obs = optProb.obs
+        opt_processData.x0 = optProb.x0
+        opt_processData.xf = optProb.xf
+        opt_processData.t_dil = solution.time_dil
+        opt_processData.time = solution.time
+
+        if optProb.algorithm == "SCVX":
+            opt_processData.time_cvx_solver = solution.time_cvx_solver
+
         if optProb.robot.nrMotors == 2:
             prob_name += "_fM_2m"
         elif optProb.robot.nrMotors == 3:
@@ -227,13 +256,18 @@ def save_opt_output(optProb,
         else:
             prob_name += "_fM_8m"
 
-    # save data
-    path = "./data_scvx_komo_comparision/"
+        # save data
+        path = "./data_comparision/"
 
-    filename = path + prob_name
+        filename = path + prob_name
 
-    save_object(filename + "_scvx", opt_processData_scvx)
-    save_object(filename + "_komo", opt_processData_komo)
+        if optProb.algorithm == "SCVX":
+            save_object(filename + "_scvx", opt_processData)
+        elif optProb.algorithm == "KOMO":
+            save_object(filename + "_komo", opt_processData)
+        elif optProb.algorithm == "CASADI":
+            save_object(filename + "_casadi", opt_processData)
+
 
 def load_object(filename):
     with open(filename, "rb") as input_file:

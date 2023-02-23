@@ -51,7 +51,7 @@ def calc_rot_vel(q_t,q_tm1,dt):
 	q_dot = (q_t - q_tm1) / dt
 	return 2 * (qmultiply(qinverse(q_tm1), q_dot))[1:]
 
-class QuadrotorAutograd():
+class Multicopter():
 
 	def __init__(self, nrMotors, arm_length, t2w = 1.4):
 		self.type = "fM"
@@ -59,6 +59,7 @@ class QuadrotorAutograd():
 		self.t2w = t2w
 		self.dt = None
 		self.t_dil_croco = None
+		self.t_dil_casadi = None
 		self.g = 9.81  # not signed
 
 		self.min_x = np.array([-1.5, -1.5, 0,
@@ -242,6 +243,39 @@ class QuadrotorAutograd():
 		q = state[6:10]
 		omega = state[10:]
 		dt = self.dt * self.t_dil_croco
+
+		eta = np.dot(self.B0, force)
+		f_u = np.array([0, 0, eta[0]])
+		tau_u = np.array([eta[1], eta[2], eta[3]])
+
+		## dynamics ##
+		# velocity
+		# v(t) = v(t-1) + (g + R(f(t))/m)*dt = v(t-1) + a(t)*dt
+		acc = (np.array([0, 0, -self.g]) + qrotate(q, f_u) / self.mass)
+		vel_next = vel + acc * dt
+
+		# positions
+		# x(t) = x(t-1) + v(t)*dt
+		pos_next = pos + vel * dt
+
+		# rotational velocity
+		# w(t) = w(t-1) + J⁻¹(Tau(t-1) - w(t-1)xJw(t-1))*dt = w(t-1) + w_dot(t-1)
+		omega_dot = (self.inv_J * (tau_u - np.cross(self.J * omega, omega)))
+		omega_next = omega + omega_dot * dt
+
+		# quaternions
+		# q(t) = q(t-1) + 0.5*w(t)q(t-1)
+		q_next = qnormalize(qintegrate(q, qrotate(q, omega), dt))
+
+		return np.concatenate((pos_next, vel_next, q_next, omega_next))
+
+	def step_CASADI(self, state, force):
+		# compute next state
+		pos = state[:3]
+		vel = state[3:6]
+		q = state[6:10]
+		omega = state[10:]
+		dt = self.dt * self.t_dil_casadi
 
 		eta = np.dot(self.B0, force)
 		f_u = np.array([0, 0, eta[0]])

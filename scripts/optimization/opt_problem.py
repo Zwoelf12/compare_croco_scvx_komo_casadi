@@ -1,8 +1,7 @@
-from physics.collision.collisionHandler import collisionHandler
-from optimization.CROCO.croco_AuLa import run_croco
-from optimization.KOMO.opt_problems import KomoProblem
-from optimization.SCP.SCvx import SCvx
-from optimization import opt_utils as ou
+#from physics.collision.collisionHandler import collisionHandler
+#from optimization.KOMO.opt_problems import Komo
+#from optimization.SCP.SCvx import SCvx
+from optimization.CASADI import Casadi
 
 class OptProblem():
     def __init__(self):
@@ -21,15 +20,16 @@ class OptProblem():
 
     def solve_problem(self):
 
-        self.CHandler = collisionHandler(self.robot)
-        self.CHandler.obs_data = self.obs
+        #self.CHandler = collisionHandler(self.robot)
+        #self.CHandler.obs_data = self.obs
 
-        if self.obs is not None:
-            for obs in self.obs:
-                self.CHandler.addObject(obs.type, obs.shape, obs.pos, obs.quat)
+        #if self.obs is not None:
+        #    for obs in self.obs:
+        #        self.CHandler.addObject(obs.type, obs.shape, obs.pos, obs.quat)
 
         if self.algorithm == "SCVX":
 
+            """
             scvx = SCvx(self.robot)
             solution = scvx.solve(self.x0,
                                   self.xf,
@@ -41,26 +41,35 @@ class OptProblem():
                                   self.par.num_time_steps,
                                   self.par.max_num_iter,
                                   self.CHandler)
+            """
 
         elif self.algorithm == "KOMO":
 
-            solution = KomoProblem.solve_komo(self.par.phases,
-                                         self.par.time_steps_per_phase,
-                                         self.par.time_per_phase,
-                                         self.x0,
-                                         self.xf,
-                                         self.obs,
-                                         self.robot,
-                                         self.initial_x,
-                                         self.initial_u)
+            print("lego")
 
-        elif self.algorithm == "CROCO":
+            """
+            solution = Komo.solve(self.par.phases,
+                                  self.par.time_steps_per_phase,
+                                  self.par.time_per_phase,
+                                  self.x0,
+                                  self.xf,
+                                  self.obs,
+                                  self.robot,
+                                  self.initial_x,
+                                  self.initial_u)
+            """
 
-            ou.gen_yaml_files(self.initial_x, self.initial_u, self.obs, self.x0, self.xf, self.robot)
+        elif self.algorithm == "CASADI":
 
-            self.robot.t_dil_croco = self.tf_max
-
-            solution = run_croco("../scripts/temp/env.yaml","../scripts/temp/guess.yaml",self.robot,True)
+            solution = Casadi.solve(self.robot,
+                                    self.x0,
+                                    self.xf,
+                                    self.tf_max,
+                                    self.obs,
+                                    self.initial_x,
+                                    self.initial_u,
+                                    self.par.num_time_steps,
+                                    self.par.discretization_method)
 
         else:
             print("unknown algorithm")
