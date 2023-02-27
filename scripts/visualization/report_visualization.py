@@ -83,185 +83,164 @@ def set_axes_equal(ax):
     ax.set_zlim3d([z_middle - plot_radius, z_middle + plot_radius])
 
 
-def report_compare(robot,
-				  data_scvx,
-				  data_komo,
-				  data_propagated_scvx,
-				  data_propagated_komo,
-				  obstacles,
-				  int_err_scvx,
-				  int_err_small_dt_scvx,
-				  int_err_komo,
-				  int_err_small_dt_komo,
-				  x0,xf,t_dil,xm= None,
-				  nu = None):
+def report_compare(solutions, list_of_solvers):
 
-	nTimeSteps_scvx = data_scvx.shape[0]
-	timeVec_scvx = np.linspace(0,t_dil,nTimeSteps_scvx)
+	robot = solutions[list_of_solvers[0]].robot
+	x0 = solutions[list_of_solvers[0]].x0
+	xf = solutions[list_of_solvers[0]].xf
+	t_dil = solutions[list_of_solvers[0]].t_dil
+	obstacles = solutions[list_of_solvers[0]].obs
 
-	nTimeSteps_komo = data_komo.shape[0]
-	timeVec_komo = np.linspace(0, t_dil, nTimeSteps_komo)
+	nSolvers = len(list_of_solvers)
 
-	fig, axs = plt.subplots(2, 1)
-	# plot int error for smaller stepsize
-	axs[0].plot(timeVec_scvx[1:], int_err_small_dt_komo)
-	axs[0].set_title("integration error KOMO (explicit euler with 10 times smaller step size)")
-	axs[0].set_ylabel("int err small dt []")
-	if robot.type == "dI":
-		leg = ["$e_{I,p_x}$", "$e_{I,p_y}$", "$e_{I,p_z}$", "$e_{I,v_x}$", "$e_{I,v_y}$", "$e_{I,v_z}$"]
-	else:
-		leg = ["$e_{I,p_x}$", "$e_{I,p_y}$", "$e_{I,p_z}$", "$e_{I,v_x}$", "$e_{I,v_y}$", "$e_{I,v_z}$",
-					   "$e_{I,q_1}$", "$e_{I,q_2}$", "$e_{I,q_3}$", "$e_{I,q_4}$", "$e_{I,\omega_x}$","$e_{I,\omega_y}$",
-					   "$e_{I,\omega_z}$"]
-	axs[0].legend(leg)
-	axs[0].set_xlabel("time [s]")
+	nTime_steps = {}
+	time_points = {}
+	for solver_name in list_of_solvers:
+		nTime_steps[solver_name] = solutions[solver_name].data.shape[0]
+		time_points[solver_name] = np.linspace(0,t_dil,nTime_steps[solver_name])
 
-	# plot integration error Komo
-	axs[1].plot(timeVec_komo[1:], int_err_small_dt_scvx)
-	axs[1].set_title("integration error SCVX (explicit euler with 10 times smaller step size)")
-	axs[1].set_ylabel("int err small dt []")
-	if robot.type == "dI":
-		leg = ["$e_{I,p_x}$", "$e_{I,p_y}$", "$e_{I,p_z}$", "$e_{I,v_x}$", "$e_{I,v_y}$", "$e_{I,v_z}$"]
-	# axs[2].legend(leg, loc="lower center", bbox_to_anchor=(0.5, -0.3))
-	else:
-		leg = ["$e_{I,p_x}$", "$e_{I,p_y}$", "$e_{I,p_z}$", "$e_{I,v_x}$", "$e_{I,v_y}$", "$e_{I,v_z}$",
-			   "$e_{I,q_1}$", "$e_{I,q_2}$", "$e_{I,q_3}$", "$e_{I,q_4}$", "$e_{I,\omega_x}$", "$e_{I,\omega_y}$",
-			   "$e_{I,\omega_z}$"]
+	fig, axs = plt.subplots(2, 2)
 
-	axs[1].legend(leg)
-	axs[1].set_xlabel("time [s]")
+	ax1 = axs[0, 0]
+	ax2 = axs[0, 1]
+	ax3 = axs[1, 0]
+	ax4 = axs[1, 1]
 
+	legend_ax1 = []
+	legend_ax2 = []
+	legend_ax3 = []
+	legend_ax4 = []
 
-	fig, axs = plt.subplots(3, 1)
-	# plot int error
-	axs[1].plot(timeVec_scvx[1:], int_err_scvx)
-	axs[1].set_title("integration error SCVX")
-	axs[1].set_ylabel("integration error []")
-	if robot.type == "dI":
-		leg = ["$e_{I,p_x}$", "$e_{I,p_y}$", "$e_{I,p_z}$", "$e_{I,v_x}$", "$e_{I,v_y}$", "$e_{I,v_z}$"]
-	else:
-		leg = ["$e_{I,p_x}$", "$e_{I,p_y}$", "$e_{I,p_z}$", "$e_{I,v_x}$", "$e_{I,v_y}$", "$e_{I,v_z}$",
-					   "$e_{I,q_1}$", "$e_{I,q_2}$", "$e_{I,q_3}$", "$e_{I,q_4}$", "$e_{I,\omega_x}$","$e_{I,\omega_y}$",
-					   "$e_{I,\omega_z}$"]
+	for solver_name in list_of_solvers:
 
-	axs[1].legend(leg)
-	axs[1].set_xlabel("time [s]")
+		sol = solutions[solver_name]
+		time_vec = time_points[solver_name]
 
-	# plot integration error Komo
-	axs[0].plot(timeVec_komo[1:],int_err_komo)
-	axs[0].set_title("integration error KOMO")
-	axs[0].set_ylabel("integration error []")
-	if robot.type == "dI":
-		leg = ["$e_{I,p_x}$", "$e_{I,p_y}$", "$e_{I,p_z}$", "$e_{I,v_x}$", "$e_{I,v_y}$", "$e_{I,v_z}$"]
-	else:
-		leg = ["$e_{I,p_x}$", "$e_{I,p_y}$",  "$e_{I,p_z}$", "$e_{I,v_x}$", "$e_{I,v_y}$", "$e_{I,v_z}$",
-			 "$e_{I,q_1}$", "$e_{I,q_2}$", "$e_{I,q_3}$", "$e_{I,q_4}$", "$e_{I,\omega_x}$", "$e_{I,\omega_y}$",
-			 "$e_{I,\omega_z}$"]
-	axs[0].legend(leg)
-	axs[0].set_xlabel("time [s]")
+		# plot positions
+		ax1.plot(time_vec, sol.data[:, :3])
+		legend_ax1.extend([solver_name + ": \n $p_x$", "$p_y$", "$p_z$"])
 
-	# plot actions
-	if robot.type == "dI":
-		axs[2].plot(timeVec_scvx, data_scvx[:, 6:])
-		axs[2].plot(timeVec_komo, data_komo[:, 6:])
-		axs[2].plot(timeVec_scvx, robot.max_u * np.ones(timeVec_scvx.shape), "-r")
-		axs[2].legend(["SCVX: \n $a_x$", "$a_y$", "$a_z$", "KOMO: \n $a_x$", "$a_y$", "$a_z$"])
-		axs[2].set_ylabel("accelerations [m/s²]")
-		inputCostKOMO = (data_komo[:-1, 6:] ** 2).sum()
-		inputCostSCVX = (data_scvx[:-1, 6:] ** 2).sum()
-		axs[2].set_title("acceleration comparision \n input cost: \n SCVX: {} \n KOMO: {}".format(np.round(inputCostSCVX, 3),
-																						np.round(inputCostKOMO, 3)))
-	elif robot.type == "fM":
-		axs[2].plot(timeVec_scvx, data_scvx[:, 13:])
-		axs[2].plot(timeVec_komo, data_komo[:, 13:])
-		if robot.nrMotors == 2:
-			leg = ["SCVX: \n $f_1$", "$f_2$",  "KOMO: \n $f_1$", "$f_2$"]
-		elif robot.nrMotors == 3:
-			leg = ["SCVX: \n $f_1$", "$f_2$", "$f_3$", "KOMO: \n $f_1$", "$f_2$",
-						"$f_3$"]
-		elif robot.nrMotors == 4:
-			leg = ["SCVX: \n $f_1$", "$f_2$", "$f_3$", "$f_4$", "KOMO: \n $f_1$", "$f_2$",
-						"$f_3$", "$f_4$"]
-		elif robot.nrMotors == 6:
-			leg = ["SCVX: \n $f_1$", "$f_2$", "$f_3$", "$f_4$", "$f_5$", "$f_6$", "KOMO: \n $f_1$", "$f_2$",
-						   "$f_3$", "$f_4$", "$f_5$", "$f_6$"]
-		elif robot.nrMotors == 8:
-			leg = ["SCVX: \n $f_1$", "$f_2$", "$f_3$", "$f_4$", "$f_5$", "$f_6$", "$f_7$", "$f_8$", "KOMO: \n $f_1$", "$f_2$",
-						   "$f_3$", "$f_4$", "$f_5$", "$f_6$", "$f_7$", "$f_8$"]
+		# plot velocities
+		ax2.plot(time_vec, sol.data[:, 3:6])
+		legend_ax2.extend([solver_name + ": \n $v_x$", "$v_y$", "$v_z$"])
 
-		axs[2].legend(leg)
-		axs[2].set_ylabel("forces [N]")
-		inputCostKOMO = (data_komo[:-1, 13:] ** 2).sum()
-		inputCostSCVX = (data_scvx[:-1, 13:] ** 2).sum()
-		axs[2].set_title("force comparision \n input cost: \n SCVX: {} \n KOMO: {}".format(np.round(inputCostSCVX, 3),
-																			 np.round(inputCostKOMO, 3)))
-	axs[0].set_xlabel("time [s]")
+		# plot quaternions
+		ax3.plot(time_vec, sol.data[:, 6:10])
+		legend_ax3.extend([solver_name + ": \n $q_1$", "$q_2$", "$q_3$", "$q_4$"])
 
-	if robot.type == "dI":
-		fig, axs = plt.subplots(1, 2)
-		ax1 = axs[0]
-		ax2 = axs[1]
-	else:
-		fig, axs = plt.subplots(2, 2)
-		ax1 = axs[0,0]
-		ax2 = axs[0,1]
-		ax3 = axs[1,0]
-		ax4 = axs[1,1]
+		# plot rotational velocities
+		ax4.plot(time_vec, sol.data[:, 10:13])
+		legend_ax2.extend([solver_name + ": \n $\omega_x$", "$\omega_y$", "$\omega_z$"])
 
-	# plot velocities
-	ax2.plot(timeVec_scvx, data_scvx[:, 3:6])
-	ax2.plot(timeVec_komo, data_komo[:, 3:6])
-	ax2.legend(["SCVX: \n $v_x$", "$v_y$", "$v_z$", "KOMO: \n $v_x$", "$v_y$", "$v_z$"])
-	ax2.set_xlabel("time [s]")
-	ax2.set_ylabel("velocities [m/s]")
-	ax2.set_title("velocity comparision")
+	# make legend
+	ax1.legend(legend_ax1)
+	ax2.legend(legend_ax2)
+	ax3.legend(legend_ax3)
+	ax4.legend(legend_ax4)
 
-	# plot positions
-	ax1.plot(timeVec_scvx, data_scvx[:, :3])
-	ax1.plot(timeVec_komo, data_komo[:, :3])
-	ax1.legend(["SCVX: \n $p_x$", "$p_y$", "$p_z$", "KOMO: \n $p_x$", "$p_y$", "$p_z$"])
 	ax1.set_xlabel("time [s]")
 	ax1.set_ylabel("positions [m]")
 	ax1.set_title("position comparision")
 
-	if robot.type == "fM":
-		# plot quaternions
-		ax3.plot(timeVec_scvx, data_scvx[:, 6:10])
-		ax3.plot(timeVec_komo, data_komo[:, 6:10])
-		ax3.legend(["SCVX: \n $q_1$", "$q_2$", "$q_3$", "$q_4$", "KOMO: \n $q_1$", "$q_2$",
-					"$q_3$", "$q_4$"])
-		ax3.set_xlabel("time [s]")
-		ax3.set_ylabel("quaternion [1]")
-		ax3.set_title("quaternion comparision")
+	ax2.set_xlabel("time [s]")
+	ax2.set_ylabel("velocities [m/s]")
+	ax2.set_title("velocity comparision")
 
-		# plot rotational velocities
-		ax4.plot(timeVec_scvx, data_scvx[:, 10:13])
-		ax4.plot(timeVec_komo, data_komo[:, 10:13])
-		ax4.legend(["SCVX: \n $\omega_x$", "$\omega_y$", "$\omega_z$", "KOMO: \n $\omega_x$", "$\omega_y$", "$\omega_z$"])
-		ax4.set_xlabel("time [s]")
-		ax4.set_ylabel("rotational velocities [rad/s]")
-		ax4.set_title("rotational velocities comparision")
+	ax3.set_xlabel("time [s]")
+	ax3.set_ylabel("quaternion [1]")
+	ax3.set_title("quaternion comparision")
+
+	ax4.set_xlabel("time [s]")
+	ax4.set_ylabel("rotational velocities [rad/s]")
+	ax4.set_title("rotational velocities comparision")
 
 	# plot the trajectory obtained by the optimizer
 	plt.figure()
 	ax = plt.axes(projection='3d')
-	ax.plot3D(data_scvx[:, 0], data_scvx[:, 1], data_scvx[:, 2], 'b', marker = 'o', markersize=4)
-	ax.plot3D(data_komo[:, 0], data_komo[:, 1], data_komo[:, 2], 'r', marker='o', markersize=4)
+	colors = ["r","b","g","k"]
+	for i, solver_name in zip(range(nSolvers),list_of_solvers):
+		sol = solutions[solver_name]
+		ax.plot3D(sol.data[:, 0], sol.data[:, 1], sol.data[:, 2], colors[i] , marker = 'o', markersize=4)
+		#ax.plot3D(data_komo[:, 0], data_komo[:, 1], data_komo[:, 2], 'r', marker='o', markersize=4)
 
 	ax.scatter3D(x0[0], x0[1], x0[2], color='k')
 	ax.scatter3D(xf[0], xf[1], xf[2], color='k')
+
+	"""
 	if xm is not None:
 		ax.scatter3D(xm[0], xm[1], xm[2], color='k')
+	"""
+
 	if obstacles is not None:
 		for obs in obstacles:
 			draw_obs(obs.type, obs.shape, obs.pos, ax)
 
-	plt.legend(["SCVX", "KOMO"])
+
+	plt.legend(list_of_solvers)
 
 	ax = plt.gca()
 	ax.set_xlim([robot.min_x[0], robot.max_x[0]])
 	ax.set_ylim([robot.min_x[1], robot.max_x[1]])
 	ax.set_zlim([robot.min_x[2], robot.max_x[2]])
+
+	# plot integration error
+	if nSolvers <= 2:
+		fig, axs = plt.subplots(1, nSolvers)
+		if nSolvers == 1:
+			axs = [axs]
+	else:
+		fig, axs = plt.subplots(2, nSolvers)
+
+	for i,solver_name in zip(range(nSolvers),list_of_solvers):
+		int_error = solutions[solver_name].int_err
+		time_vec = time_points[solver_name][1:]
+
+		axs[i].plot(time_vec, int_error)
+		axs[i].set_title("integration error " + solver_name)
+		axs[i].set_ylabel("integration error []")
+
+		leg = ["$e_{I,p_x}$", "$e_{I,p_y}$", "$e_{I,p_z}$", "$e_{I,v_x}$", "$e_{I,v_y}$", "$e_{I,v_z}$",
+			   "$e_{I,q_1}$", "$e_{I,q_2}$", "$e_{I,q_3}$", "$e_{I,q_4}$", "$e_{I,\omega_x}$","$e_{I,\omega_y}$",
+			   "$e_{I,\omega_z}$"]
+
+		axs[i].legend(leg)
+		axs[i].set_xlabel("time [s]")
+
+	# plot actions
+	if nSolvers == 1:
+		fig, axs = plt.subplots(1, 1)
+		axs = [axs]
+	elif nSolvers == 2:
+		fig, axs = plt.subplots(1, 2)
+		axs = [axs[0],axs[1]]
+	elif nSolvers == 3:
+		fig, axs = plt.subplots(1, 3)
+		axs = [axs[0],axs[1],axs[2]]
+	else:
+		fig, axs = plt.subplots(2, 2)
+		axs = [axs[0,0], axs[0,1], axs[1,0], axs[1,1]]
+
+	for i,solver_name in zip(range(nSolvers),list_of_solvers):
+		actions = solutions[solver_name].data[:-1, 13:]
+		time_vec = time_points[solver_name][:-1]
+
+		axs[i].plot(time_vec, actions)
+		if robot.nrMotors == 2:
+			leg = [solver_name + ": \n $f_1$", "$f_2$"]
+		elif robot.nrMotors == 3:
+			leg = [solver_name + ": \n $f_1$", "$f_2$", "$f_3$"]
+		elif robot.nrMotors == 4:
+			leg = [solver_name + ": \n $f_1$", "$f_2$", "$f_3$", "$f_4$"]
+		elif robot.nrMotors == 6:
+			leg = [solver_name + ": \n $f_1$", "$f_2$", "$f_3$", "$f_4$", "$f_5$", "$f_6$"]
+		elif robot.nrMotors == 8:
+			leg = [solver_name + ": \n $f_1$", "$f_2$", "$f_3$", "$f_4$", "$f_5$", "$f_6$", "$f_7$", "$f_8$"]
+
+		axs[i].legend(leg)
+		axs[i].set_ylabel("forces [N]")
+		inputCost = np.round((actions[:-1] ** 2).sum(),3)
+		axs[i].set_title("force comparision \n input cost: \n {}: {}".format(solver_name, inputCost))
+		axs[i].set_xlabel("time [s]")
 
 	plt.show()
 

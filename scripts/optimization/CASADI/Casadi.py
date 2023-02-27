@@ -1,18 +1,14 @@
 from casadi import *
-#import sys
-#import os
-#sys.path.insert(0,os.getcwd()+"/scripts/")
 from casadi.tools import *
 import optimization.opt_utils as ou
-import matplotlib.pyplot as plt
 import pylab as pl
 import time
 
-def solve(robot, x0, xf, t_final, obs, initial_x, initial_u, num_timesteps, discretization_method):
+def solve(robot, x0, xf, xm, xm_timing, t_final, obs, initial_x, initial_u, num_timesteps, discretization_method):
 
     opt = casadi.Opti() # generate optimization problem
 
-    # define states and control
+    ## define states and control
     nMotors = len(robot.min_u)
     X = opt.variable(13, num_timesteps) # optimization variables for state trajectory
     U = opt.variable(nMotors, num_timesteps-1) # optimization variables for control trajectory
@@ -21,7 +17,7 @@ def solve(robot, x0, xf, t_final, obs, initial_x, initial_u, num_timesteps, disc
     opt.set_initial(X, initial_x.T)
     opt.set_initial(U, initial_u[:-1, :].T)
 
-    # chose discretization
+    ## chose discretization
     if discretization_method == "RK":
         f = robot.step_RK
     elif discretization_method == "euler":
@@ -30,9 +26,11 @@ def solve(robot, x0, xf, t_final, obs, initial_x, initial_u, num_timesteps, disc
         raise NameError("unknown discretization method")
 
     ## define constraints
-    # initial and final constraints
+    # initial, final and intermediate constraints
     opt.subject_to(X[:,0] == x0) # initial
     opt.subject_to(X[:,-1] == xf) # final
+    if xm is not None and xm_timing:
+        opt.subject_to(X[6:10,xm_timing] == xm[6:10]) # apply intermediate constraints only to the orientation
 
     for t in range(num_timesteps-1):
 
@@ -44,11 +42,12 @@ def solve(robot, x0, xf, t_final, obs, initial_x, initial_u, num_timesteps, disc
 
         # collision constraints
         robot_position = X[:3, t]  # positions
-        for obstacle in obs:
-            if obstacle.type == "sphere":
-                obs_center = obstacle.pos
-                obs_radius = obstacle.shape[0]
-                opt.subject_to(norm_2(robot_position-obs_center) > obs_radius + robot.arm_length)
+        if obs:
+            for obstacle in obs:
+                if obstacle.type == "sphere":
+                    obs_center = obstacle.pos
+                    obs_radius = obstacle.shape[0]
+                    opt.subject_to(norm_2(robot_position-obs_center) > obs_radius + robot.arm_length)
 
         # dynamic constraints
         x_next = f(X[:,t],U[:,t])
@@ -75,22 +74,13 @@ def solve(robot, x0, xf, t_final, obs, initial_x, initial_u, num_timesteps, disc
         #opt.debug.x_describe(index)
         #opt.debug.g_describe(index)
 
-    states = sol.value(X).T
-    actions = sol.value(U).T
+    states = np.array(sol.value(X).T)
+    actions = np.array(sol.value(U).T)
 
     solution = ou.OptSolution(states, actions, time = t_end_solver - t_start_solver, tdil = t_final)
 
     """
-    ## plot results
-    leg = ["p_x", "p_y", "p_z", "v_x", "v_y", "v_z", "q_1", "q_2", "q_3", "q_4", "w_x", "w_y", "w_z"]
-    fig = plt.figure()
-    plt.plot(sol.value(X).T)
-    plt.legend(leg)
-
-    leg = ["f1","f2","f3","f4"]
-    fig = plt.figure()
-    plt.plot(sol.value(U).T)
-    plt.show()
+    ## plot Jacobian
 
     pl.figure()
     pl.spy(sol.value(jacobian(opt.g,opt.x)))

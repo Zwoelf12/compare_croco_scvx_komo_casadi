@@ -9,12 +9,13 @@ from physics.multirotor_models import multirotor_full_model_komo_scp
 from physics.multirotor_models import multirotor_full_model_casadi
 from visualization.report_visualization import report_compare
 from optimization import problem_setups
+from visualization.animation_visualization import animate_fM
 
 only_visualize = False
-list_of_solvers = ["SCVX","CASADI"]
+list_of_solvers = ["CASADI"]
 
 # choose which problem should be solved
-prob = 2
+prob = 4
 if prob == 1:
     prob_setup = problem_setups.simple_flight_wo_obs()
     prob_name = "simple_flight_wo_obs"
@@ -24,6 +25,9 @@ elif prob == 2:
 elif prob == 3:
     prob_setup = problem_setups.recovery_flight()
     prob_name = "recovery_flight"
+elif prob == 4:
+    prob_setup = problem_setups.flip()
+    prob_name = "flip"
 
 # define optimization problem
 optProb = OptProblem()
@@ -35,12 +39,14 @@ arm_length = 0.046
 if only_visualize == False:
 
     # define start and end point
-    optProb.x0 = prob_setup.x0_fM
-    optProb.xf = prob_setup.xf_fM
+    optProb.x0 = prob_setup.x0
+    optProb.xf = prob_setup.xf
+    optProb.xm = prob_setup.xm
 
-    # define maximum and minimum flight time
+    # define maximum and minimum flight time and step number for intermediate state
     optProb.tf_min = prob_setup.tf_min
     optProb.tf_max = prob_setup.tf_max
+    optProb.xm_timing = prob_setup.xm_timing
 
     # define obstacles
     optProb.obs = prob_setup.obs
@@ -93,9 +99,7 @@ if only_visualize == False:
                            prob_name,
                            solution,
                            data,
-                           real_traj,
-                           int_error,
-                           int_error_small_dt)
+                           int_error)
         
         """
 
@@ -134,9 +138,7 @@ if only_visualize == False:
                            prob_name,
                            solution,
                            data,
-                           real_traj,
-                           int_error,
-                           int_error_small_dt)
+                           int_error)
                            
         """
 
@@ -152,6 +154,7 @@ if only_visualize == False:
         par = ou.Parameter_casadi()
         par.num_time_steps = t_steps_casadi
         par.discretization_method = "RK"
+        print("using discretization method: ", par.discretization_method)
         optProb.robot.dt = optProb.tf_max / par.num_time_steps
         print("dt CASADI: {}".format(optProb.robot.dt))
         optProb.par = par
@@ -173,21 +176,16 @@ if only_visualize == False:
                            data,
                            int_error)
 
-"""
-sol_scvx, sol_komo = ou.load_opt_output(prob_name, robot_type, nr_motors)
+solutions = ou.load_opt_output(prob_name, nr_motors, list_of_solvers)
 
-report_compare(sol_scvx.robot,
-                  sol_scvx.data,
-                  sol_komo.data,
-                  sol_scvx.real_traj,
-                  sol_komo.real_traj,
-                  sol_scvx.obs,
-                  sol_scvx.int_err,
-                  sol_scvx.int_err_small_dt,
-                  sol_komo.int_err,
-                  sol_komo.int_err_small_dt,
-                  sol_scvx.x0, sol_scvx.xf, sol_scvx.t_dil)
-"""
+report_compare(solutions,list_of_solvers)
+
+for solver_name in list_of_solvers:
+    sol = solutions[solver_name]
+    animate_fM(sol.data,sol.obs)
+
+
+
 
 
 

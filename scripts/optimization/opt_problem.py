@@ -7,6 +7,8 @@ class OptProblem():
     def __init__(self):
         self.x0 = None  # initial state
         self.xf = None  # final state
+        self.xm = None  # intermediate state
+        self.xm_timing = None # timepoint in for intermediate state
         self.obs = None  # included obstacles
         self.algorithm = None # used algorithm
         self.robot = None  # used robot model
@@ -64,6 +66,8 @@ class OptProblem():
             solution = Casadi.solve(self.robot,
                                     self.x0,
                                     self.xf,
+                                    self.xm,
+                                    self.xm_timing,
                                     self.tf_max,
                                     self.obs,
                                     self.initial_x,

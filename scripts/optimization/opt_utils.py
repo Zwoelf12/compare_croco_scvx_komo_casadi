@@ -246,27 +246,27 @@ def save_opt_output(optProb,
             opt_processData.time_cvx_solver = solution.time_cvx_solver
 
         if optProb.robot.nrMotors == 2:
-            prob_name += "_fM_2m"
+            prob_name += "_2m"
         elif optProb.robot.nrMotors == 3:
-            prob_name += "_fM_3m"
+            prob_name += "_3m"
         elif optProb.robot.nrMotors == 4:
-            prob_name += "_fM_4m"
+            prob_name += "_4m"
         elif optProb.robot.nrMotors == 6:
-            prob_name += "_fM_6m"
+            prob_name += "_6m"
         else:
-            prob_name += "_fM_8m"
+            prob_name += "_8m"
 
         # save data
-        path = "./data_comparision/"
+        path = "./data/data_comparision/"
 
         filename = path + prob_name
 
         if optProb.algorithm == "SCVX":
-            save_object(filename + "_scvx", opt_processData)
+            save_object(filename + "_SCVX", opt_processData)
         elif optProb.algorithm == "KOMO":
-            save_object(filename + "_komo", opt_processData)
+            save_object(filename + "_KOMO", opt_processData)
         elif optProb.algorithm == "CASADI":
-            save_object(filename + "_casadi", opt_processData)
+            save_object(filename + "_CASADI", opt_processData)
 
 
 def load_object(filename):
@@ -274,21 +274,17 @@ def load_object(filename):
         sol = pickle.load(input_file)
     return sol
 
-def load_opt_output(prob_name,robot_type, nrMotors):
+def load_opt_output(prob_name, nrMotors, list_of_solvers):
 
-    path = "./data_scvx_komo_comparision/"
+    path = "./data/data_comparision/"
 
-    if robot_type == "dI":
-        filename_scvx = prob_name + "_" + robot_type + "_scvx"
-        filename_komo = prob_name + "_" + robot_type + "_komo"
-    else:
-        filename_scvx = prob_name + "_" + robot_type + "_{}m".format(nrMotors) + "_scvx"
-        filename_komo = prob_name + "_" + robot_type + "_{}m".format(nrMotors) + "_komo"
+    solutions = {}
+    for solver_name in list_of_solvers:
+        filename = prob_name + "_{}m".format(nrMotors) + "_" + solver_name
+        sol_now = load_object(path + filename)
+        solutions[solver_name] = sol_now
 
-    sol_scvx = load_object(path + filename_scvx)
-    sol_komo = load_object(path + filename_komo)
-
-    return sol_scvx, sol_komo
+    return solutions
 
 def gen_yaml_files(init_x,init_u,obs,x0,xf,robot):
     init_x = init_x.tolist()
