@@ -16,7 +16,6 @@ set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -Wall -Wextra")
 
 # subdirectories
 add_subdirectory(deps/fcl EXCLUDE_FROM_ALL)
-add_subdirectory(deps/sbpl)# EXCLUDE_FROM_ALL)
 add_subdirectory(deps/ompl EXCLUDE_FROM_ALL)
 add_subdirectory(deps/rai)# EXCLUDE_FROM_ALL)
 #add_subdirectory(deps/assimp)# EXCLUDE_FROM_ALL)
@@ -148,9 +147,7 @@ set_property(TARGET motion_planning_common PROPERTY POSITION_INDEPENDENT_CODE ON
 #add_executable(kinedit
 #  deps/rai/bin/src_kinEdit/main.cpp
 #)
-#target_link_libraries(kinedit
-#  rai
-#)
+#target_link_l
 
 # Python bindings
 add_subdirectory(deps/pybind11 EXCLUDE_FROM_ALL)
