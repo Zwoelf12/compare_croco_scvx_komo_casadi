@@ -3,14 +3,17 @@ sys.path += ['deps/rai']
 import libry as ry
 import numpy as np
 from physics.multirotor_models import multirotor_flex_komo
+from optimization.parameter_tuning import KOMO_parameter
 
 def fullModel_flight(phases,
                   timeStepspP,
                   timepP,
                   x0,
                   xf,
+                  intermediate_states,
                   obstacles,
                   robot,
+                  prob_name,
                   initial_x,
                   initial_u):
 
@@ -42,6 +45,8 @@ def fullModel_flight(phases,
 
     thrust_to_torque = robot.t2t
     max_force_per_motor = robot.max_u[0]
+
+    parameter = KOMO_parameter(prob_name)
 
     komo = C.komo(phases, timeStepspP, timepP, 2, True)
 
@@ -97,6 +102,19 @@ def fullModel_flight(phases,
     komo.addObjective(times=[1.], feature=ry.FS.positionDiff, frames=['drone', 'target'], type=ry.OT.eq,
                       scale=[1e2])
 
+    # reach intermediate states
+    if intermediate_states is not None:
+        for i_s in intermediate_states:
+            if "pos" in i_s.type:
+                komo.addObjective(times=[i_s.timing/timeStepspP], feature=ry.FS.position, frames=['drone'], type=ry.OT.eq,
+                                  scale=[1e2], target=i_s.value[:3])
+
+            if robot.nrMotors != 2 and robot.nrMotors != 3:
+                if "quat" in i_s.type:
+                    komo.addObjective(times=[i_s.timing/timeStepspP], feature=ry.FS.quaternion, frames=['drone'], type=ry.OT.eq,
+                                      scale=[1e2], target=i_s.value[6:10])
+
+
     if robot.nrMotors != 2 and robot.nrMotors != 3:
 
         # reach desired orientation
@@ -127,13 +145,13 @@ def fullModel_flight(phases,
     #                  target=[], order=1, deltaFromStep=+0, deltaToStep=+1)
 
     # follow dynamic equations
-    komo.addObjective(times=[], feature=ry.FS.NewtonEuler, frames=["drone"], type=ry.OT.eq, scale=[1e2*0.1], target=[],
+    komo.addObjective(times=[], feature=ry.FS.NewtonEuler, frames=["drone"], type=ry.OT.eq, scale=[parameter.weight_dynamics], target=[],
                       order=2, deltaFromStep=+2, deltaToStep=-1)
 
     # add costs on input
     for m in range(robot.nrMotors):
         komo.addObjective(times=[], feature=ry.FS.fex_Force, frames=['world', "m" + str(m+1)], type=ry.OT.sos,
-                          scale=[1e3*7], target=[], order=0, deltaFromStep=+0, deltaToStep=+0)
+                          scale=[parameter.weight_input], target=[], order=0, deltaFromStep=+0, deltaToStep=+0)
                           
     # add limits to forces which where defined when the forces where added
     komo.addObjective(times=[], feature=ry.FS.qLimits, frames=['world'], type=ry.OT.ineq,

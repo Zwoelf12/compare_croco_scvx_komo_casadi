@@ -236,3 +236,45 @@ class Multicopter():
 		x_next = state + dt / 6 * (k1 + 2 * k2 + 2 * k3 + k4)
 
 		return x_next
+
+	def step_RK_c(self, state, force):
+
+		## dynamics ##
+		def f(state, force):
+			pos = state[:3]
+			vel = state[3:6]
+			q = state[6:10]
+			omega = state[10:]
+
+			eta = self.B0 @ force
+			f_u = np.array([0, 0, eta[0]])
+			tau_u = np.array([eta[1], eta[2], eta[3]])
+
+			# velocity
+			# v_dot(t) = (g + R(f(t))/m)
+			vel_dot = (np.array([0, 0, -self.g]) + qrotate(q, f_u) / self.mass)
+
+			# positions
+			# x_dot(t) = v(t-1)
+			pos_dot = vel
+
+			# rotational velocity
+			# w_dot(t) = J⁻¹(Tau(t-1) - w(t-1)xJw(t-1))
+			omega_dot = (self.inv_J * (tau_u - np.cross(self.J * omega, omega)))
+
+			# quaternions
+			# q_dot(t) = 0.5*q(t-1)w(t-1)
+			q_dot = 0.5*qmultiply(q, np.concatenate((np.array([0]),omega)))
+
+			return np.concatenate((pos_dot, vel_dot, q_dot, omega_dot))
+
+		dt = self.dt
+
+		# Runge Kutta coefficients
+		k1 = f(state, force)
+		k2 = f(state + dt / 2 * k1, force)
+		k3 = f(state + dt / 2 * k2, force)
+		k4 = f(state + dt * k3, force)
+		x_next = state + dt / 6 * (k1 + 2 * k2 + 2 * k3 + k4)
+
+		return x_next

@@ -1,14 +1,20 @@
 import numpy as np
 from optimization import opt_utils as ou
 
+class intermediate_state():
+
+    def __init__(self, type=None, value=None, timing=None):
+        self.type = type # list of which part of the states should be equal (pos, vel, ...)
+        self.value = value # actual value of the state part
+        self.timing = timing # intermediate time in time step number (e.g. at step 50 of 100)
+
 class Prob_setup():
 
     x0 = None
     xf = None
-    xm = None
+    intermediate_states = None
 
     tf_min = None
-    xm_timing = None # intermediate time in time step number (e.g. at step 50 of 100)
     tf_max = None
 
     t_steps_scvx = None
@@ -133,21 +139,36 @@ def flip():
                          1., 0., 0., 0.,
                          0., 0., 0.], dtype=np.float64)
 
-    setup.xm =  np.array([0., 0.725, 1.,
-                          0., 0., 0.,
-                          0., -1., 0., 0.,
-                          0., 0., 0.], dtype=np.float64)
+    xm_1 = intermediate_state(["quat"],
+                              np.array([0., 0.725, 1.,
+                                        0., 0., 0.,
+                                        0., 0., -1., 0.,
+                                        0., 0., 0.], dtype=np.float64),
+                              30)
 
-    setup.t_steps_scvx = 100
-    setup.t_steps_komo = 100
-    setup.t_steps_croco = 100
-    setup.t_steps_casadi = 100
+    xm_2 = intermediate_state(["pos"],
+                              np.array([0., 1., 1.5,
+                                        0., 0., 0.,
+                                        .71, 0., -.71, 0.,
+                                        0., 0., 0.], dtype=np.float64),
+                              20)
+
+    xm_3 = intermediate_state(["pos"],
+                              np.array([0., 0.5, 1.5,
+                                        0., 0., 0.,
+                                        .71, 0., .71, 0.,
+                                        0., 0., 0.], dtype=np.float64),
+                              40)
+
+    setup.intermediate_states = [xm_1,xm_2,xm_3]
+
+    setup.t_steps_scvx = 60
+    setup.t_steps_komo = 60
+    setup.t_steps_croco = 60
+    setup.t_steps_casadi = 60
 
     setup.tf_min = 2.7
     setup.tf_max = 2.7
-
-    # tm in time step number
-    setup.xm_timing = 50
 
     setup.noise = 0.01
 

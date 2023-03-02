@@ -33,6 +33,7 @@ class Parameter_casadi():
     def __init__(self):
         self.num_time_steps = None # number of time steps
         self.discretization_method = None # discretization method
+        self.use_c_code = False # choose if pre compiled c code should be used for dynamic function
 
 class Parameter_komo():
     def __init__(self):
@@ -316,7 +317,7 @@ def gen_yaml_files(init_x,init_u,obs,x0,xf,robot):
 
 
 
-def calc_initial_guess(robot, timesteps, noise_factor, xf, x0, tf_min, tf_max):
+def calc_initial_guess(robot, timesteps, noise_factor, xf, x0, intermediate_points, tf_min, tf_max):
 
     T = timesteps
 
@@ -333,35 +334,81 @@ def calc_initial_guess(robot, timesteps, noise_factor, xf, x0, tf_min, tf_max):
     # initial time dilation
     initial_p = (tf_min + tf_max) / 2
 
-    # use interpolation between start and end point as initial guess
-    initial_x[:, 0:3] += np.linspace(x0[0:3], xf[0:3], T)
+    # sort intermedtiate states in ascending order
+    intermediate_points.sort(key=lambda x: x.timing)
 
-    if robot.type == "fM":
-        # interpolate quaternions
-        q0 = rowan.normalize(x0[6:10])
-        qf = rowan.normalize(xf[6:10])
-        initial_x[:, 6:10] += rowan.interpolate.slerp(q0, qf, np.linspace(0, 1, T))
+    # collect all points that should be visited
+    positions_fixed = [x0[0:3]]
+    intermediate_positions = [x.value[0:3] for x in intermediate_points if "pos" in x.type]
+    positions_fixed.extend(intermediate_positions)
+    positions_fixed.append(xf[0:3])
 
-        # normalize quaternions
-        Q = initial_x[:, 6:10]
-        Q_norm = np.linalg.norm(initial_x[:, 6:10], axis=1)
-        initial_x[:, 6:10] = (Q.T / Q_norm).T
+    # collect timing for positions
+    position_timing = [0]
+    intermediate_pos_timing = [x.timing for x in intermediate_points if "pos" in x.type]
+    position_timing.extend(intermediate_pos_timing)
+    position_timing.append(T)
 
-        # add gravity compensation
-        initial_u[:, :] += (9.81 * robot.mass) / robot.nrMotors
+    # collect all orientations that should be visited
+    quaternions_fixed = [x0[6:10]]
+    intermediate_quaternions = [x.value[6:10] for x in intermediate_points if "quat" in x.type]
+    quaternions_fixed.extend(intermediate_quaternions)
+    quaternions_fixed.append(xf[6:10])
 
-    # add noise depending on the state and input range
+    # collect timing for quaternions
+    quaternion_timing = [0]
+    intermediate_pos_timing = [x.timing for x in intermediate_points if "quat" in x.type]
+    quaternion_timing.extend(intermediate_pos_timing)
+    quaternion_timing.append(T)
+
+    def calc_interpolation(pos_to_visit, pos_timing, quat_to_visit, quat_timing):
+        positions = []
+        for i in range(len(pos_to_visit)-1):
+            x_s = pos_to_visit[i]
+            x_f = pos_to_visit[i+1]
+            pos_interp = np.linspace(x_s[0:3], x_f[0:3], pos_timing[i+1] - pos_timing[i])
+            positions.append(pos_interp)
+
+        positions = np.concatenate(positions)
+
+        quaternions = []
+
+        for i in range(len(quat_to_visit)-1):
+            q_s = rowan.normalize(quat_to_visit[i])
+            q_f = rowan.normalize(quat_to_visit[i+1])
+            quat_interp = rowan.interpolate.slerp(q_s, q_f, np.linspace(0, 1, quat_timing[i+1] - quat_timing[i]))
+            quaternions.append(quat_interp)
+
+        quaternions = np.concatenate(quaternions)
+
+        return positions, quaternions
+
+
+    ## use interpolation between start and end point as initial guess
+    # interpolate positions and quaternions
+    interpolated_positions, interpolated_quaternions = calc_interpolation(positions_fixed, position_timing, quaternions_fixed, quaternion_timing)
+    initial_x[:, 0:3] += interpolated_positions
+    initial_x[:, 6:10] += interpolated_quaternions
+
+    # normalize quaternions
+    Q = initial_x[:, 6:10]
+    Q_norm = np.linalg.norm(initial_x[:, 6:10], axis=1)
+    initial_x[:, 6:10] = (Q.T / Q_norm).T
+
+    # add gravity compensation
+    initial_u[:, :] += (9.81 * robot.mass) / robot.nrMotors
+
+    ## add noise depending on the state and input range
     # pos and vel
     initial_x[1:-1, :6] += np.random.normal(0, state_range[:6] * noise_factor, initial_x[:, :6].shape)[1:-1]
 
-    if robot.type == "fM":
-        # orientation
-        orient_noise_euler = np.random.normal(0, 2*np.pi * noise_factor, (T,3))
-        orient_noise_quat = rowan.from_euler(orient_noise_euler[:,0], orient_noise_euler[:,1], orient_noise_euler[:,2])
-        initial_x[1:-1, 6:10] += orient_noise_quat[1:-1]
+    # orientation
+    orient_noise_euler = np.random.normal(0, 2*np.pi * noise_factor, (T,3))
+    orient_noise_quat = rowan.from_euler(orient_noise_euler[:,0], orient_noise_euler[:,1], orient_noise_euler[:,2])
+    initial_x[1:-1, 6:10] += orient_noise_quat[1:-1]
 
-        # rotational velocities
-        initial_x[1:-1, 10:] += np.random.normal(0, state_range[10:] * noise_factor, initial_x[:, 10:].shape)[1:-1]
+    # rotational velocities
+    initial_x[1:-1, 10:] += np.random.normal(0, state_range[10:] * noise_factor, initial_x[:, 10:].shape)[1:-1]
 
     # input
     initial_u += np.random.normal(0., input_range * noise_factor, initial_u.shape)

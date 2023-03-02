@@ -5,9 +5,10 @@ from jax import jacfwd, jit, config
 config.update("jax_enable_x64", True)
 import time
 from optimization.opt_utils import OptSolution, calc_initial_guess
+from optimization.parameter_tuning import SCVX_parameter
 
 class SCvx():
-  def __init__(self, robot):
+  def __init__(self, robot, prob_name):
 
     self.useScaling = True
     self.useHelperVars = True
@@ -20,6 +21,8 @@ class SCvx():
     self.robot = robot
     # inflate robot to avoid corner cutting
     self.robot.arm_length = robot.arm_length
+
+    parameter = SCVX_parameter(prob_name)
 
     # user defined parameter
     self.lam = 1e5 # weight 3 slack in cost
@@ -52,7 +55,7 @@ class SCvx():
     self.constructF = jit(jacfwd(robot.step, 2))
     self.step = jit(robot.step)
 
-  def solve(self, x0, xf,
+  def solve(self, x0, xf, intermediate_states,
     tf_min, tf_max, initial_x,
     initial_u, initial_p, T = 50,
     num_iterations = 10,
@@ -99,6 +102,7 @@ class SCvx():
     nusprev = initial_guess.nus
     nuICprev = initial_guess.nuIC
     nuTCprev = initial_guess.nuTC
+    nuMCprev = initial_guess.nuMC
     pprev = initial_guess.p
     Pprev = initial_guess.P
     Pfprev = initial_guess.Pf
@@ -126,9 +130,10 @@ class SCvx():
         nus = cp.Variable((T, nObstacles))
       nuIC = cp.Variable(stateDim)
       nuTC = cp.Variable(stateDim)
+      nuMC = cp.Variable(stateDim)
       p = cp.Variable(1)
       P = cp.Variable(T)
-      Pf = cp.Variable(2)
+      Pf = cp.Variable(3)
       dx_lq = cp.Variable(T)
       du_lq = cp.Variable(T)
       dp_lq = cp.Variable(1)
@@ -141,6 +146,7 @@ class SCvx():
       nus.value = nusprev
       nuIC.value = nuICprev
       nuTC.value = nuTCprev
+      nuMC.value = nuMCprev
       P.value = Pprev
       Pf.value = Pfprev
       dx_lq.value = dx_lqprev
@@ -156,22 +162,23 @@ class SCvx():
                       [u_prev_ph], \
                       [p_prev_ph]
 
-        NU_, NUS_, NUIC_, NUTC_ = [nuprev], \
-                                  [nusprev], \
-                                  [nuICprev], \
-                                  [nuTCprev]
+        NU_, NUS_, NUIC_, NUTC_, NUMC_ = [nuprev], \
+                                         [nusprev], \
+                                         [nuICprev], \
+                                         [nuTCprev], \
+                                         [nuMCprev]
 
-        prevNLCost = self.calc_aug_nl_cost(xprev, uprev, pprev, x0, xf, T, CHandler)
+        prevNLCost = self.calc_aug_nl_cost(xprev, uprev, pprev, x0, xf, intermediate_states, T, CHandler)
 
       # define objective
-      cp_objective = self.define_objective(u_ph, p_ph, P, Pf, nu, nus, nuIC, nuTC)
+      cp_objective = self.define_objective(u_ph, p_ph, P, Pf, nu, nus, nuIC, nuTC, nuMC)
 
       # define constraints
       constraints = self.define_constraints(x_ph, u_ph, p_ph,
-                                            nu, nus, nuIC, nuTC, P, Pf,
+                                            nu, nus, nuIC, nuTC, nuMC, P, Pf,
                                             dx_lq, du_lq, dp_lq,
                                             x_prev_ph, u_prev_ph, p_prev_ph,
-                                            x0, xf, T, CHandler)
+                                            x0, xf, intermediate_states, T, CHandler)
 
       # define problem
       prob = cp.Problem(cp_objective, constraints)
@@ -221,14 +228,13 @@ class SCvx():
         stop_flag = True
 
       # update rule
-      xprev, uprev, pprev, nuprev, nusprev, nuICprev, nuTCprev, Pprev, Pfprev, dx_lqprev, du_lqprev, dp_lqprev, roh = self.update_prob(x.value, u.value, p.value,
-                                                                                                                                       nu.value, nus.value, nuIC.value, nuTC.value, P.value, Pf.value,
-                                                                                                                                       dx_lq.value, du_lq.value, dp_lq.value,
-                                                                                                                                       T, xf, x0, prob_value,
+      xprev, uprev, pprev, nuprev, nusprev, nuICprev, nuTCprev, nuMCprev, Pprev, Pfprev, dx_lqprev, du_lqprev, dp_lqprev, roh = self.update_prob(x.value, u.value, p.value,
+                                                                                                                                       nu.value, nus.value, nuIC.value, nuTC.value, nuMC.value, P.value, Pf.value,
+                                                                                                                                       dx_lq.value, du_lq.value, dp_lq.value, prob_value,
                                                                                                                                        xprev, uprev, pprev,
-                                                                                                                                       nuprev, nusprev, nuICprev, nuTCprev, Pprev, Pfprev,
+                                                                                                                                       nuprev, nusprev, nuICprev, nuTCprev, nuMCprev, Pprev, Pfprev,
                                                                                                                                        dx_lqprev, du_lqprev, dp_lqprev,
-                                                                                                                                       CHandler, nlCost, prevNLCost)
+                                                                                                                                       nlCost, prevNLCost)
 
       # add obtained trajectory
       x_ph, u_ph, p_ph = self.scale_prob(x.value, u.value, p.value)
@@ -240,6 +246,7 @@ class SCvx():
       NUS_.append(nus.value)
       NUIC_.append(nuIC.value)
       NUTC_.append(nuTC.value)
+      NUMC_.append(nuMC.value)
       lin_cost.append(prob_value)
       nonlin_cost.append(nlCost)
 
@@ -254,6 +261,7 @@ class SCvx():
       print("max collision constraint violation: ", np.max(np.abs(nus.value)))
       print("max init constraint violation: ", np.max(np.abs(nuIC.value)))
       print("max terminal constraint violation: ", np.max(np.abs(nuTC.value)))
+      print("max intermediate constraint violation: ", np.max(np.abs(nuMC.value)))
       print("trajectory is executed in: {} s".format(self.redim_p(p.value)))
       print("time for iteration: ", np.round(end_time - start_time, 4))
       print("time to solve convex subproblem: ", np.round(end_time_sol_interface - start_time_sol_interface, 4))
@@ -311,7 +319,7 @@ class SCvx():
 
 ###################################################################################################################################################################################
 
-  def define_objective(self, u, p, P, Pf, nu, nus, nuIC, nuTC):
+  def define_objective(self, u, p, P, Pf, nu, nus, nuIC, nuTC, nuMC):
 
     inputs = self.robot.dt * cp.sum(u**2) # penalty on inputs
 
@@ -321,7 +329,7 @@ class SCvx():
       slackCost = runningSlackCost + terminalSlackCost # penalty for slack
     else:
       runningSlackCost = self.lam * self.robot.dt * (cp.norm(self.E @ nu.T, 1) + cp.norm(nus, 1))
-      terminalSlackCost = self.lam * (cp.norm(nuIC,1) + cp.norm(nuTC,1))
+      terminalSlackCost = self.lam * (cp.norm(nuIC,1) + cp.norm(nuTC,1) + cp.norm(nuMC,1))
       slackCost = runningSlackCost + terminalSlackCost # penalty for slack
 
     time = (p/self.tf_max)**2 # penalty on time dilation
@@ -334,7 +342,7 @@ class SCvx():
 
   ###################################################################################################################################################################################
   
-  def calc_aug_nl_cost(self, x, u, p, x0, xf, T, CHandler):
+  def calc_aug_nl_cost(self, x, u, p, x0, xf, intermediate_states, T, CHandler):
     # calculate terms of the nonlinear augmented costfunction
     dc_viol = np.zeros((T - 1, len(x0)))
     if CHandler.obs_data:
@@ -347,6 +355,31 @@ class SCvx():
     # initial and final constraint violation
     ic_viol = x_ph[0] - x0
     tc_viol = x_ph[-1] - xf
+
+    # calculate intermediate constraints violations
+    violations = []
+    for i_s in intermediate_states:
+      state_viol = np.zeros(len(x0))
+
+      if "pos" in i_s.type:
+        state_viol[:3] = x_ph[i_s.timing,:3] - i_s.value[:3]
+      if "vel" in i_s.type:
+        state_viol[3:6] = x_ph[i_s.timing,3:6] - i_s.value[3:6]
+      if "quat" in i_s.type:
+        state_viol[6:10] = x_ph[i_s.timing,6:10] - i_s.value[6:10]
+      if "rot_vel" in i_s.type:
+        state_viol[10:] = x_ph[i_s.timing,10:] - i_s.value[10:]
+
+      violations.append(state_viol)
+
+    print(np.vstack(violations).shape)
+    print(np.vstack(violations))
+
+    mc_viol = np.max(np.vstack(violations), axis = 0)
+
+    print(mc_viol)
+
+    rein = input("check if dimensions etc. fits")
 
     P = np.zeros(T)
     for t in range(T - 1):
@@ -378,7 +411,7 @@ class SCvx():
 
     P[T-1] = np.linalg.norm(oc_viol[T-1], 1)
 
-    Pf = np.array([np.linalg.norm(ic_viol, 1), np.linalg.norm(tc_viol, 1)])
+    Pf = np.array([np.linalg.norm(ic_viol, 1), np.linalg.norm(tc_viol, 1), np.linalg.norm(mc_viol, 1)])
 
     inputs = self.robot.dt * np.sum(u_ph ** 2)
 
@@ -388,7 +421,7 @@ class SCvx():
       slackCost = runningSlackCost + terminalSlackCost
     else:
       runningSlackCost = self.lam * self.robot.dt * (np.linalg.norm(self.E @ dc_viol.T, 1) + np.linalg.norm(oc_viol, 1))
-      terminalSlackCost = self.lam * (np.linalg.norm(ic_viol, 1) + np.linalg.norm(tc_viol, 1))
+      terminalSlackCost = self.lam * (np.linalg.norm(ic_viol, 1) + np.linalg.norm(tc_viol, 1) + np.linalg.norm(mc_viol, 1))
       slackCost = runningSlackCost + terminalSlackCost  # penalty for slack
 
     time = (p_ph / self.tf_max) ** 2
@@ -403,17 +436,28 @@ class SCvx():
 ###################################################################################################################################################################################
 
   def define_constraints(self, x, u, p,
-                         nu, nus, nuIC, nuTC, P, Pf,
+                         nu, nus, nuIC, nuTC, nuMC, P, Pf,
                          dx_lq, du_lq, dp_lq,
                          xprev, uprev, pprev,
-                         x0, xf, T, CHandler):
+                         x0, xf, intermediate_states, T, CHandler):
 
-    # initial and final constraints
+    # initial, final and intermediate constraints
     if self.robot.type == "dI" or (self.robot.nrMotors != 2 and self.robot.nrMotors != 3):
       constraints = [
         x[0] == x0 + nuIC, # initial state constraint
         x[T-1] == xf + nuTC # final state constraint
       ]
+
+      if intermediate_states is not None:  # intermediate
+        for i_s in intermediate_states:
+          if "pos" in i_s.type:
+            constraints.append(x[i_s.timing,:3] == i_s.value[:3] + nuMC[:3])
+          if "vel" in i_s.type:
+            constraints.append(x[i_s.timing,3:6] == i_s.value[3:6] + nuMC[3:6])
+          if "quat" in i_s.type:
+            constraints.append(x[i_s.timing,:3] == i_s.value[:3] + nuMC[6:10])
+          if "rot_vel" in i_s.type:
+            constraints.append(x[i_s.timing,:3] == i_s.value[:3] + nuMC[10:])
 
     else:
       constraints = [
@@ -568,15 +612,20 @@ class SCvx():
         cp.norm(nuTC, 1) <= Pf[1]
       )
 
+      # add constraints on helper variable for cost calculation (intermediate condition slack)
+      constraints.append(
+        cp.norm(nuMC, 1) <= Pf[2]
+      )
+
     return constraints
 
 ###################################################################################################################################################################################
 
 
-  def update_prob(self, x, u, p, nu, nus, nuIC, nuTC, P, Pf, dx_lq, du_lq, dp_lq,
-                  T, xf, x0, prob_value, xprev, uprev, pprev,
-                  nuprev, nusprev, nuICprev, nuTCprev, Pprev, Pfprev,
-                  dx_lqprev, du_lqprev, dp_lqprev, CHandler, cost_aug_nl, cost_aug_nl_prev):
+  def update_prob(self, x, u, p, nu, nus, nuIC, nuTC, nuMC, P, Pf, dx_lq, du_lq, dp_lq,
+                  prob_value, xprev, uprev, pprev,
+                  nuprev, nusprev, nuICprev, nuTCprev, nuMCprev, Pprev, Pfprev,
+                  dx_lqprev, du_lqprev, dp_lqprev, cost_aug_nl, cost_aug_nl_prev):
 
 
     # calculate accuracy of the convex prediction of the nonconvex problem
@@ -592,6 +641,7 @@ class SCvx():
       nusprev = np.array(nus)
       nuICprev = np.array(nuIC)
       nuTCprev = np.array(nuTC)
+      nuMCprev = np.array(nuMC)
       pprev = np.array(p)
       Pprev = np.array(P)
       Pfprev = np.array(Pf)
@@ -607,10 +657,10 @@ class SCvx():
         self.eta = jnp.min(np.array([self.eta1, self.eta * self.bgr]))
 
     if self.useAdaptiveWeights:
-      if np.max(np.abs(nu)) <= 1e-4 and np.max(np.abs(nus)) <= 1e-5 and np.max(np.abs(nuIC)) <= 1e-5 and np.max(np.abs(nuTC)) <= 1e-5:
+      if np.max(np.abs(nu)) <= 1e-4 and np.max(np.abs(nus)) <= 1e-5 and np.max(np.abs(nuIC)) <= 1e-5 and np.max(np.abs(nuTC)) <= 1e-5 and np.max(np.abs(nuMC)) <= 1e-5:
         self.weightsFac = self.adapWeightsFac
 
-    return xprev, uprev, pprev, nuprev, nusprev, nuICprev, nuTCprev, Pprev, Pfprev, dx_lqprev, du_lqprev, dp_lqprev, roh
+    return xprev, uprev, pprev, nuprev, nusprev, nuICprev, nuTCprev, nuMCprev, Pprev, Pfprev, dx_lqprev, du_lqprev, dp_lqprev, roh
 
   ###################################################################################################################################################################################
   
@@ -645,7 +695,7 @@ class SCvx():
     i_g.nuIC = np.random.normal(0, 1e-12, (self.robot.max_x.shape[0]))
     i_g.nuTC = np.random.normal(0, 1e-12, (self.robot.max_x.shape[0]))
     i_g.P = np.random.normal(0,1e-12,(T))
-    i_g.Pf = np.random.normal(0,1e-12,(2))
+    i_g.Pf = np.random.normal(0,1e-12,(3))
     i_g.dx_lq = np.random.normal(0,1e-12,(T))
     i_g.du_lq = np.random.normal(0,1e-12,(T))
     i_g.dp_lq = np.random.normal(0, 1e-12, (1))

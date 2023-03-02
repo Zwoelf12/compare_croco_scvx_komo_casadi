@@ -1,7 +1,3 @@
-#import sys
-#import os
-#sys.path.insert(0,os.getcwd()+"/scripts/")
-
 from optimization import opt_utils as ou
 from optimization.opt_problem import OptProblem
 from optimization.check.check_solution import check_solution
@@ -10,9 +6,11 @@ from physics.multirotor_models import multirotor_full_model_casadi
 from visualization.report_visualization import report_compare
 from optimization import problem_setups
 from visualization.animation_visualization import animate_fM
+from visualization.initial_guess_visualization import visualize_initial_guess
 
 only_visualize = False
 list_of_solvers = ["CASADI"]
+vis_init_guess = False
 
 # choose which problem should be solved
 prob = 4
@@ -31,6 +29,7 @@ elif prob == 4:
 
 # define optimization problem
 optProb = OptProblem()
+optProb.prob_name = prob_name
 
 # define robot model
 nr_motors = 4
@@ -41,12 +40,11 @@ if only_visualize == False:
     # define start and end point
     optProb.x0 = prob_setup.x0
     optProb.xf = prob_setup.xf
-    optProb.xm = prob_setup.xm
+    optProb.intermediate_states = prob_setup.intermediate_states
 
     # define maximum and minimum flight time and step number for intermediate state
     optProb.tf_min = prob_setup.tf_min
     optProb.tf_max = prob_setup.tf_max
-    optProb.xm_timing = prob_setup.xm_timing
 
     # define obstacles
     optProb.obs = prob_setup.obs
@@ -61,8 +59,14 @@ if only_visualize == False:
                                                                                     prob_setup.noise,
                                                                                     optProb.xf,
                                                                                     optProb.x0,
+                                                                                    optProb.intermediate_states,
                                                                                     optProb.tf_min,
                                                                                     optProb.tf_max)
+
+
+    if vis_init_guess:
+        visualize_initial_guess(optProb.initial_x, optProb.x0, optProb.xf, optProb.intermediate_states, optProb.obs)
+
     if "KOMO" in list_of_solvers:
         ######## solve problem with KOMO #######
         print("lego")
@@ -154,6 +158,7 @@ if only_visualize == False:
         par = ou.Parameter_casadi()
         par.num_time_steps = t_steps_casadi
         par.discretization_method = "RK"
+        par.use_c_code = True # not working yet
         print("using discretization method: ", par.discretization_method)
         optProb.robot.dt = optProb.tf_max / par.num_time_steps
         print("dt CASADI: {}".format(optProb.robot.dt))

@@ -30,13 +30,31 @@ def check_solution(solution, optProb):
     if robot.nrMotors != 2 and robot.nrMotors != 3:
         success &= check_array(states[0], optProb.x0, "start state")
         success &= check_array(states[-1], optProb.xf, "end state")
-        if optProb.xm is not None and optProb.xm_timing:
-            success &= check_array(states[optProb.xm_timing, 6:10], optProb.xm[6:10], "intermediate state")
+
+        if optProb.intermediate_states is not None:
+            for i_s in optProb.intermediate_states:
+                if "pos" in i_s.type:
+                    success &= check_array(states[i_s.timing, :3], i_s.value[:3], "intermediate state pos")
+                if "vel" in i_s.type:
+                    success &= check_array(states[i_s.timing, 3:6], i_s.value[3:6], "intermediate state vel")
+                if "quat" in i_s.type:
+                    success &= check_array(states[i_s.timing, 6:10], i_s.value[6:10], "intermediate state quat")
+                if "rot_vel" in i_s.type:
+                    success &= check_array(states[i_s.timing, 10:], i_s.value[10:], "intermediate state rot_vel")
     else:
         success &= check_array(states[0], optProb.x0, "start state")
         success &= check_array(states[-1,:6], optProb.xf[:6], "end state")
-        if optProb.xm is not None and optProb.xm_timing:
-            success &= check_array(states[optProb.xm_timing, 6:10], optProb.xm[6:10], "intermediate state")
+
+        if optProb.intermediate_states is not None:
+            for i_s in optProb.intermediate_states:
+                if i_s.type == "pos":
+                    success &= check_array(states[i_s.timing, :3], i_s.value[:3], "intermediate state pos")
+                if i_s.type == "vel":
+                    success &= check_array(states[i_s.timing, 3:6], i_s.value[3:6], "intermediate state vel")
+                if i_s.type == "quat":
+                    success &= check_array(states[i_s.timing, 6:10], i_s.value[6:10], "intermediate state quat")
+                if i_s.type == "rot_vel":
+                    success &= check_array(states[i_s.timing, 10:], i_s.value[10:], "intermediate state rot_vel")
 
     # dynamics
     int_err = []

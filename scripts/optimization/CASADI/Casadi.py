@@ -3,10 +3,56 @@ from casadi.tools import *
 import optimization.opt_utils as ou
 import pylab as pl
 import time
+from optimization.parameter_tuning import CASADI_parameter
+import subprocess
 
-def solve(robot, x0, xf, xm, xm_timing, t_final, obs, initial_x, initial_u, num_timesteps, discretization_method):
+def update_c_code(robot,discretization_method):
+
+    if discretization_method == "RK":
+
+        f = robot.step_RK
+        x = SX.sym('x',robot.max_x.shape[0])
+        u = SX.sym('u',robot.nrMotors)
+
+        F = Function('f',[x,u],[f(x,u)])
+
+        file_name_c = "step_RK.c"
+        file_name_so = "step_RK.so"
+        F.generate(file_name_c)
+
+        cmd = "gcc -fPIC -shared {} -o {}".format(file_name_c, file_name_so)
+        print("compiling c code")
+        subprocess.run(cmd.split())
+        print("compiling done")
+
+    elif discretization_method == "euler":
+
+        f = robot.step_euler
+
+        x = SX.sym('x', robot.max_x.shape[0])
+        u = SX.sym('u', robot.nrMotors)
+
+        F = Function('f', [x, u], [f(x, u)])
+
+        file_name_c = "step_euler.c"
+        file_name_so = "step_euler.so"
+        F.generate(file_name_c)
+
+        cmd = "gcc -fPIC -shared {} -o {}".format(file_name_c, file_name_so)
+        print("compiling c code")
+        subprocess.run(cmd.split())
+        print("compiling done")
+
+    else:
+        raise NameError("unknown discretization method")
+
+
+
+def solve(robot, x0, xf, intermediate_states, t_final, obs, initial_x, initial_u, num_timesteps, discretization_method, use_c_code, prob_name):
 
     opt = casadi.Opti() # generate optimization problem
+
+    parameter = CASADI_parameter(prob_name) # tuning parameter for IPOPT have to be identified
 
     ## define states and control
     nMotors = len(robot.min_u)
@@ -20,8 +66,14 @@ def solve(robot, x0, xf, xm, xm_timing, t_final, obs, initial_x, initial_u, num_
     ## chose discretization
     if discretization_method == "RK":
         f = robot.step_RK
+        if use_c_code:
+            f = external("f", "step_RK.so")
+
+        print(f)
     elif discretization_method == "euler":
         f = robot.step_euler
+        if use_c_code:
+            f = external("f", "step_euler.so")
     else:
         raise NameError("unknown discretization method")
 
@@ -29,8 +81,17 @@ def solve(robot, x0, xf, xm, xm_timing, t_final, obs, initial_x, initial_u, num_
     # initial, final and intermediate constraints
     opt.subject_to(X[:,0] == x0) # initial
     opt.subject_to(X[:,-1] == xf) # final
-    if xm is not None and xm_timing:
-        opt.subject_to(X[6:10,xm_timing] == xm[6:10]) # apply intermediate constraints only to the orientation
+
+    if intermediate_states is not None: # intermediate
+        for i_s in intermediate_states:
+            if "pos" in i_s.type:
+                opt.subject_to(X[:3, i_s.timing] == i_s.value[:3])
+            if "vel" in i_s.type:
+                opt.subject_to(X[3:6, i_s.timing] == i_s.value[3:6])
+            if "quat" in i_s.type:
+                opt.subject_to(X[6:10, i_s.timing] == i_s.value[6:10])
+            if "rot_vel" in i_s.type:
+                opt.subject_to(X[10:, i_s.timing] == i_s.value[10:])
 
     for t in range(num_timesteps-1):
 
@@ -65,7 +126,7 @@ def solve(robot, x0, xf, xm, xm_timing, t_final, obs, initial_x, initial_u, num_
         t_end_solver = time.time()
 
     except RuntimeError:
-        print("##### DEBUGGING #####")
+        print("Solver failed: Converged to a point of local infeasibility")
         # debugging
         #index = 33
         #opt.debug.value(X)
@@ -73,6 +134,8 @@ def solve(robot, x0, xf, xm, xm_timing, t_final, obs, initial_x, initial_u, num_
         #opt.debug.show_infeasibilities()
         #opt.debug.x_describe(index)
         #opt.debug.g_describe(index)
+    except:
+        print("something went wrong")
 
     states = np.array(sol.value(X).T)
     actions = np.array(sol.value(U).T)

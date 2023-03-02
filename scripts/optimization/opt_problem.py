@@ -7,8 +7,7 @@ class OptProblem():
     def __init__(self):
         self.x0 = None  # initial state
         self.xf = None  # final state
-        self.xm = None  # intermediate state
-        self.xm_timing = None # timepoint in for intermediate state
+        self.intermediate_states = None # intermediate states
         self.obs = None  # included obstacles
         self.algorithm = None # used algorithm
         self.robot = None  # used robot model
@@ -19,6 +18,7 @@ class OptProblem():
         self.initial_x = None # initialization of states
         self.initial_u = None # initialization of actions
         self.initial_p = None # initialization of time_dilation
+        self.prob_name = None # short problem description
 
     def solve_problem(self):
 
@@ -32,9 +32,10 @@ class OptProblem():
         if self.algorithm == "SCVX":
 
             """
-            scvx = SCvx(self.robot)
-            solution = scvx.solve(self.x0,
+            Scvx = SCvx(self.robot,self.prob_name)
+            solution = Scvx.solve(self.x0,
                                   self.xf,
+                                  self.intermediate_states,
                                   self.tf_min,
                                   self.tf_max,
                                   self.initial_x,
@@ -55,25 +56,32 @@ class OptProblem():
                                   self.par.time_per_phase,
                                   self.x0,
                                   self.xf,
+                                  self.intermediate_states,
                                   self.obs,
                                   self.robot,
+                                  self.prob_name,
                                   self.initial_x,
-                                  self.initial_u)
+                                  self.initial_u,
+                                  self.prob_name)
             """
 
         elif self.algorithm == "CASADI":
 
+            if self.par.use_c_code:
+                Casadi.update_c_code(self.robot,self.par.discretization_method)
+
             solution = Casadi.solve(self.robot,
                                     self.x0,
                                     self.xf,
-                                    self.xm,
-                                    self.xm_timing,
+                                    self.intermediate_states,
                                     self.tf_max,
                                     self.obs,
                                     self.initial_x,
                                     self.initial_u,
                                     self.par.num_time_steps,
-                                    self.par.discretization_method)
+                                    self.par.discretization_method,
+                                    self.par.use_c_code,
+                                    self.prob_name)
 
         else:
             print("unknown algorithm")
