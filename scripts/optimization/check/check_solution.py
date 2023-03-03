@@ -107,11 +107,12 @@ def check_solution(solution, optProb):
             success = False
             false_success = True
 
-    actions_nan = np.empty(robot.nrMotors)
-    actions_nan[:] = np.nan
-    print(actions.shape)
-    print(states.shape)
-    data = np.hstack((states, np.vstack((actions, actions_nan))))
+    if optProb.algorithm == "CASADI":
+        actions_nan = np.empty(robot.nrMotors)
+        actions_nan[:] = np.nan
+        actions = np.vstack((actions, actions_nan))
+
+    data = np.hstack((states, actions))
 
     return success, data, np.array(int_err), false_success, solution.constr_viol
 
