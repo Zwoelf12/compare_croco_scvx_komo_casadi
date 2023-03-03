@@ -245,7 +245,7 @@ def report_compare(solutions, list_of_solvers):
 	plt.show()
 
 
-def report_noise(prob_name,path, nr_motors, t2w_vec, noise_vec, robot_type, prob_setup):
+def report_noise(prob_name, path, nr_motors, t2w_vec, noise_vec, robot_type, prob_setup):
 
 	data_scvx_allProbs = []
 	data_komo_allProbs = []
