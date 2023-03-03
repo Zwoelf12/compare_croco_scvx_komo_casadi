@@ -448,9 +448,9 @@ class SCvx():
           if "vel" in i_s.type:
             constraints.append(x[i_s.timing,3:6] == i_s.value[3:6] + nuMC[3:6])
           if "quat" in i_s.type:
-            constraints.append(x[i_s.timing,:3] == i_s.value[:3] + nuMC[6:10])
+            constraints.append(x[i_s.timing,6:10] == i_s.value[6:10] + nuMC[6:10])
           if "rot_vel" in i_s.type:
-            constraints.append(x[i_s.timing,:3] == i_s.value[:3] + nuMC[10:])
+            constraints.append(x[i_s.timing,10:] == i_s.value[10:] + nuMC[10:])
 
     else:
       constraints = [
