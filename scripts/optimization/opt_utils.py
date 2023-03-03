@@ -334,8 +334,9 @@ def calc_initial_guess(robot, timesteps, noise_factor, xf, x0, intermediate_poin
     # initial time dilation
     initial_p = (tf_min + tf_max) / 2
 
-    # sort intermedtiate states in ascending order
-    intermediate_points.sort(key=lambda x: x.timing)
+    if intermediate_points is not None:
+        # sort intermedtiate states in ascending order
+        intermediate_points.sort(key=lambda x: x.timing)
 
     # collect all points that should be visited
     positions_fixed = [x0[0:3]]
