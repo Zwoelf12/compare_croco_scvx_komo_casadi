@@ -372,14 +372,7 @@ class SCvx():
 
       violations.append(state_viol)
 
-    print(np.vstack(violations).shape)
-    print(np.vstack(violations))
-
     mc_viol = np.max(np.vstack(violations), axis = 0)
-
-    print(mc_viol)
-
-    rein = input("check if dimensions etc. fits")
 
     P = np.zeros(T)
     for t in range(T - 1):
