@@ -54,7 +54,6 @@ class OptProblem():
                                   self.intermediate_states,
                                   self.obs,
                                   self.robot,
-                                  self.prob_name,
                                   self.initial_x,
                                   self.initial_u,
                                   self.prob_name)
