@@ -338,33 +338,34 @@ def calc_initial_guess(robot, timesteps, noise_factor, xf, x0, intermediate_poin
     if intermediate_points is not None:
         # sort intermedtiate states in ascending order
         intermediate_points.sort(key=lambda x: x.timing)
+        # collect all points that should be visited
         intermediate_positions = [x.value[0:3] for x in intermediate_points if "pos" in x.type]
+        # collect timing for positions
+        intermediate_pos_timing = [x.timing for x in intermediate_points if "pos" in x.type]
+        # collect all orientations that should be visited
         intermediate_quaternions = [x.value[6:10] for x in intermediate_points if "quat" in x.type]
+        # collect timing for quaternions
+        intermediate_quat_timing = [x.timing for x in intermediate_points if "quat" in x.type]
     else:
         intermediate_positions = []
+        intermediate_pos_timing = []
         intermediate_quaternions = []
+        intermediate_quat_timing = []
 
-
-    # collect all points that should be visited
     positions_fixed = [x0[0:3]]
     positions_fixed.extend(intermediate_positions)
     positions_fixed.append(xf[0:3])
 
-    # collect timing for positions
     position_timing = [0]
-    intermediate_pos_timing = [x.timing for x in intermediate_points if "pos" in x.type]
     position_timing.extend(intermediate_pos_timing)
     position_timing.append(T)
 
-    # collect all orientations that should be visited
     quaternions_fixed = [x0[6:10]]
     quaternions_fixed.extend(intermediate_quaternions)
     quaternions_fixed.append(xf[6:10])
 
-    # collect timing for quaternions
     quaternion_timing = [0]
-    intermediate_pos_timing = [x.timing for x in intermediate_points if "quat" in x.type]
-    quaternion_timing.extend(intermediate_pos_timing)
+    quaternion_timing.extend(intermediate_quat_timing)
     quaternion_timing.append(T)
 
     def calc_interpolation(pos_to_visit, pos_timing, quat_to_visit, quat_timing):
