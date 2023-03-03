@@ -9,7 +9,7 @@ from visualization.animation_visualization import animate_fM
 from visualization.initial_guess_visualization import visualize_initial_guess
 
 only_visualize = False
-list_of_solvers = ["CASADI"]
+list_of_solvers = ["KOMO","SCVX","CASADI"]
 vis_init_guess = False
 
 # choose which problem should be solved
@@ -150,7 +150,7 @@ if only_visualize == False:
         par = ou.Parameter_casadi()
         par.num_time_steps = t_steps_casadi
         par.discretization_method = "RK"
-        par.use_c_code = True # not working yet
+        par.use_c_code = False # not working yet
         print("using discretization method: ", par.discretization_method)
         optProb.robot.dt = optProb.tf_max / par.num_time_steps
         print("dt CASADI: {}".format(optProb.robot.dt))

@@ -1,5 +1,5 @@
 import sys
-sys.path += ['deps/rai']
+sys.path += ['../build/deps/rai']
 import libry as ry
 import numpy as np
 from physics.multirotor_models import multirotor_flex_komo

@@ -1,0 +1,17 @@
+** compiled at:     Mar  3 2023 13:47:32
+** execution start: 2023-03-03 15:45:44:794624
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.cpp:initCmdLine:602(1) ** cmd line arguments: 'rai-pybind -python '
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.cpp:initCmdLine:606(1) ** run path: '/home/wrehberg/compare_croco_scvx_komo_casadi/scripts'
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/graph.cpp:initParameters:1356(3) opening config file 'rai.cfg'
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/graph.cpp:initParameters:1365(1) ** parsed parameters:
+{python,
+opt/muInit:100,
+opt/damping:0.01,
+KOMO/verbose:1,
+opt/stopTolerance:1e-08,
+opt/stopEvals:1e+07}
+
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/ry/ry.cpp:init_LogToPythonConsole:34(0) initializing ry log callback
+** execution stop: 2023-03-03 15:45:45:839159
+** real time: 1.04456sec
+** CPU time: 1.28214
