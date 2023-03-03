@@ -358,21 +358,25 @@ class SCvx():
 
     # calculate intermediate constraints violations
     violations = []
-    for i_s in intermediate_states:
-      state_viol = np.zeros(len(x0))
+    if intermediate_states is not None:
+        for i_s in intermediate_states:
+          state_viol = np.zeros(len(x0))
 
-      if "pos" in i_s.type:
-        state_viol[:3] = x_ph[i_s.timing,:3] - i_s.value[:3]
-      if "vel" in i_s.type:
-        state_viol[3:6] = x_ph[i_s.timing,3:6] - i_s.value[3:6]
-      if "quat" in i_s.type:
-        state_viol[6:10] = x_ph[i_s.timing,6:10] - i_s.value[6:10]
-      if "rot_vel" in i_s.type:
-        state_viol[10:] = x_ph[i_s.timing,10:] - i_s.value[10:]
+          if "pos" in i_s.type:
+            state_viol[:3] = x_ph[i_s.timing,:3] - i_s.value[:3]
+          if "vel" in i_s.type:
+            state_viol[3:6] = x_ph[i_s.timing,3:6] - i_s.value[3:6]
+          if "quat" in i_s.type:
+            state_viol[6:10] = x_ph[i_s.timing,6:10] - i_s.value[6:10]
+          if "rot_vel" in i_s.type:
+            state_viol[10:] = x_ph[i_s.timing,10:] - i_s.value[10:]
 
-      violations.append(state_viol)
+          violations.append(state_viol)
 
-    mc_viol = np.max(np.vstack(violations), axis = 0)
+          mc_viol = np.max(np.vstack(violations), axis = 0)
+
+    else:
+      mc_viol = np.zeros(x_ph.shape[1])
 
     P = np.zeros(T)
     for t in range(T - 1):
