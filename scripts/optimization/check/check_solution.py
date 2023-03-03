@@ -94,11 +94,11 @@ def check_solution(solution, optProb):
             success = False
 
     # collisions
-    #for t in range(T):
-    #    dist, pRob, pObs = optProb.CHandler.calcDistance_broadphase(states[t])
-    #    if dist < -0.03:  # allow up to 3cm violation
-    #        print("Collision at t={} ({})".format(t, dist))
-    #        success = False
+    for t in range(T):
+        dist, pRob, pObs = optProb.CHandler.calcDistance_broadphase(states[t])
+        if dist < -0.03:  # allow up to 3cm violation
+            print("Collision at t={} ({})".format(t, dist))
+            success = False
 
     # check if constraint violations in KOMO are reasonable (not really necessary?)
     false_success = False
@@ -109,6 +109,8 @@ def check_solution(solution, optProb):
 
     actions_nan = np.empty(robot.nrMotors)
     actions_nan[:] = np.nan
+    print(actions.shape)
+    print(states.shape)
     data = np.hstack((states, np.vstack((actions, actions_nan))))
 
     return success, data, np.array(int_err), false_success, solution.constr_viol
