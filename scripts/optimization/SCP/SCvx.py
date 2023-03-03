@@ -675,6 +675,7 @@ class SCvx():
         self.nus = None
         self.nuIC = None
         self.nuTC = None
+        self.nuMC = None
         self.p = None
         self.P = None
         self.Pf = None
@@ -694,6 +695,7 @@ class SCvx():
       i_g.nus = np.random.normal(0, 1e-12, (T, nObstacles))
     i_g.nuIC = np.random.normal(0, 1e-12, (self.robot.max_x.shape[0]))
     i_g.nuTC = np.random.normal(0, 1e-12, (self.robot.max_x.shape[0]))
+    i_g.nuMC = np.random.normal(0, 1e-12, (self.robot.max_x.shape[0]))
     i_g.P = np.random.normal(0,1e-12,(T))
     i_g.Pf = np.random.normal(0,1e-12,(3))
     i_g.dx_lq = np.random.normal(0,1e-12,(T))
