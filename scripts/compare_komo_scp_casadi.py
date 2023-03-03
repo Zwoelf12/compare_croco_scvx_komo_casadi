@@ -118,7 +118,7 @@ if only_visualize == False:
         par.max_num_iter = 50
         par.num_time_steps = t_steps_scvx
         optProb.robot.dt = 1/(par.num_time_steps-1)
-        print("dt SCVX: {}".format(optProb.robot.dt * optProb.tf))
+        print("dt SCVX: {}".format(optProb.robot.dt * optProb.tf_max))
         optProb.par = par
 
         # solve Problem with scvx
