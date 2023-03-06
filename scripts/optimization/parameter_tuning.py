@@ -7,9 +7,9 @@ class SCVX_parameter():
         if prob_name == "simple_flight_wo_obs":
 
             # user defined parameter
-            self.lam = 1e3  # weight 3 slack in cost
+            self.lam = 1e2  # weight 3 slack in cost
             self.alp = 0.  # weight for time in cost
-            self.bet = 1e3  # weight for input in cost
+            self.bet = 1e3*5  # weight for input in cost
             self.gam = 0.  # weight ratio between input and time penalty
             self.adapWeightsFac = 1e1  # determines by how much the slack cost is decreased and the problem cost is increased when slack is in a reasonable range
             self.weightsFac = 1
