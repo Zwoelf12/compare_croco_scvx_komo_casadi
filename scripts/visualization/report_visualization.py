@@ -130,7 +130,7 @@ def report_compare(solutions, list_of_solvers):
 
 		# plot rotational velocities
 		ax4.plot(time_vec, sol.data[:, 10:13])
-		legend_ax2.extend([solver_name + ": \n $\omega_x$", "$\omega_y$", "$\omega_z$"])
+		legend_ax4.extend([solver_name + ": \n $\omega_x$", "$\omega_y$", "$\omega_z$"])
 
 	# make legend
 	ax1.legend(legend_ax1)
