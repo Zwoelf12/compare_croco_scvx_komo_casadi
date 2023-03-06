@@ -25,29 +25,29 @@ class SCvx():
     parameter = SCVX_parameter(prob_name)
 
     # user defined parameter
-    self.lam = 1e2 # weight 3 slack in cost
-    self.alp = 0.  # weight for time in cost
-    self.bet = 1e3 # weight for input in cost
-    self.gam = 0.  # weight ratio between input and time penalty
-    self.adapWeightsFac = 1e1 # determines by how much the slack cost is decreased and the problem cost is increased when slack is in a reasonable range
-    self.weightsFac = 1 
-    self.E = np.eye(self.robot.min_x.shape[0]) #weight matrix for dynamic slack
+    self.lam = parameter.lam # weight 3 slack in cost
+    self.alp = parameter.alp  # weight for time in cost
+    self.bet = parameter.bet # weight for input in cost
+    self.gam = parameter.gam  # weight ratio between input and time penalty
+    self.adapWeightsFac = parameter.adapWeightsFac # determines by how much the slack cost is decreased and the problem cost is increased when slack is in a reasonable range
+    self.weightsFac = parameter.weightsFac
+    self.E = parameter.E #weight matrix for dynamic slack
     # when to update trust region
-    self.roh0 = 0.
-    self.roh1 = 0.1
-    self.roh2 = 0.7
+    self.roh0 = parameter.roh0
+    self.roh1 = parameter.roh1
+    self.roh2 = parameter.roh2
     # growth and shrink parameter for trust region
-    self.bgr = 2
-    self.bsh = 2
+    self.bgr = parameter.bgr
+    self.bsh = parameter.bsh
     # initial trust region and minimal and maximal trust region radius
-    self.eta = 10
-    self.eta0 = 1e-3
-    self.eta1 = 100
+    self.eta = parameter.eta
+    self.eta0 = parameter.eta0
+    self.eta1 = parameter.eta1
     # stopping criterion
-    self.eps = 1e-3
-    self.eps_t = 1e-4
+    self.eps = parameter.eps
+    self.eps_t = parameter.eps_t
     # norm order for trust region
-    self.q = "inf"
+    self.q = parameter.q
 
     # build A & B Matrices and f
     self.constructA = jit(jacfwd(robot.step, 0))

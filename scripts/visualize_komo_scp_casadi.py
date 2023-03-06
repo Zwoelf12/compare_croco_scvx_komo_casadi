@@ -29,7 +29,7 @@ nr_motors = 4
 solutions = ou.load_opt_output(prob_name, nr_motors, list_of_solvers)
 
 # visualize solutions
-#report_compare(solutions, list_of_solvers)
+report_compare(solutions, list_of_solvers)
 
 sol = solutions[list_of_solvers[0]]
 visualize_initial_guess(sol.initial_x, sol.x0, sol.xf, sol.intermediate_states, sol.obs)

@@ -10,10 +10,10 @@ from visualization.initial_guess_visualization import visualize_initial_guess
 
 only_visualize = False
 list_of_solvers = ["KOMO","SCVX","CASADI"]
-vis_init_guess = True
+vis_init_guess = False
 
 # choose which problem should be solved
-prob = 1
+prob = 2
 if prob == 1:
     prob_setup = problem_setups.simple_flight_wo_obs()
     prob_name = "simple_flight_wo_obs"
