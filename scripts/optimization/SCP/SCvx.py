@@ -241,9 +241,9 @@ class SCvx():
         stop_flag = True
 
       if intermediate_states is not None:
-        nuMC_value = None
-      else:
         nuMC_value = nuMC.value
+      else:
+        nuMC_value = None
 
       # update rule
       xprev, uprev, pprev, nuprev, nusprev, nuICprev, nuTCprev, nuMCprev, Pprev, Pfprev, dx_lqprev, du_lqprev, dp_lqprev, roh = self.update_prob(x.value, u.value, p.value,
