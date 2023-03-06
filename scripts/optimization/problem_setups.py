@@ -44,8 +44,8 @@ def simple_flight_wo_obs():
                          1., 0., 0., 0.,
                          0., 0., 0.], dtype=np.float64)
 
-    setup.tf_min = 2.3
-    setup.tf_max = 2.3
+    setup.tf_min = 2.1
+    setup.tf_max = 2.1
 
     setup.t_steps_scvx = 30
     setup.t_steps_komo = 30
