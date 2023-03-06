@@ -1,5 +1,4 @@
 from optimization import opt_utils as ou
-from optimization.opt_problem import OptProblem
 from visualization.report_visualization import report_compare
 from optimization import problem_setups
 
