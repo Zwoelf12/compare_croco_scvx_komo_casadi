@@ -220,7 +220,7 @@ class SCvx():
         return solution
 
       # calculate nonlinear augmented cost
-      nlCost = self.calc_aug_nl_cost(x.value, u.value, p.value, x0, xf, T, CHandler)
+      nlCost = self.calc_aug_nl_cost(x.value, u.value, p.value, x0, xf, intermediate_states, T, CHandler)
       # stopping criterion
       trajCrit = np.linalg.norm(p.value - pprev, 1) + np.max(np.linalg.norm(x.value - xprev, 1, 1)) # criterion following Malyuta et. al. looks only at trajectory change
       costCrit = np.abs(prevNLCost - prob_value) / np.abs(prevNLCost) # criterion with respect to optimal value
