@@ -16,7 +16,7 @@ class SCvx():
     self.useEarlyStopping = False
     self.useAdaptiveWeights = False
     
-    self.solver = "gurobi"
+    self.solver = "ecos"
 
     self.robot = robot
     # inflate robot to avoid corner cutting

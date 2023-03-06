@@ -188,8 +188,9 @@ def report_compare(solutions, list_of_solvers):
 		fig, axs = plt.subplots(1, nSolvers)
 		if nSolvers == 1:
 			axs = [axs]
+
 	else:
-		fig, axs = plt.subplots(2, nSolvers)
+		fig, axs = plt.subplots(1, nSolvers)
 
 	for i,solver_name in zip(range(nSolvers),list_of_solvers):
 		int_error = solutions[solver_name].int_err

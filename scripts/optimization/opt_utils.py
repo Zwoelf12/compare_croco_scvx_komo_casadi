@@ -272,6 +272,7 @@ def save_opt_output(optProb,
 
 def load_object(filename):
     with open(filename, "rb") as input_file:
+        print(filename)
         sol = pickle.load(input_file)
     return sol
 

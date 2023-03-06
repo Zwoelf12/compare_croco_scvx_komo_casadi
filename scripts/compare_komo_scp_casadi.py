@@ -8,8 +8,8 @@ from optimization import problem_setups
 from visualization.animation_visualization import animate_fM
 from visualization.initial_guess_visualization import visualize_initial_guess
 
-only_visualize = False
-list_of_solvers = ["KOMO","SCVX","CASADI"]
+only_visualize = True
+list_of_solvers = ["KOMO","CASADI"]
 vis_init_guess = False
 
 # choose which problem should be solved
@@ -69,6 +69,7 @@ if only_visualize == False:
 
     if "KOMO" in list_of_solvers:
         ######## solve problem with KOMO #######
+        """
         
         optProb.robot = multirotor_full_model_komo_scp.Multicopter(nr_motors, arm_length, prob_setup.t2w)
 
@@ -103,11 +104,10 @@ if only_visualize == False:
                            data,
                            int_error)
 
-
+        """
 
     if "SCVX" in list_of_solvers:
-
-
+        """
         ######## solve problem with SCVX #######
         optProb.algorithm = "SCVX"
 
@@ -138,7 +138,7 @@ if only_visualize == False:
                            data,
                            int_error)
 
-
+        """
     if "CASADI" in list_of_solvers:
 
         ######## solve problem with CASADI ########
@@ -177,9 +177,9 @@ solutions = ou.load_opt_output(prob_name, nr_motors, list_of_solvers)
 
 report_compare(solutions,list_of_solvers)
 
-for solver_name in list_of_solvers:
-    sol = solutions[solver_name]
-    animate_fM(sol.data,sol.obs)
+#for solver_name in list_of_solvers:
+#    sol = solutions[solver_name]
+#    animate_fM(sol.data,sol.obs)
 
 
 
