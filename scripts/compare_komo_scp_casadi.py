@@ -8,8 +8,8 @@ from optimization import problem_setups
 from visualization.animation_visualization import animate_fM
 from visualization.initial_guess_visualization import visualize_initial_guess
 
-only_visualize = True
-list_of_solvers = ["KOMO","CASADI"]
+only_visualize = False
+list_of_solvers = ["KOMO","SCVX","CASADI"]
 vis_init_guess = False
 
 # choose which problem should be solved
