@@ -240,9 +240,14 @@ class SCvx():
       if costCrit < self.eps or trajCrit < self.eps_t:
         stop_flag = True
 
+      if intermediate_states is not None:
+        nuMC_value = None
+      else:
+        nuMC_value = nuMC.value
+
       # update rule
       xprev, uprev, pprev, nuprev, nusprev, nuICprev, nuTCprev, nuMCprev, Pprev, Pfprev, dx_lqprev, du_lqprev, dp_lqprev, roh = self.update_prob(x.value, u.value, p.value,
-                                                                                                                                       nu.value, nus.value, nuIC.value, nuTC.value, nuMC.value, P.value, Pf.value,
+                                                                                                                                       nu.value, nus.value, nuIC.value, nuTC.value, nuMC_value, P.value, Pf.value,
                                                                                                                                        dx_lq.value, du_lq.value, dp_lq.value, prob_value,
                                                                                                                                        xprev, uprev, pprev,
                                                                                                                                        nuprev, nusprev, nuICprev, nuTCprev, nuMCprev, Pprev, Pfprev,
@@ -259,8 +264,8 @@ class SCvx():
       NUS_.append(nus.value)
       NUIC_.append(nuIC.value)
       NUTC_.append(nuTC.value)
-      NUMC_.append(nuMC.value)
-      print("intermediate constraints violations True: ", np.linalg.norm(nuMC.value, 1))
+      NUMC_.append(nuMC_value)
+      print("intermediate constraints violations True: ", np.linalg.norm(nuMC_value, 1))
       lin_cost.append(prob_value)
       nonlin_cost.append(nlCost)
 
@@ -275,7 +280,7 @@ class SCvx():
       print("max collision constraint violation: ", np.max(np.abs(nus.value)))
       print("max init constraint violation: ", np.max(np.abs(nuIC.value)))
       print("max terminal constraint violation: ", np.max(np.abs(nuTC.value)))
-      print("max intermediate constraint violation: ", np.max(np.abs(nuMC.value)))
+      print("max intermediate constraint violation: ", np.max(np.abs(nuMC_value)))
       print("trajectory is executed in: {} s".format(self.redim_p(p.value)))
       print("time for iteration: ", np.round(end_time - start_time, 4))
       print("time to solve convex subproblem: ", np.round(end_time_sol_interface - start_time_sol_interface, 4))
