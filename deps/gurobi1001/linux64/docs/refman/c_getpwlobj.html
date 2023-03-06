@@ -1,0 +1,170 @@
+<!DOCTYPE HTML>
+
+<!--Converted with LaTeX2HTML 2021.2 (Released July 1, 2021) -->
+<HTML lang="en">
+<HEAD>
+<TITLE>GRBgetpwlobj</TITLE>
+<META NAME="description" CONTENT="GRBgetpwlobj">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="viewport" CONTENT="width=device-width, initial-scale=1.0">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2021.2">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="c_getq.html">
+<LINK REL="previous" HREF="c_getjsonsolution.html">
+<LINK REL="next" HREF="c_getq.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A
+ HREF="c_getq.html">
+<IMG WIDTH="37" HEIGHT="24" ALT="next" SRC="next.png"></A> 
+<A
+ HREF="c_model_queries.html">
+<IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up.png"></A> 
+<A
+ HREF="c_getjsonsolution.html">
+<IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A
+ HREF="c_getq.html">GRBgetq</A>
+<B> Up:</B> <A
+ HREF="c_model_queries.html">Model Queries</A>
+<B> Previous:</B> <A
+ HREF="c_getjsonsolution.html">GRBgetjsonsolution</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A ID="SECTION000342400000000000000"></A>
+<A ID="routine:GRBgetpwlobj"></A>
+<BR>
+GRBgetpwlobj
+</H3><SPAN CLASS="FOOTNOTESIZE">
+</SPAN><TABLE class="PAD " style="">
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">
+int </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> </SPAN><SPAN CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">GRBgetpwlobj</SPAN></FONT></SPAN><SPAN CLASS="FOOTNOTESIZE"> ( </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> GRBmodel </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> *model, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                                        </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> int </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> var, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                                        </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> int </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> *npointsP, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                                        </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> double </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> *x, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> double </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> *y ) </SPAN></TD>
+</TR>
+</TABLE><SPAN CLASS="FOOTNOTESIZE">
+
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">Retrieve the piecewise-linear objective function for a variable.  The
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.46ex; vertical-align: -0.12ex; " SRC="img4.svg"
+ ALT="$x$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.91ex; vertical-align: -0.57ex; " SRC="img5.svg"
+ ALT="$y$"></SPAN> arguments must be large enough to hold
+the result.  If either are NULL, then <code>npointsP</code> will contain the
+number of points in the function on return.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">Refer to
+<A HREF="objectives.html#subsubsection:PiecewiseObj">this discussion</A>
+for additional information on what the values in <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.46ex; vertical-align: -0.12ex; " SRC="img4.svg"
+ ALT="$x$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.91ex; vertical-align: -0.57ex; " SRC="img5.svg"
+ ALT="$y$"></SPAN> mean.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">
+<SPAN CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">A non-zero return value indicates that a problem occurred while retrieving the piecewise-linear objective function.
+Refer to the <A HREF="error_codes.html#sec:ErrorCodes">Error Code</A> table for a
+list of possible return values.  Details on the error can be obtained
+by calling <A HREF="c_geterrormsg.html#routine:GRBgeterrormsg">GRBgeterrormsg</A>.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">model</SPAN>: The model from which the piecewise-linear objective
+  function is being retrieved.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">var</SPAN>: The variable whose objective function is being retrieved.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">npointsP</SPAN>: The number of points that define the piecewise-linear function.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">x</SPAN>: The <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.46ex; vertical-align: -0.12ex; " SRC="img4.svg"
+ ALT="$x$"></SPAN> values for the points that define the piecewise-linear function.  These will always be in non-decreasing order.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">y</SPAN>: The <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.91ex; vertical-align: -0.57ex; " SRC="img5.svg"
+ ALT="$y$"></SPAN> values for the points that define the piecewise-linear function.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN CLASS="LARGE"><B>Example usage:</B></SPAN></SPAN><PRE>
+  double *x;
+  double *y;
+
+  error = GRBgetpwlobj(model, var, &amp;npoints, NULL, NULL);
+  /* ...allocate x and y to hold 'npoints' values... */
+  error = GRBgetpwlobj(model, var, &amp;npoints, x, y);
+</PRE><SPAN CLASS="FOOTNOTESIZE">
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"></SPAN>
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A
+ HREF="c_getq.html">
+<IMG WIDTH="37" HEIGHT="24" ALT="next" SRC="next.png"></A> 
+<A
+ HREF="c_model_queries.html">
+<IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up.png"></A> 
+<A
+ HREF="c_getjsonsolution.html">
+<IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A
+ HREF="c_getq.html">GRBgetq</A>
+<B> Up:</B> <A
+ HREF="c_model_queries.html">Model Queries</A>
+<B> Previous:</B> <A
+ HREF="c_getjsonsolution.html">GRBgetjsonsolution</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

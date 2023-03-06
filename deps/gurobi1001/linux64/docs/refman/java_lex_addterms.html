@@ -1,0 +1,165 @@
+<!DOCTYPE HTML>
+
+<!--Converted with LaTeX2HTML 2021.2 (Released July 1, 2021) -->
+<HTML lang="en">
+<HEAD>
+<TITLE>GRBLinExpr.addTerms()</TITLE>
+<META NAME="description" CONTENT="GRBLinExpr.addTerms()">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="viewport" CONTENT="width=device-width, initial-scale=1.0">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2021.2">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="java_lex_clear.html">
+<LINK REL="previous" HREF="java_lex_addterm.html">
+<LINK REL="next" HREF="java_lex_clear.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A
+ HREF="java_lex_clear.html">
+<IMG WIDTH="37" HEIGHT="24" ALT="next" SRC="next.png"></A> 
+<A
+ HREF="java_lex.html">
+<IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up.png"></A> 
+<A
+ HREF="java_lex_addterm.html">
+<IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A
+ HREF="java_lex_clear.html">GRBLinExpr.clear()</A>
+<B> Up:</B> <A
+ HREF="java_lex.html">GRBLinExpr</A>
+<B> Previous:</B> <A
+ HREF="java_lex_addterm.html">GRBLinExpr.addTerm()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A ID="SECTION00079500000000000000"></A>
+<A ID="javamethod:GRBLinExpr.addTerms"></A>
+<BR>
+GRBLinExpr.addTerms()
+</H3><SPAN CLASS="FOOTNOTESIZE">
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">Add new terms into a linear expression.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">
+</SPAN><TABLE class="PAD " style="">
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">
+void </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> </SPAN><SPAN CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">addTerms</SPAN></FONT></SPAN><SPAN CLASS="FOOTNOTESIZE"> ( </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> double[] </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> coeffs, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> GRBVar[] </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> vars ) </SPAN></TD>
+</TR>
+</TABLE><SPAN CLASS="FOOTNOTESIZE">
+
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">Add a list of terms into a linear expression.  Note that the lengths
+of the two argument arrays must be equal.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">coeffs</SPAN>: Coefficients for new terms.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">vars</SPAN>: Variables for new terms.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"></SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">
+</SPAN><TABLE class="PAD " style="">
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">
+void </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> </SPAN><SPAN CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">addTerms</SPAN></FONT></SPAN><SPAN CLASS="FOOTNOTESIZE"> ( </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> double[] </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> coeffs, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> GRBVar[] </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> vars, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> int </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> start, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> int </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> len ) </SPAN></TD>
+</TR>
+</TABLE><SPAN CLASS="FOOTNOTESIZE">
+
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">Add new terms into a linear expression.  This signature allows you to
+use arrays to hold the coefficients and variables that describe the
+terms in an array without being forced to add a term for each entry in
+the array.  The <code>start</code> and <code>len</code> arguments allow you to
+specify which terms to add.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">coeffs</SPAN>: Coefficients for new terms.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">vars</SPAN>: Variables for new terms.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">start</SPAN>: The first term in the list to add.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">len</SPAN>: The number of terms to add.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"></SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"></SPAN>
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A
+ HREF="java_lex_clear.html">
+<IMG WIDTH="37" HEIGHT="24" ALT="next" SRC="next.png"></A> 
+<A
+ HREF="java_lex.html">
+<IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up.png"></A> 
+<A
+ HREF="java_lex_addterm.html">
+<IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A
+ HREF="java_lex_clear.html">GRBLinExpr.clear()</A>
+<B> Up:</B> <A
+ HREF="java_lex.html">GRBLinExpr</A>
+<B> Previous:</B> <A
+ HREF="java_lex_addterm.html">GRBLinExpr.addTerm()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

@@ -1,0 +1,138 @@
+<!DOCTYPE HTML>
+
+<!--Converted with LaTeX2HTML 2021.2 (Released July 1, 2021) -->
+<HTML lang="en">
+<HEAD>
+<TITLE>ConcurrentSettings</TITLE>
+<META NAME="description" CONTENT="ConcurrentSettings">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="viewport" CONTENT="width=device-width, initial-scale=1.0">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2021.2">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="covercuts.html">
+<LINK REL="previous" HREF="concurrentmip.html">
+<LINK REL="next" HREF="covercuts.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A
+ HREF="covercuts.html">
+<IMG WIDTH="37" HEIGHT="24" ALT="next" SRC="next.png"></A> 
+<A
+ HREF="parameter_descriptions.html">
+<IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up.png"></A> 
+<A
+ HREF="concurrentmip.html">
+<IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A
+ HREF="covercuts.html">CoverCuts</A>
+<B> Up:</B> <A
+ HREF="parameter_descriptions.html">Parameter Descriptions</A>
+<B> Previous:</B> <A
+ HREF="concurrentmip.html">ConcurrentMIP</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A ID="SECTION0001922100000000000000"></A>
+<A ID="parameter:ConcurrentSettings"></A>
+<BR>
+ConcurrentSettings
+</H3><SPAN CLASS="FOOTNOTESIZE">
+Create concurrent environments from a list of .prm files
+
+</SPAN><TABLE class="PAD " style="">
+<TR><TD ALIGN="LEFT">&nbsp;</TD><TH CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">
+<SPAN  CLASS="textbf">Type:</SPAN>          </SPAN></TH>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> string </SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+<SPAN  CLASS="textbf">Default value:</SPAN> </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> "" </SPAN></TD>
+</TR>
+</TABLE><SPAN CLASS="FOOTNOTESIZE">
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">This command-line only parameter allows you to specify a
+comma-separated list of
+<A HREF="prm_format.html#format:PRM">.prm</A> files that are used to set
+parameters for the different instances in a concurrent MIP run.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">To give an example, you could create two <code>.prm</code> files with the
+following contents...
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">s0.prm:
+</SPAN><PRE>
+MIPFocus 0
+</PRE><SPAN CLASS="FOOTNOTESIZE">
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">s1.prm:
+</SPAN><PRE>
+MIPFocus 1
+</PRE><SPAN CLASS="FOOTNOTESIZE">
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">Issuing the command
+<code>gurobi_cl ConcurrentSettings=s0.prm,s1.prm model.mps</code>
+would invoke the concurrent MIP solver, using parameter
+setting <code>MIPFocus=0</code> in one of the two concurrent solves
+and <code>MIPFocus=1</code> in the other.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">Note that if you want to run concurrent MIP on multiple
+machines, you must also set the
+<A HREF="concurrentjobs.html#parameter:ConcurrentJobs">ConcurrentJobs</A>
+parameter.  The command for running distributed concurrent optimization
+using the two example parameter files on two machines would be
+</SPAN><PRE>
+&gt; gurobi_cl ConcurrentJobs=2 ConcurrentSettings=s0.prm,s1.prm model.mps
+</PRE><SPAN CLASS="FOOTNOTESIZE">
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">
+<SPAN  CLASS="textbf">Note:</SPAN> Command-line only 
+<BR>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">For examples of how to query or modify parameter values from
+our different APIs, refer to our
+<A HREF="parameter_examples.html#sec:ParameterExamples">Parameter Examples</A>.</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"></SPAN>
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A
+ HREF="covercuts.html">
+<IMG WIDTH="37" HEIGHT="24" ALT="next" SRC="next.png"></A> 
+<A
+ HREF="parameter_descriptions.html">
+<IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up.png"></A> 
+<A
+ HREF="concurrentmip.html">
+<IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A
+ HREF="covercuts.html">CoverCuts</A>
+<B> Up:</B> <A
+ HREF="parameter_descriptions.html">Parameter Descriptions</A>
+<B> Previous:</B> <A
+ HREF="concurrentmip.html">ConcurrentMIP</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

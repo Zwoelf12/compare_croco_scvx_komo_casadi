@@ -1,0 +1,125 @@
+<!DOCTYPE HTML>
+
+<!--Converted with LaTeX2HTML 2021.2 (Released July 1, 2021) -->
+<HTML lang="en">
+<HEAD>
+<TITLE>CSQueueTimeout</TITLE>
+<META NAME="description" CONTENT="CSQueueTimeout">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="viewport" CONTENT="width=device-width, initial-scale=1.0">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2021.2">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="csrouter.html">
+<LINK REL="previous" HREF="cspriority.html">
+<LINK REL="next" HREF="csrouter.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A
+ HREF="csrouter.html">
+<IMG WIDTH="37" HEIGHT="24" ALT="next" SRC="next.png"></A> 
+<A
+ HREF="parameter_descriptions.html">
+<IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up.png"></A> 
+<A
+ HREF="cspriority.html">
+<IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A
+ HREF="csrouter.html">CSRouter</A>
+<B> Up:</B> <A
+ HREF="parameter_descriptions.html">Parameter Descriptions</A>
+<B> Previous:</B> <A
+ HREF="cspriority.html">CSPriority</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A ID="SECTION0001923500000000000000"></A>
+<A ID="parameter:CSQueueTimeout"></A>
+<BR>
+CSQueueTimeout
+</H3><SPAN CLASS="FOOTNOTESIZE">
+Queue timeout for new jobs
+
+</SPAN><TABLE class="PAD " style="">
+<TR><TD ALIGN="LEFT">&nbsp;</TD><TH CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">
+<SPAN  CLASS="textbf">Type:</SPAN>          </SPAN></TH>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> double </SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+<SPAN  CLASS="textbf">Default value:</SPAN> </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> -1 </SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+<SPAN  CLASS="textbf">Minimum value:</SPAN> </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> -1 </SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+<SPAN  CLASS="textbf">Maximum value:</SPAN> </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> Infinity </SPAN></TD>
+</TR>
+</TABLE><SPAN CLASS="FOOTNOTESIZE">
+
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">This parameter allows you to set a limit (in seconds) on how long a
+new Compute Server job will wait in queue before it gives up (and
+reports a <code>JOB_REJECTED</code> error).
+Note that there might be a delay of up to 20 seconds for the actual
+signaling of the time out.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">Any negative value will allow a job to sit in the Compute Server queue
+indefinitely.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">You must set this parameter through a <code>gurobi.lic</code> file (using
+<code>QUEUETIMEOUT=n</code>) or an <A HREF="environments.html#sec:Environment">empty
+environment</A>. Changing the parameter after
+your environment has been created will have no effect.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">Refer to the
+<A ID="tex2html43"
+  HREF="../remoteservices/remoteservices.html">Gurobi Remote Services Reference Manual</A>
+for more information on starting Compute Server jobs.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"></SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">For examples of how to query or modify parameter values from
+our different APIs, refer to our
+<A HREF="parameter_examples.html#sec:ParameterExamples">Parameter Examples</A>.</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"></SPAN>
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A
+ HREF="csrouter.html">
+<IMG WIDTH="37" HEIGHT="24" ALT="next" SRC="next.png"></A> 
+<A
+ HREF="parameter_descriptions.html">
+<IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up.png"></A> 
+<A
+ HREF="cspriority.html">
+<IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A
+ HREF="csrouter.html">CSRouter</A>
+<B> Up:</B> <A
+ HREF="parameter_descriptions.html">Parameter Descriptions</A>
+<B> Previous:</B> <A
+ HREF="cspriority.html">CSPriority</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

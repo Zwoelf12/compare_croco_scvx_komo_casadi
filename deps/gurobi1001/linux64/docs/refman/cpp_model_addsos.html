@@ -1,0 +1,135 @@
+<!DOCTYPE HTML>
+
+<!--Converted with LaTeX2HTML 2021.2 (Released July 1, 2021) -->
+<HTML lang="en">
+<HEAD>
+<TITLE>GRBModel::addSOS()</TITLE>
+<META NAME="description" CONTENT="GRBModel::addSOS()">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="viewport" CONTENT="width=device-width, initial-scale=1.0">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2021.2">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="cpp_model_addvar.html">
+<LINK REL="previous" HREF="cpp_model_addranges.html">
+<LINK REL="next" HREF="cpp_model_addvar.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A
+ HREF="cpp_model_addvar.html">
+<IMG WIDTH="37" HEIGHT="24" ALT="next" SRC="next.png"></A> 
+<A
+ HREF="cpp_model.html">
+<IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up.png"></A> 
+<A
+ HREF="cpp_model_addranges.html">
+<IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A
+ HREF="cpp_model_addvar.html">GRBModel::addVar()</A>
+<B> Up:</B> <A
+ HREF="cpp_model.html">GRBModel</A>
+<B> Previous:</B> <A
+ HREF="cpp_model_addranges.html">GRBModel::addRanges()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A ID="SECTION00052800000000000000"></A>
+<A ID="cppmethod:GRBModel::addSOS"></A>
+<BR>
+GRBModel::addSOS()
+</H3><SPAN CLASS="FOOTNOTESIZE">
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">Add an SOS constraint to the model.  Please refer to
+<A HREF="constraints.html#subsubsection:SOSConstraints">this section</A>
+for details on SOS constraints.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">
+</SPAN><TABLE class="PAD " style="">
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">
+GRBSOS </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> </SPAN><SPAN CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">addSOS</SPAN></FONT></SPAN><SPAN CLASS="FOOTNOTESIZE"> ( </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> const GRBVar* </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> vars, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> const double* </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> weights, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> int </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> len, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> int </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> type ) </SPAN></TD>
+</TR>
+</TABLE><SPAN CLASS="FOOTNOTESIZE">
+
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">vars</SPAN>: Array of variables that participate in the SOS constraint.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">weights</SPAN>: Weights for the variables in the SOS constraint.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">len</SPAN>: Number of members in the new SOS set (length of
+    <SPAN  CLASS="texttt">vars</SPAN> and <SPAN  CLASS="texttt">weights</SPAN> arrays).
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">type</SPAN>: SOS type (can be <SPAN  CLASS="texttt">GRB_SOS_TYPE1</SPAN> or <SPAN  CLASS="texttt">GRB_SOS_TYPE2</SPAN>).
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">
+<SPAN CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">New SOS constraint.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"></SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"></SPAN>
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A
+ HREF="cpp_model_addvar.html">
+<IMG WIDTH="37" HEIGHT="24" ALT="next" SRC="next.png"></A> 
+<A
+ HREF="cpp_model.html">
+<IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up.png"></A> 
+<A
+ HREF="cpp_model_addranges.html">
+<IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A
+ HREF="cpp_model_addvar.html">GRBModel::addVar()</A>
+<B> Up:</B> <A
+ HREF="cpp_model.html">GRBModel</A>
+<B> Previous:</B> <A
+ HREF="cpp_model_addranges.html">GRBModel::addRanges()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

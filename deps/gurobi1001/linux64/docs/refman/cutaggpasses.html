@@ -1,0 +1,122 @@
+<!DOCTYPE HTML>
+
+<!--Converted with LaTeX2HTML 2021.2 (Released July 1, 2021) -->
+<HTML lang="en">
+<HEAD>
+<TITLE>CutAggPasses</TITLE>
+<META NAME="description" CONTENT="CutAggPasses">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="viewport" CONTENT="width=device-width, initial-scale=1.0">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2021.2">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="cutoff.html">
+<LINK REL="previous" HREF="cstlsinsecure.html">
+<LINK REL="next" HREF="cutoff.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A
+ HREF="cutoff.html">
+<IMG WIDTH="37" HEIGHT="24" ALT="next" SRC="next.png"></A> 
+<A
+ HREF="parameter_descriptions.html">
+<IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up.png"></A> 
+<A
+ HREF="cstlsinsecure.html">
+<IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A
+ HREF="cutoff.html">Cutoff</A>
+<B> Up:</B> <A
+ HREF="parameter_descriptions.html">Parameter Descriptions</A>
+<B> Previous:</B> <A
+ HREF="cstlsinsecure.html">CSTLSInsecure</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A ID="SECTION0001923800000000000000"></A>
+<A ID="parameter:CutAggPasses"></A>
+<BR>
+CutAggPasses
+</H3><SPAN CLASS="FOOTNOTESIZE">
+Constraint aggregation passes in cut generation
+
+</SPAN><TABLE class="PAD " style="">
+<TR><TD ALIGN="LEFT">&nbsp;</TD><TH CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">
+<SPAN  CLASS="textbf">Type:</SPAN>          </SPAN></TH>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> int </SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+<SPAN  CLASS="textbf">Default value:</SPAN> </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> -1 </SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+<SPAN  CLASS="textbf">Minimum value:</SPAN> </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> -1 </SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+<SPAN  CLASS="textbf">Maximum value:</SPAN> </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> MAXINT </SPAN></TD>
+</TR>
+</TABLE><SPAN CLASS="FOOTNOTESIZE">
+
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">A non-negative value indicates the maximum number of constraint
+aggregation passes performed during cut generation. Overrides
+the <A HREF="cuts.html#parameter:Cuts">Cuts</A> parameter.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">Changing the value of this parameter rarely produces a significant
+benefit.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> One important note about integer-valued parameters: while the maximum
+value that can be stored in a signed integer is <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.54ex; vertical-align: -0.31ex; " SRC="img264.svg"
+ ALT="$2^{31}-1$"></SPAN>, we use a
+<TT>MAXINT</TT> value of 2,000,000,000.  Attempting to set an integer
+parameter to a value larger than this maximum will produce an error.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">
+<SPAN  CLASS="textbf">Note:</SPAN> Only affects mixed integer programming (MIP) models 
+<BR>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">For examples of how to query or modify parameter values from
+our different APIs, refer to our
+<A HREF="parameter_examples.html#sec:ParameterExamples">Parameter Examples</A>.</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"></SPAN>
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A
+ HREF="cutoff.html">
+<IMG WIDTH="37" HEIGHT="24" ALT="next" SRC="next.png"></A> 
+<A
+ HREF="parameter_descriptions.html">
+<IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up.png"></A> 
+<A
+ HREF="cstlsinsecure.html">
+<IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A
+ HREF="cutoff.html">Cutoff</A>
+<B> Up:</B> <A
+ HREF="parameter_descriptions.html">Parameter Descriptions</A>
+<B> Previous:</B> <A
+ HREF="cstlsinsecure.html">CSTLSInsecure</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

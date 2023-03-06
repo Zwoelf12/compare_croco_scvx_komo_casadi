@@ -1,0 +1,722 @@
+<!DOCTYPE HTML>
+
+<!--Converted with LaTeX2HTML 2021.2 (Released July 1, 2021) -->
+<HTML lang="en">
+<HEAD>
+<TITLE>Detailed Release Notes 10</TITLE>
+<META NAME="description" CONTENT="Detailed Release Notes 10">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="viewport" CONTENT="width=device-width, initial-scale=1.0">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2021.2">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="c_api_overview.html">
+<LINK REL="previous" HREF="refman.html">
+<LINK REL="next" HREF="c_api_overview.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A
+ HREF="c_api_overview.html">
+<IMG WIDTH="37" HEIGHT="24" ALT="next" SRC="next.png"></A> 
+<A
+ HREF="refman.html">
+<IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up.png"></A> 
+<A
+ HREF="refman.html">
+<IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A
+ HREF="c_api_overview.html">C API Overview</A>
+<B> Up:</B> <A
+ HREF="refman.html">Gurobi Optimizer Reference Manual</A>
+<B> Previous:</B> <A
+ HREF="refman.html">Gurobi Optimizer Reference Manual</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A ID="SECTION00010000000000000000"></A>
+<A ID="sec:DetailedReleaseNotes"></A>
+<BR>
+Detailed Release Notes for Gurobi 10.0.1
+</H1>
+
+<P>
+<SPAN CLASS="LARGE"><SPAN  CLASS="textbf"><SPAN CLASS="XXLARGE"><SPAN  CLASS="textbf">Supported Platforms</SPAN></SPAN></SPAN></SPAN>
+
+<P>
+
+<P>
+<BR>    <DIV class="CENTER">
+<TABLE class="PAD  BORDER" style="">
+<TR><TH CLASS="LEFT"><SPAN  CLASS="textbf">Platform (port)</SPAN></TH>
+<TH CLASS="LEFT"><SPAN  CLASS="textbf">Operating System</SPAN></TH>
+<TH CLASS="LEFT"><SPAN  CLASS="textbf">Compiler</SPAN></TH>
+<TH CLASS="LEFT"><SPAN  CLASS="textbf">Notes</SPAN></TH>
+</TR>
+<TR><TD CLASS="LEFT">Windows <BR>
+64-bit (win64)</TD>
+<TD CLASS="LEFT">Windows 10, 11, Windows Server 2012 R2, 2016, 2019, 2022</TD>
+<TD CLASS="LEFT">Visual Studio 2017-2022</TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">Use <SPAN  CLASS="texttt">gurobi_c++md2017.lib</SPAN> (e.g.) for C++</SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT">&nbsp;</TD>
+<TD CLASS="LEFT">&nbsp;</TD>
+<TD CLASS="LEFT">&nbsp;</TD>
+<TD CLASS="LEFT">&nbsp;</TD>
+</TR>
+<TR><TD CLASS="LEFT">Linux x86-64 <BR>
+64-bit (linux64)</TD>
+<TD CLASS="LEFT">Red Hat Enterprise Linux 7 (and corresponding CentOS distribution), 8, and 9</TD>
+<TD CLASS="LEFT">GCC &gt;= 4.8</TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">Use <SPAN  CLASS="texttt">libgurobi_g++5.2.a</SPAN> for newer C++ compilers</SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT">&nbsp;</TD>
+<TD CLASS="LEFT">SUSE Enterprise Linux 12, 15</TD>
+<TD CLASS="LEFT">&nbsp;</TD>
+<TD CLASS="LEFT">&nbsp;</TD>
+</TR>
+<TR><TD CLASS="LEFT">&nbsp;</TD>
+<TD CLASS="LEFT">Ubuntu 18.04, 20.04, 22.04*</TD>
+<TD CLASS="LEFT">&nbsp;</TD>
+<TD CLASS="LEFT">&nbsp;</TD>
+</TR>
+<TR><TD CLASS="LEFT">&nbsp;</TD>
+<TD CLASS="LEFT">Amazon Linux 2</TD>
+<TD CLASS="LEFT">&nbsp;</TD>
+<TD CLASS="LEFT">&nbsp;</TD>
+</TR>
+<TR><TD CLASS="LEFT">macOS <BR>
+64-bit universal2 (macos_universal2)</TD>
+<TD CLASS="LEFT">11 (Big Sur), 12 (Monterey), 13 (Ventura)</TD>
+<TD CLASS="LEFT">Xcode 12/13</TD>
+<TD CLASS="LEFT">&nbsp;</TD>
+</TR>
+<TR><TD CLASS="LEFT">Linux arm64 <BR>
+64-bit (armlinux64)</TD>
+<TD CLASS="LEFT">Red Hat Enterprise Linux 7 (and corresponding CentOS distribution), 8, and 9</TD>
+<TD CLASS="LEFT">GCC &gt;= 4.8</TD>
+<TD CLASS="LEFT">&nbsp;</TD>
+</TR>
+<TR><TD CLASS="LEFT">&nbsp;</TD>
+<TD CLASS="LEFT">SUSE Enterprise Linux 12, 15</TD>
+<TD CLASS="LEFT">&nbsp;</TD>
+<TD CLASS="LEFT">&nbsp;</TD>
+</TR>
+<TR><TD CLASS="LEFT">&nbsp;</TD>
+<TD CLASS="LEFT">Ubuntu 20.04, 22.04</TD>
+<TD CLASS="LEFT">&nbsp;</TD>
+<TD CLASS="LEFT">&nbsp;</TD>
+</TR>
+<TR><TD CLASS="LEFT">&nbsp;</TD>
+<TD CLASS="LEFT">Amazon Linux 2</TD>
+<TD CLASS="LEFT">&nbsp;</TD>
+<TD CLASS="LEFT">&nbsp;</TD>
+</TR>
+<TR><TD CLASS="LEFT">AIX <BR>
+64-bit (power64)</TD>
+<TD CLASS="LEFT">AIX 7.1, 7.2, 7.3</TD>
+<TD CLASS="LEFT">XL C/C++ 9</TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">Due to limited Python support on AIX, this port does not include the Interactive Shell or the Python libraries.</SPAN></TD>
+</TR>
+</TABLE>
+</DIV>
+<BR>
+<SPAN CLASS="FOOTNOTESIZE">*On Ubuntu 22.04 for x86-64, user code that calls
+  dlopen()/dlclose() to load/unload <SPAN  CLASS="texttt">libgurobi100.so</SPAN> is known to
+  fail. We have investigated the issue, and unfortunately we have not
+  yet found a workaround.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN CLASS="LARGE"><SPAN  CLASS="textbf"><SPAN CLASS="XXLARGE"><SPAN  CLASS="textbf">Additional Supported Platform Information</SPAN></SPAN></SPAN></SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">Gurobi&nbsp;10.0.1 supports the following language/platform versions:
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"></SPAN>
+<DIV class="CENTER"><SPAN CLASS="FOOTNOTESIZE"></SPAN><TABLE class="PAD  BORDER" style="">
+<TR><TH CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">
+    <SPAN  CLASS="textbf">Language</SPAN>   </SPAN></TH>
+<TH CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">Version</SPAN>  </SPAN></TH>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">  
+    Python              </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 3.7, 3.8, 3.9, 3.10, 3.11 </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    MATLAB              </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> R2019a-R2022b </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    R                   </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 4.2 </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    JDK                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 8, 11, 17 </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    .NET                </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 6.0
+  </SPAN></TD>
+</TR>
+</TABLE><SPAN CLASS="FOOTNOTESIZE"></SPAN></DIV><SPAN CLASS="FOOTNOTESIZE">
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN  CLASS="textbf">Bug Fixes</SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">All bug fixes listed by version can be found on our
+<A ID="tex2html6"
+  HREF="https://www.gurobi.com/downloads/recent-bug-fixes-by-version/">website</A>.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN  CLASS="textbf">NuGet package for .NET</SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">We now provide an official NuGet package for .NET users. You can find
+the package at <kbd><A ID="tex2html5"
+
+HREF="https://www.nuget.org/packages/Gurobi.Optimizer">https://www.nuget.org/packages/Gurobi.Optimizer</A></kbd>.
+Additional information is available in the .NET Interface section of
+the Gurobi Quick Start Guide.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN CLASS="LARGE"><SPAN  CLASS="textbf"><SPAN CLASS="XXLARGE"><SPAN  CLASS="textbf">Changed in Gurobi&nbsp;10.0.1</SPAN></SPAN></SPAN></SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN  CLASS="textbf">Changes to the .NET standard library</SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">The .NET standard library is now signed with a strong name. This applies
+to both the C# library distributed with the full Gurobi installation and
+the NuGet package.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN CLASS="LARGE"><SPAN  CLASS="textbf"><SPAN CLASS="XXLARGE"><SPAN  CLASS="textbf">Changed in Gurobi&nbsp;10.0.0</SPAN></SPAN></SPAN></SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN  CLASS="textbf">Changes to C API</SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">The parameter for method <SPAN  CLASS="texttt">GRBcbproceed</SPAN> has changed.
+The signature was:
+</SPAN><PRE>
+int GRBcbproceed(GRBmodel *model)
+</PRE><SPAN CLASS="FOOTNOTESIZE">
+and is now:
+</SPAN><PRE>
+int GRBcbproceed(void *cbdata)
+</PRE><SPAN CLASS="FOOTNOTESIZE">
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN  CLASS="textbf">Changes to attributes</SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">The <A HREF="vbasis.html#attr:VBasis">VBasis</A>
+variable attribute for a fixed variable will now return either
+-1 (non-basic at lower bound) or -2 (non-basic at upper bound),
+depending on the sign of the reduced cost (it previously
+always returned -1).
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN  CLASS="textbf">Changes to callback</SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">User callbacks could previously be called from a variety of Gurobi
+methods.  They will now only be called from methods that solve an
+optimization model.  The list of such methods of course includes
+<SPAN  CLASS="texttt">optimize</SPAN>, but also <SPAN  CLASS="texttt">feasRelax</SPAN>, <SPAN  CLASS="texttt">computeIIS</SPAN>, and a
+few others.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN CLASS="LARGE"><SPAN  CLASS="textbf"><SPAN CLASS="XXLARGE"><SPAN  CLASS="textbf">Removed in Gurobi&nbsp;10.0</SPAN></SPAN></SPAN></SPAN>
+<A ID="v100:subsection:removed"></A></SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN  CLASS="textbf">End of support for Python 2.7</SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">This version has dropped support for Python&nbsp;2.7.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN  CLASS="textbf">Only one set of C++ libraries for Windows</SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">We now only ship a single set of C++ libraries
+(<SPAN  CLASS="texttt">gurobi_c++md2017.lib</SPAN>, <SPAN  CLASS="texttt">gurobi_c++mdd2017.lib</SPAN>, etc.),
+built with Visual Studio 2017. These are binary compatible with Visual
+Studio versions 2017-2022.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN  CLASS="textbf">Removed attributes</SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">Attributes JobID and ComputeServer are no longer available.  The same
+information can be obtained via the read-only parameters
+<A HREF="jobid.html#parameter:JobID">JobID</A> and
+<A HREF="computeserver.html#parameter:ComputeServer">ComputeServer</A>, which have been
+available since Gurobi&nbsp;8.0.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN  CLASS="textbf">Removed GRBgetlogfile method</SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">The C API method <SPAN  CLASS="texttt">GRBgetlogfile</SPAN> has been removed.  Use the
+<A HREF="logfile.html#parameter:LogFile">LogFile</A> parameter to obtain the name
+of the log file.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN  CLASS="textbf">Removed legacy methods for creating Compute Server and
+  Instant Cloud environments</SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">The following legacy methods and constructors for creating Compute
+Server and Instant Cloud environments have been removed:
+</SPAN>
+<UL>
+<LI>C: <SPAN  CLASS="texttt">GRBloadclientenv</SPAN>, <SPAN  CLASS="texttt">GRBloadcloudenv</SPAN>
+</LI>
+<LI>C++:
+<PRE>
+     GRBEnv(const std::string&amp; logfilename, const std::string&amp; computeserver,
+            const std::string&amp; router, const std::string&amp; password,
+            const std::string&amp; group, int CStlsInsecure, int priority,
+            double timeout)
+
+     GRBEnv(const std::string&amp; logfilename, const std::string&amp; accessID,
+            const std::string&amp; secretKey, const std::string&amp; pool,
+            int priority)
+</PRE>
+</LI>
+<LI>Java:
+<PRE>
+     GRBEnv(String logFileName, String computeServer, String router,
+            String password, String group, int CStlsInsecure, int priority,
+            double timeout)
+     GRBEnv(String logfilename, String accessID, String secretKey, String pool,
+            int priority)
+</PRE>
+</LI>
+<LI>.NET:
+<PRE>
+     GRBEnv(string logfilename, string computeserver, string router,
+            string password, string group, int CStlsInsecure, int priority,
+            double timeout)
+     GRBEnv(string logfilename, string accessID, string secretKey, string pool,
+            int priority)
+</PRE>
+</LI>
+<LI>gurobipy: <SPAN  CLASS="texttt">Env.ClientEnv</SPAN>, <SPAN  CLASS="texttt">Env.CloudEnv</SPAN>,
+</LI>
+<LI>Matlab and R: The <SPAN  CLASS="texttt">env</SPAN> parameter to the Gurobi functions. See
+<A HREF="#v100:subsection:MATLABR">Matlab and R changes</A> below for conversion details.
+</LI>
+</UL><SPAN CLASS="FOOTNOTESIZE">
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">You should use the
+<A HREF="configuration_parameters.html#subsection:ConfigurationParameters">configuration parameters</A>
+instead, which were introduced in Gurobi&nbsp;8.0 to simplify this process.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN CLASS="LARGE"><SPAN  CLASS="textbf"><SPAN CLASS="XXLARGE"><SPAN  CLASS="textbf">New features affecting all APIs</SPAN></SPAN></SPAN></SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN  CLASS="textbf">Licensing</SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">The Gurobi Web License Service (WLS) previously only worked within
+containerized environments.  With Gurobi&nbsp;10.0, WLS licenses are also
+available that work outside of containers (on Windows, macOS and Linux),
+as well as in both types of environments.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN  CLASS="textbf">New parameters</SPAN>
+The following parameters are new in Gurobi&nbsp;10.0:
+</SPAN>
+<UL>
+<LI><A HREF="networkalg.html#parameter:NetworkAlg">NetworkAlg</A> to control the network
+  simplex algorithm.
+
+<P>
+</LI>
+<LI><A HREF="obbt.html#parameter:OBBT">OBBT</A> to control the
+  aggressiveness of Optimality-Based Bound Tightening.
+
+<P>
+</LI>
+<LI><A HREF="softmemlimit.html#parameter:SoftMemLimit">SoftMemLimit</A> to limit the
+  total amount of memory available to an optimization (leading to a
+  graceful exit when the limit is hit).
+
+<P>
+</LI>
+<LI><A HREF="solutiontarget.html#parameter:SolutionTarget">SolutionTarget</A> to specify the
+  solution target for LP.
+
+<P>
+</LI>
+<LI><A HREF="wlstokenrefresh.html#parameter:WLSTokenRefresh">WLSTokenRefresh</A> to
+  specify the refresh interval of a Web License Service token.
+
+<P>
+</LI>
+</UL><SPAN CLASS="FOOTNOTESIZE">
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN  CLASS="textbf">Logistic General Constraint</SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">Added support for piecewise-linear approximation of the logistic
+function as a general constraint. With this feature, you can model the
+logistic function <!-- MATH
+ $y = \frac{1}{1 + e^{-x}}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 3.41ex; vertical-align: -1.11ex; " SRC="img3.svg"
+ ALT="$y = \frac{1}{1 + e^{-x}}$"></SPAN> on problem variables <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.46ex; vertical-align: -0.12ex; " SRC="img4.svg"
+ ALT="$x$"></SPAN>
+and <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.91ex; vertical-align: -0.57ex; " SRC="img5.svg"
+ ALT="$y$"></SPAN>. As with all general constraints, you can control how
+fine-grained the piecewise-linear approximation should be. See the
+<A HREF="constraints.html#subsubsection:GenConstrFunction">General Constraint</A>
+section for more information.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN  CLASS="textbf">Specific performance improvements</SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">In addition to general performance improvements across all supported
+problem classes, we have added the following enhancements for specific
+problem types:
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"></SPAN>
+<UL>
+<LI>Added a network simplex algorithm to speed up the solution of LPs
+  with pure network structure.
+</LI>
+<LI>Added a new QUBO heuristic to improve our
+  ability to quickly find good feasible solutions for Quadratic
+  Unconstrained Boolean Optimization problems.
+</LI>
+<LI>Reorganized the concurrent LP solver to improve performance
+  and reduce memory consumption.
+</LI>
+<LI>Significantly improved performance on MIP models that contain
+  constraints that model neural networks with ReLU activation functions.
+</LI>
+</UL><SPAN CLASS="FOOTNOTESIZE">
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN CLASS="LARGE"><SPAN  CLASS="textbf"><SPAN CLASS="XXLARGE"><SPAN  CLASS="textbf">Behavior changes affecting the Python matrix-friendly API</SPAN></SPAN></SPAN></SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">With version 10.0 we have extended the capabilities of the existing
+<SPAN  CLASS="texttt">MVar</SPAN>, <SPAN  CLASS="texttt">MLinExpr</SPAN>, and <SPAN  CLASS="texttt">MQuadExpr</SPAN> modeling classes
+and improved their behaviour in many respects.  Some of the changes
+may cause incompatibilities with existing code that uses these
+objects, so we suggest that you read the following summary carefully
+and adapt your code accordingly.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN  CLASS="textbf">More arithmetic operations supported</SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">You can now perform point-wise multiplication involving combinations
+of matrix-friendly modeling objects and NumPy ndarrays.  For example:
+</SPAN><PRE>
+a = numpy.random.rand(3)
+x = model.addMVar(3)
+y = model.addMVar(3)
+
+# Add three linear constraints a[i]*x[i] = y[i]
+model.addConstr(a * x == y)
+# Add three quadratic constraints x[i]*y[i] = a[i]
+model.addConstr(x * y == a)
+</PRE><SPAN CLASS="FOOTNOTESIZE">
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN  CLASS="textbf">Arbitrary dimensions now supported</SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">The classes <SPAN  CLASS="texttt">MVar</SPAN>, <SPAN  CLASS="texttt">MLinExpr</SPAN>, and <SPAN  CLASS="texttt">MQuadExpr</SPAN> now
+support arbitrary numbers of dimensions.  For example, you can now
+create 2-D matrix linear expressions:
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"></SPAN><PRE>
+A = numpy.random.rand(4,3)
+B = numpy.random.rand(4,2)
+X = model.addMVar((3,2))
+
+# Add 8 linear constraints A[i, :] @ X[:, j] == B[i, j]
+model.addConstr(A @ X == B)
+</PRE><SPAN CLASS="FOOTNOTESIZE">
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN  CLASS="textbf">Dimensionality and consistency</SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">The classes <SPAN  CLASS="texttt">MVar</SPAN>, <SPAN  CLASS="texttt">MLinExpr</SPAN>, and <SPAN  CLASS="texttt">MQuadExpr</SPAN> now
+behave similarly to NumPy's ndarray when it comes to dimension
+handling.  For example:
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"></SPAN><PRE>
+X = model.addMVar((3,3))
+
+sub1 = X[:, 1]    # Gives 1-D (3,) Mvar
+sub2 = X[:, 1:2]  # Gives 2-D (3, 1) Mvar
+sub3 = X[0, 1]    # Gives 0-D () Mvar
+</PRE><SPAN CLASS="FOOTNOTESIZE">
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">In addition, a 0-D MVar object now acts like a &ldquo;scalar&rdquo; <SPAN  CLASS="texttt">Var</SPAN>
+object, but it keeps its dimensionality properties.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">Furthermore, in previous versions all <SPAN  CLASS="texttt">MQuadExpr</SPAN> objects
+containing just one element had shape <SPAN  CLASS="texttt">(1,)</SPAN>.  Such objects now
+follow the shape rules of Python's matrix multiplication operator:
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"></SPAN><PRE>
+Q = np.random.rand((3,3)); Q = Q + Q.T
+x = model.addMVar((3,1))
+
+expr1 = x.T @ Q @ x            # expr1.shape is (1,1)
+expr2 = x[:, 0] @ Q @ x[:, 0]  # expr2.shape is ()
+</PRE><SPAN CLASS="FOOTNOTESIZE">
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN  CLASS="textbf">Arithmetic operations embrace NumPy's broadcasting
+rules</SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">The behaviour of arithmetic operations among the matrix friendly
+modeling objects of different shapes now follows NumPy's broadcasting
+rules.  For example:
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"></SPAN><PRE>
+a = numpy.random.rand(3)
+x = model.addMVar((3,3))
+
+# a is broadcast along the first dimension of x; result is (3,3)
+expr = a * x
+</PRE><SPAN CLASS="FOOTNOTESIZE">
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">Broadcasting is also applied implicitly when adding broadcastable
+expressions as constraints:
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"></SPAN><PRE>
+a = numpy.random.rand(3)
+x = model.addMVar((3,3))
+
+# a is broadcast along the first dimension of x.
+# The effect is the same as doing addConstr(x - a == 0)
+model.addConstr(x == a)
+</PRE><SPAN CLASS="FOOTNOTESIZE">
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">For detailed information on broadcasting we refer you to NumPy's
+documentation.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN  CLASS="textbf">Other changes</SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"></SPAN>
+<UL>
+<LI>Creating MVar objects through <SPAN  CLASS="texttt">Model.addMVar</SPAN> is now
+  roughly 40% faster.
+
+<P>
+</LI>
+<LI>The optional attribute initializers for <SPAN  CLASS="texttt">Model.addMVar</SPAN> now
+  need to be passed in a broadcastable shape.  In older versions, any
+  list with an appropriate number of elements could be used, which is
+  ambiguous in the case of a multi-dimensional MVar.  Please refer to
+  the documentation of
+  <A HREF="py_model_addmvar.html#pythonmethod:Model.addMVar">Model.addMVar</A> for
+  details.
+
+<P>
+</LI>
+<LI>Using the MVar constructor to convert a list of <SPAN  CLASS="texttt">Var</SPAN>
+  objects to an <SPAN  CLASS="texttt">MVar</SPAN> object is deprecated.  A dedicated, faster
+  method (<A HREF="py_mvar_fromlist.html#pythonmethod:MVar.fromlist">MVar.fromlist</A>) has
+  been introduced for this purpose.
+
+<P>
+</LI>
+<LI>The method <A HREF="py_mvar_sum.html#pythonmethod:MVar.sum">MVar.sum</A> now
+  takes an optional <SPAN  CLASS="texttt">axis</SPAN> argument to select an axis along which
+  the summation should happen.  Also, the shape of the resulting
+  <SPAN  CLASS="texttt">MLinExpr</SPAN> after summing <SPAN  CLASS="textit">all</SPAN> elements is now <SPAN  CLASS="texttt">()</SPAN>,
+  (0-D), as opposed to <SPAN  CLASS="texttt">(1,)</SPAN> in older versions.
+
+<P>
+</LI>
+<LI>The method
+  <A HREF="py_mlex_copy.html#pythonmethod:MLinExpr.copy">MLinExpr.copy</A> now returns
+  a deep copy, as opposed to a shallow copy in earlier versions.
+
+<P>
+</LI>
+<LI>Invalid or incompatible matrix multiplication invocations now
+  raise a <SPAN  CLASS="texttt">ValueError</SPAN> instead of a <SPAN  CLASS="texttt">GurobiError</SPAN>.
+
+<P>
+</LI>
+</UL><SPAN CLASS="FOOTNOTESIZE">
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">To check whether your program calls any deprecated methods you can set
+an appropriate filter in Python's <SPAN  CLASS="texttt">warnings</SPAN> module.  For
+example, you can turn all warnings to runtime errors by starting the
+Python interpreter with the option <SPAN  CLASS="texttt">-W error</SPAN>.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN CLASS="LARGE"><SPAN  CLASS="textbf"><SPAN CLASS="XXLARGE"><SPAN  CLASS="textbf">Changes in the Matlab and R APIs</SPAN></SPAN></SPAN></SPAN>
+<A ID="v100:subsection:MATLABR"></A></SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">The <SPAN  CLASS="texttt">env</SPAN> argument to Matlab and R API functions has been removed.
+This argument was previously used
+to provide the data required to connect to a Compute Server or
+to Gurobi Instant Cloud. This information should now be passed through
+parameters in the <SPAN  CLASS="texttt">params</SPAN> struct.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">For example, the new signature of the "gurobi" function is
+<SPAN  CLASS="texttt">gurobi(model, params)</SPAN>. To update a program that
+uses the <SPAN  CLASS="texttt">env</SPAN>
+argument, just set the appropriate parameters in <SPAN  CLASS="texttt">params</SPAN>
+to match the fields you previously used in <SPAN  CLASS="texttt">env</SPAN>.
+The following table shows the correspondence between
+the field names of the deprecated <SPAN  CLASS="texttt">env</SPAN> argument
+and <A HREF="parameters.html#sec:Parameters">Gurobi parameters</A>:
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"></SPAN><TABLE class="PAD  BORDER" style="">
+<TR><TH CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">
+<SPAN  CLASS="textbf">env</SPAN>       </SPAN></TH>
+<TH CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">params</SPAN> </SPAN></TH>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">  
+<SPAN  CLASS="texttt">router</SPAN>      </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> <A HREF="csrouter.html#parameter:CSRouter">CSRouter</A> </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+<SPAN  CLASS="texttt">password</SPAN>    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> <A HREF="serverpassword.html#parameter:ServerPassword">ServerPassword</A> </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+<SPAN  CLASS="texttt">group</SPAN>       </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> <A HREF="csgroup.html#parameter:CSGroup">CSGroup</A> </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+<SPAN  CLASS="texttt">priority</SPAN>    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> <A HREF="cspriority.html#parameter:CSPriority">CSPriority</A> </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+<SPAN  CLASS="texttt">timeout</SPAN>     </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> <A HREF="csqueuetimeout.html#parameter:CSQueueTimeout">CSQueueTimeout</A> </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+<SPAN  CLASS="texttt">accessid</SPAN>    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> <A HREF="cloudaccessid.html#parameter:CloudAccessID">CloudAccessID</A> </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+<SPAN  CLASS="texttt">secretkey</SPAN>   </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> <A HREF="cloudsecretkey.html#parameter:CloudSecretKey">CloudSecretKey</A> </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+<SPAN  CLASS="texttt">pool</SPAN>        </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> <A HREF="cloudpool.html#parameter:CloudPool">CloudPool</A> </SPAN></TD>
+</TR>
+</TABLE><SPAN CLASS="FOOTNOTESIZE">
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">A client MATLAB program that solves a model on a Compute Server should
+now look something like the following:
+</SPAN><PRE>
+m.A = sparse(0,0);  % Just a minimal model struct for demonstration
+params.Method = 2;  % Use barrier method (for demonstration)
+params.ComputeServer = 'myserver.mycompany.com';  % Set server name
+params.ServerPassword = 'pass';  % Set password
+gurobi(m, params);  % Solve model on server with barrier
+</PRE><SPAN CLASS="FOOTNOTESIZE">
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">Similarly for R, client code to solve a model on a Compute Server should look like:
+</SPAN><PRE>
+m &lt;- list(A = matrix(0))  # Just a minimal model struct for demonstration
+params &lt;- list()
+params$Method &lt;- 2  # Use barrier method (for demonstration)
+params$ComputeServer &lt;- "myserver.mycompany.com";  # Set server name
+params$ServerPassword &lt;- "pass";  # Set password
+gurobi(m, params);  # Solve model on server with barrier
+</PRE><SPAN CLASS="FOOTNOTESIZE">
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">In summary, this is now the full list of signatures for Matlab and R API functions:
+</SPAN><PRE>
+gurobi(model, params)
+gurobi_feasrelax(model, relaxobjtype, minrelax, penalties, params)
+gurobi_iis(model, params)
+gurobi_read(filename, params)
+gurobi_relax(model, params)
+gurobi_write(model, filename, params)
+</PRE><SPAN CLASS="FOOTNOTESIZE">
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN CLASS="LARGE"><SPAN  CLASS="textbf"><SPAN CLASS="XXLARGE"><SPAN  CLASS="textbf">Compute Server, Cluster Manager, and Instant Cloud</SPAN></SPAN></SPAN></SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">Detailed release notes for Compute Server, Cluster Manager, and
+Instant Cloud can be found
+<A ID="tex2html7"
+  HREF="https://www.gurobi.com/release-notes/server/v10.0/">here</A>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> 
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"></SPAN>
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A
+ HREF="c_api_overview.html">
+<IMG WIDTH="37" HEIGHT="24" ALT="next" SRC="next.png"></A> 
+<A
+ HREF="refman.html">
+<IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up.png"></A> 
+<A
+ HREF="refman.html">
+<IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A
+ HREF="c_api_overview.html">C API Overview</A>
+<B> Up:</B> <A
+ HREF="refman.html">Gurobi Optimizer Reference Manual</A>
+<B> Previous:</B> <A
+ HREF="refman.html">Gurobi Optimizer Reference Manual</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

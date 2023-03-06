@@ -1,0 +1,863 @@
+<!DOCTYPE HTML>
+
+<!--Converted with LaTeX2HTML 2021.2 (Released July 1, 2021) -->
+<HTML lang="en">
+<HEAD>
+<TITLE>GRBModel::set()</TITLE>
+<META NAME="description" CONTENT="GRBModel::set()">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="viewport" CONTENT="width=device-width, initial-scale=1.0">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2021.2">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="cpp_model_setobjective.html">
+<LINK REL="previous" HREF="cpp_model_setcb_.html">
+<LINK REL="next" HREF="cpp_model_setobjective.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A
+ HREF="cpp_model_setobjective.html">
+<IMG WIDTH="37" HEIGHT="24" ALT="next" SRC="next.png"></A> 
+<A
+ HREF="cpp_model.html">
+<IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up.png"></A> 
+<A
+ HREF="cpp_model_setcb_.html">
+<IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A
+ HREF="cpp_model_setobjective.html">GRBModel::setObjective()</A>
+<B> Up:</B> <A
+ HREF="cpp_model.html">GRBModel</A>
+<B> Previous:</B> <A
+ HREF="cpp_model_setcb_.html">GRBModel::setCallback()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A ID="SECTION000524600000000000000"></A>
+<A ID="cppmethod:GRBModel::set"></A>
+<BR>
+GRBModel::set()
+</H3><SPAN CLASS="FOOTNOTESIZE">
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">Set the value(s) of a parameter or attribute.  Use this method for
+parameters, for scalar model attributes, and for arrays of constraint
+or variable attributes.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">
+</SPAN><TABLE class="PAD " style="">
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">
+void </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> </SPAN><SPAN CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></SPAN><SPAN CLASS="FOOTNOTESIZE"> ( </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> <A HREF="cpp_doubleparam.html#cppenum:GRB_DoubleParam">GRB_DoubleParam</A> </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> param, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> double </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> newvalue ) </SPAN></TD>
+</TR>
+</TABLE><SPAN CLASS="FOOTNOTESIZE">
+
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">Set the value of a double-valued parameter.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">The difference between setting a parameter on a model and setting it
+on an environment (i.e., through
+<A HREF="cpp_env_set.html#cppmethod:GRBEnv::set">GRBEnv::set</A>)
+is that the former modifies the parameter for a single model, while
+the latter modifies the parameter for every model that is subsequently
+built using that environment (and leaves the parameter unchanged for
+models that were previously built using that environment).
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">param</SPAN>: The parameter being modified.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">newvalue</SPAN>: The desired new value for the parameter.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"></SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">
+</SPAN><TABLE class="PAD " style="">
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">
+void </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> </SPAN><SPAN CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></SPAN><SPAN CLASS="FOOTNOTESIZE"> ( </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> <A HREF="cpp_intparam.html#cppenum:GRB_IntParam">GRB_IntParam</A> </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> param, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> int </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> newvalue ) </SPAN></TD>
+</TR>
+</TABLE><SPAN CLASS="FOOTNOTESIZE">
+
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">Set the value of an int-valued parameter.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">The difference between setting a parameter on a model and setting it
+on an environment (i.e., through
+<A HREF="cpp_env_set.html#cppmethod:GRBEnv::set">GRBEnv::set</A>)
+is that the former modifies the parameter for a single model, while
+the latter modifies the parameter for every model that is subsequently
+built using that environment (and leaves the parameter unchanged for
+models that were previously built using that environment).
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">param</SPAN>: The parameter being modified.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">newvalue</SPAN>: The desired new value for the parameter.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"></SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">
+</SPAN><TABLE class="PAD " style="">
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">
+void </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> </SPAN><SPAN CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></SPAN><SPAN CLASS="FOOTNOTESIZE"> ( </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> <A HREF="cpp_stringparam.html#cppenum:GRB_StringParam">GRB_StringParam</A> </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> param, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> string </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> newvalue ) </SPAN></TD>
+</TR>
+</TABLE><SPAN CLASS="FOOTNOTESIZE">
+
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">Set the value of a string-valued parameter.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">The difference between setting a parameter on a model and setting it
+on an environment (i.e., through
+<A HREF="cpp_env_set.html#cppmethod:GRBEnv::set">GRBEnv::set</A>)
+is that the former modifies the parameter for a single model, while
+the latter modifies the parameter for every model that is subsequently
+built using that environment (and leaves the parameter unchanged for
+models that were previously built using that environment).
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">param</SPAN>: The parameter being modified.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">newvalue</SPAN>: The desired new value for the parameter.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"></SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">
+</SPAN><TABLE class="PAD " style="">
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">
+void </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> </SPAN><SPAN CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></SPAN><SPAN CLASS="FOOTNOTESIZE"> ( </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> <A HREF="cpp_charattr.html#cppenum:GRB_CharAttr">GRB_CharAttr</A> </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> attr, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> const GRBVar* </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> vars, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> char* </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> newvalues, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> int </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> count ) </SPAN></TD>
+</TR>
+</TABLE><SPAN CLASS="FOOTNOTESIZE">
+
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">Set a char-valued variable attribute for an array of variables.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">vars</SPAN>: An array of variables whose attribute values are being modified.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input variable.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">count</SPAN>: The number of variable attributes to set.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"></SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">
+</SPAN><TABLE class="PAD " style="">
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">
+void </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> </SPAN><SPAN CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></SPAN><SPAN CLASS="FOOTNOTESIZE"> ( </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> <A HREF="cpp_charattr.html#cppenum:GRB_CharAttr">GRB_CharAttr</A> </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> attr, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> const GRBConstr* </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> constrs, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> char* </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> newvalues, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> int </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> count ) </SPAN></TD>
+</TR>
+</TABLE><SPAN CLASS="FOOTNOTESIZE">
+
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">Set a char-valued constraint attribute for an array of constraints.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">constrs</SPAN>: An array of constraints whose attribute values are being modified.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input constraint.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">count</SPAN>: The number of constraint attributes to set.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"></SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">
+</SPAN><TABLE class="PAD " style="">
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">
+void </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> </SPAN><SPAN CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></SPAN><SPAN CLASS="FOOTNOTESIZE"> ( </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> <A HREF="cpp_charattr.html#cppenum:GRB_CharAttr">GRB_CharAttr</A> </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> attr, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> const GRBQConstr* </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> qconstrs, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> char* </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> newvalues, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> int </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> count ) </SPAN></TD>
+</TR>
+</TABLE><SPAN CLASS="FOOTNOTESIZE">
+
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">Set a char-valued quadratic constraint attribute for an array of
+quadratic constraints.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">constrs</SPAN>: An array of quadratic constraints whose attribute values are being modified.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input quadratic constraint.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">count</SPAN>: The number of quadratic constraint attributes to set.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"></SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">
+</SPAN><TABLE class="PAD " style="">
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">
+void </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> </SPAN><SPAN CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></SPAN><SPAN CLASS="FOOTNOTESIZE"> ( </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> <A HREF="cpp_doubleattr.html#cppenum:GRB_DoubleAttr">GRB_DoubleAttr</A> </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> attr, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> double </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> newvalue ) </SPAN></TD>
+</TR>
+</TABLE><SPAN CLASS="FOOTNOTESIZE">
+
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">Set the value of a double-valued model attribute.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">newvalue</SPAN>: The desired new value for the attribute.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"></SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">
+</SPAN><TABLE class="PAD " style="">
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">
+void </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> </SPAN><SPAN CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></SPAN><SPAN CLASS="FOOTNOTESIZE"> ( </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> <A HREF="cpp_doubleattr.html#cppenum:GRB_DoubleAttr">GRB_DoubleAttr</A> </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> attr, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> const GRBVar* </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> vars, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> double* </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> newvalues, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> int </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> count ) </SPAN></TD>
+</TR>
+</TABLE><SPAN CLASS="FOOTNOTESIZE">
+
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">Set a double-valued variable attribute for an array of variables.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">vars</SPAN>: An array of variables whose attribute values are being modified.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input variable.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">count</SPAN>: The number of variable attributes to set.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"></SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">
+</SPAN><TABLE class="PAD " style="">
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">
+void </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> </SPAN><SPAN CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></SPAN><SPAN CLASS="FOOTNOTESIZE"> ( </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> <A HREF="cpp_doubleattr.html#cppenum:GRB_DoubleAttr">GRB_DoubleAttr</A> </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> attr, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> const GRBConstr* </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> constrs, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> double* </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> newvalues, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> int </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> count ) </SPAN></TD>
+</TR>
+</TABLE><SPAN CLASS="FOOTNOTESIZE">
+
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">Set a double-valued constraint attribute for an array of constraints.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">constrs</SPAN>: An array of constraints whose attribute values are being modified.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input constraint.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">count</SPAN>: The number of constraint attributes to set.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"></SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">
+</SPAN><TABLE class="PAD " style="">
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">
+void </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> </SPAN><SPAN CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></SPAN><SPAN CLASS="FOOTNOTESIZE"> ( </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> <A HREF="cpp_doubleattr.html#cppenum:GRB_DoubleAttr">GRB_DoubleAttr</A> </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> attr, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> const GRBQConstr* </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> qconstrs, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> double* </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> newvalues, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> int </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> count ) </SPAN></TD>
+</TR>
+</TABLE><SPAN CLASS="FOOTNOTESIZE">
+
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">Set a double-valued quadratic constraint attribute for an array of
+quadratic constraints.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">constrs</SPAN>: An array of quadratic constraints whose attribute values are being modified.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input quadratic constraint.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">count</SPAN>: The number of quadratic constraint attributes to set.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"></SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">
+</SPAN><TABLE class="PAD " style="">
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">
+void </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> </SPAN><SPAN CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></SPAN><SPAN CLASS="FOOTNOTESIZE"> ( </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> <A HREF="cpp_intattr.html#cppenum:GRB_IntAttr">GRB_IntAttr</A> </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> attr, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> int </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> newvalue ) </SPAN></TD>
+</TR>
+</TABLE><SPAN CLASS="FOOTNOTESIZE">
+
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">Set the value of an int-valued model attribute.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">newvalue</SPAN>: The desired new value for the attribute.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"></SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">
+</SPAN><TABLE class="PAD " style="">
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">
+void </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> </SPAN><SPAN CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></SPAN><SPAN CLASS="FOOTNOTESIZE"> ( </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> <A HREF="cpp_intattr.html#cppenum:GRB_IntAttr">GRB_IntAttr</A> </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> attr, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> const GRBVar* </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> vars, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> int* </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> newvalues, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> int </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> count ) </SPAN></TD>
+</TR>
+</TABLE><SPAN CLASS="FOOTNOTESIZE">
+
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">Set an int-valued variable attribute for an array of variables.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">vars</SPAN>: An array of variables whose attribute values are being modified.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input variable.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">count</SPAN>: The number of variable attributes to set.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"></SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">
+</SPAN><TABLE class="PAD " style="">
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">
+void </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> </SPAN><SPAN CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></SPAN><SPAN CLASS="FOOTNOTESIZE"> ( </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> <A HREF="cpp_intattr.html#cppenum:GRB_IntAttr">GRB_IntAttr</A> </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> attr, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> const GRBConstr* </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> constrs, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> int* </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> newvalues, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> int </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> count ) </SPAN></TD>
+</TR>
+</TABLE><SPAN CLASS="FOOTNOTESIZE">
+
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">Set an int-valued constraint attribute for an array of constraints.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">constrs</SPAN>: An array of constraints whose attribute values are being modified.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input constraint.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">count</SPAN>: The number of constraint attributes to set.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"></SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">
+</SPAN><TABLE class="PAD " style="">
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">
+void </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> </SPAN><SPAN CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></SPAN><SPAN CLASS="FOOTNOTESIZE"> ( </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> <A HREF="cpp_stringattr.html#cppenum:GRB_StringAttr">GRB_StringAttr</A> </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> attr, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> string </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> newvalue ) </SPAN></TD>
+</TR>
+</TABLE><SPAN CLASS="FOOTNOTESIZE">
+
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">Set the value of a string-valued model attribute.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">newvalue</SPAN>: The desired new value for the attribute.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"></SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">
+</SPAN><TABLE class="PAD " style="">
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">
+void </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> </SPAN><SPAN CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></SPAN><SPAN CLASS="FOOTNOTESIZE"> ( </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> <A HREF="cpp_stringattr.html#cppenum:GRB_StringAttr">GRB_StringAttr</A> </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> attr, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> const GRBVar* </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> vars, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> string* </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> newvalues, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> int </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> count ) </SPAN></TD>
+</TR>
+</TABLE><SPAN CLASS="FOOTNOTESIZE">
+
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">Set a string-valued variable attribute for an array of variables.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">vars</SPAN>: An array of variables whose attribute values are being modified.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input variable.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">count</SPAN>: The number of variable attributes to set.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"></SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">
+</SPAN><TABLE class="PAD " style="">
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">
+void </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> </SPAN><SPAN CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></SPAN><SPAN CLASS="FOOTNOTESIZE"> ( </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> <A HREF="cpp_stringattr.html#cppenum:GRB_StringAttr">GRB_StringAttr</A> </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> attr, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> const GRBConstr* </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> constrs, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> string* </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> newvalues, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> int </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> count ) </SPAN></TD>
+</TR>
+</TABLE><SPAN CLASS="FOOTNOTESIZE">
+
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">Set a string-valued constraint attribute for an array of constraints.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">constrs</SPAN>: An array of constraints whose attribute values are being modified.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input constraint.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">count</SPAN>: The number of constraint attributes to set.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"></SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">
+</SPAN><TABLE class="PAD " style="">
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">
+void </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> </SPAN><SPAN CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">set</SPAN></FONT></SPAN><SPAN CLASS="FOOTNOTESIZE"> ( </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> <A HREF="cpp_stringattr.html#cppenum:GRB_StringAttr">GRB_StringAttr</A> </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> attr, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> const GRBQConstr* </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> qconstrs, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> string* </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> newvalues, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> int </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> count ) </SPAN></TD>
+</TR>
+</TABLE><SPAN CLASS="FOOTNOTESIZE">
+
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">Set a string-valued quadratic constraint attribute for an array of
+quadratic constraints.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">attr</SPAN>: The attribute being modified.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">constrs</SPAN>: An array of quadratic constraints whose attribute values are being modified.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">newvalues</SPAN>: The desired new values for the attribute for each
+input quadratic constraint.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">count</SPAN>: The number of quadratic constraint attributes to set.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"></SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"></SPAN>
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A
+ HREF="cpp_model_setobjective.html">
+<IMG WIDTH="37" HEIGHT="24" ALT="next" SRC="next.png"></A> 
+<A
+ HREF="cpp_model.html">
+<IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up.png"></A> 
+<A
+ HREF="cpp_model_setcb_.html">
+<IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A
+ HREF="cpp_model_setobjective.html">GRBModel::setObjective()</A>
+<B> Up:</B> <A
+ HREF="cpp_model.html">GRBModel</A>
+<B> Previous:</B> <A
+ HREF="cpp_model_setcb_.html">GRBModel::setCallback()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

@@ -1,0 +1,492 @@
+<!DOCTYPE HTML>
+
+<!--Converted with LaTeX2HTML 2021.2 (Released July 1, 2021) -->
+<HTML lang="en">
+<HEAD>
+<TITLE>GRBModel.addQConstr()</TITLE>
+<META NAME="description" CONTENT="GRBModel.addQConstr()">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="viewport" CONTENT="width=device-width, initial-scale=1.0">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2021.2">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="java_model_addrange.html">
+<LINK REL="previous" HREF="java_model_agc_xxx.html">
+<LINK REL="next" HREF="java_model_addrange.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A
+ HREF="java_model_addrange.html">
+<IMG WIDTH="37" HEIGHT="24" ALT="next" SRC="next.png"></A> 
+<A
+ HREF="java_model.html">
+<IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up.png"></A> 
+<A
+ HREF="java_model_agc_tan.html">
+<IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A
+ HREF="java_model_addrange.html">GRBModel.addRange()</A>
+<B> Up:</B> <A
+ HREF="java_model.html">GRBModel</A>
+<B> Previous:</B> <A
+ HREF="java_model_agc_tan.html">GRBModel.addGenConstrTan()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A ID="SECTION00072500000000000000"></A>
+<A ID="javamethod:GRBModel.addQConstr"></A>
+<BR>
+GRBModel.addQConstr()
+</H3><SPAN CLASS="FOOTNOTESIZE">
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">Add a quadratic constraint to a model.  Multiple signatures
+are available.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">Important note: Gurobi can handle both convex and non-convex quadratic
+constraints.  The differences between them can be both important and
+subtle.  Refer to
+<A HREF="constraints.html#subsubsection:QuadraticConstraints">this discussion</A>
+for additional information.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">
+</SPAN><TABLE class="PAD " style="">
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">
+GRBQConstr </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> </SPAN><SPAN CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">addQConstr</SPAN></FONT></SPAN><SPAN CLASS="FOOTNOTESIZE"> ( </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> GRBQuadExpr </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> lhsExpr, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> char </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> sense, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> GRBQuadExpr </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> rhsExpr, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> String </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> name ) </SPAN></TD>
+</TR>
+</TABLE><SPAN CLASS="FOOTNOTESIZE">
+
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">Add a quadratic constraint to a model.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">lhsExpr</SPAN>: Left-hand side quadratic expression for new quadratic constraint.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">sense</SPAN>: Sense for new quadratic constraint
+(<SPAN  CLASS="texttt">GRB.LESS_EQUAL</SPAN>, <SPAN  CLASS="texttt">GRB.EQUAL</SPAN>, or <SPAN  CLASS="texttt">GRB.GREATER_EQUAL</SPAN>).
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">rhsExpr</SPAN>: Right-hand side quadratic expression for new quadratic constraint.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">name</SPAN>: Name for new constraint.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">
+<SPAN CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">New quadratic constraint object.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"></SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">
+</SPAN><TABLE class="PAD " style="">
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">
+GRBQConstr </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> </SPAN><SPAN CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">addQConstr</SPAN></FONT></SPAN><SPAN CLASS="FOOTNOTESIZE"> ( </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> GRBQuadExpr </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> lhsExpr, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> char </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> sense, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> GRBVar </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> rhsVar, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> String </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> name ) </SPAN></TD>
+</TR>
+</TABLE><SPAN CLASS="FOOTNOTESIZE">
+
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">Add a quadratic constraint to a model.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">lhsExpr</SPAN>: Left-hand side quadratic expression for new quadratic constraint.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">sense</SPAN>: Sense for new quadratic constraint
+(<SPAN  CLASS="texttt">GRB.LESS_EQUAL</SPAN>, <SPAN  CLASS="texttt">GRB.EQUAL</SPAN>, or <SPAN  CLASS="texttt">GRB.GREATER_EQUAL</SPAN>).
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">rhsVar</SPAN>: Right-hand side variable for new quadratic constraint.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">name</SPAN>: Name for new constraint.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">
+<SPAN CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">New quadratic constraint object.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"></SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">
+</SPAN><TABLE class="PAD " style="">
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">
+GRBQConstr </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> </SPAN><SPAN CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">addQConstr</SPAN></FONT></SPAN><SPAN CLASS="FOOTNOTESIZE"> ( </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> GRBQuadExpr </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> lhsExpr, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> char </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> sense, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> GRBLinExpr </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> rhsExpr, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> String </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> name ) </SPAN></TD>
+</TR>
+</TABLE><SPAN CLASS="FOOTNOTESIZE">
+
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">Add a quadratic constraint to a model.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">lhsExpr</SPAN>: Left-hand side quadratic expression for new quadratic constraint.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">sense</SPAN>: Sense for new quadratic constraint
+(<SPAN  CLASS="texttt">GRB.LESS_EQUAL</SPAN>, <SPAN  CLASS="texttt">GRB.EQUAL</SPAN>, or <SPAN  CLASS="texttt">GRB.GREATER_EQUAL</SPAN>).
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">rhsExpr</SPAN>: Right-hand side linear expression for new quadratic constraint.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">name</SPAN>: Name for new constraint.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">
+<SPAN CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">New quadratic constraint object.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"></SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">
+</SPAN><TABLE class="PAD " style="">
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">
+GRBQConstr </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> </SPAN><SPAN CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">addQConstr</SPAN></FONT></SPAN><SPAN CLASS="FOOTNOTESIZE"> ( </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> GRBQuadExpr </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> lhsExpr, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> char </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> sense, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> double </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> rhs, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> String </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> name ) </SPAN></TD>
+</TR>
+</TABLE><SPAN CLASS="FOOTNOTESIZE">
+
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">Add a quadratic constraint to a model.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">lhsExpr</SPAN>: Left-hand side quadratic expression for new quadratic constraint.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">sense</SPAN>: Sense for new quadratic constraint
+(<SPAN  CLASS="texttt">GRB.LESS_EQUAL</SPAN>, <SPAN  CLASS="texttt">GRB.EQUAL</SPAN>, or <SPAN  CLASS="texttt">GRB.GREATER_EQUAL</SPAN>).
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">rhs</SPAN>: Right-hand side value for new quadratic constraint.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">name</SPAN>: Name for new constraint.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">
+<SPAN CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">New quadratic constraint object.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"></SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">
+</SPAN><TABLE class="PAD " style="">
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">
+GRBQConstr </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> </SPAN><SPAN CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">addQConstr</SPAN></FONT></SPAN><SPAN CLASS="FOOTNOTESIZE"> ( </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> GRBLinExpr </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> lhsExpr, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> char </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> sense, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> GRBQuadExpr </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> rhsExpr, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> String </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> name ) </SPAN></TD>
+</TR>
+</TABLE><SPAN CLASS="FOOTNOTESIZE">
+
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">Add a quadratic constraint to a model.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">lhsExpr</SPAN>: Left-hand side linear expression for new quadratic constraint.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">sense</SPAN>: Sense for new quadratic constraint
+(<SPAN  CLASS="texttt">GRB.LESS_EQUAL</SPAN>, <SPAN  CLASS="texttt">GRB.EQUAL</SPAN>, or <SPAN  CLASS="texttt">GRB.GREATER_EQUAL</SPAN>).
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">rhsExpr</SPAN>: Right-hand side quadratic expression for new quadratic constraint.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">name</SPAN>: Name for new constraint.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">
+<SPAN CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">New quadratic constraint object.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"></SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">
+</SPAN><TABLE class="PAD " style="">
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">
+GRBQConstr </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> </SPAN><SPAN CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">addQConstr</SPAN></FONT></SPAN><SPAN CLASS="FOOTNOTESIZE"> ( </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> GRBVar </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> lhsVar, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> char </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> sense, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> GRBQuadExpr </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> rhsExpr, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> String </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> name ) </SPAN></TD>
+</TR>
+</TABLE><SPAN CLASS="FOOTNOTESIZE">
+
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">Add a quadratic constraint to a model.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">lhsVar</SPAN>: Left-hand side variable for new quadratic constraint.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">sense</SPAN>: Sense for new quadratic constraint
+(<SPAN  CLASS="texttt">GRB.LESS_EQUAL</SPAN>, <SPAN  CLASS="texttt">GRB.EQUAL</SPAN>, or <SPAN  CLASS="texttt">GRB.GREATER_EQUAL</SPAN>).
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">rhsExpr</SPAN>: Right-hand side quadratic expression for new quadratic constraint.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">name</SPAN>: Name for new constraint.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">
+<SPAN CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">New quadratic constraint object.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"></SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">
+</SPAN><TABLE class="PAD " style="">
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">
+GRBQConstr </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> </SPAN><SPAN CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">addQConstr</SPAN></FONT></SPAN><SPAN CLASS="FOOTNOTESIZE"> ( </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> double </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> lhs, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> char </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> sense, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> GRBQuadExpr </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> rhsExpr, </SPAN></TD>
+</TR>
+<TR><TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> 
+    </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE">                 </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> String </SPAN></TD>
+<TD CLASS="LEFT"><SPAN CLASS="FOOTNOTESIZE"> name ) </SPAN></TD>
+</TR>
+</TABLE><SPAN CLASS="FOOTNOTESIZE">
+
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">Add a quadratic constraint to a model.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">lhs</SPAN>: Left-hand side value for new quadratic constraint.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">sense</SPAN>: Sense for new quadratic constraint
+(<SPAN  CLASS="texttt">GRB.LESS_EQUAL</SPAN>, <SPAN  CLASS="texttt">GRB.EQUAL</SPAN>, or <SPAN  CLASS="texttt">GRB.GREATER_EQUAL</SPAN>).
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">rhsExpr</SPAN>: Right-hand side quadratic expression for new quadratic constraint.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">name</SPAN>: Name for new constraint.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">
+<SPAN CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">New quadratic constraint object.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"></SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"></SPAN>
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A
+ HREF="java_model_addrange.html">
+<IMG WIDTH="37" HEIGHT="24" ALT="next" SRC="next.png"></A> 
+<A
+ HREF="java_model.html">
+<IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up.png"></A> 
+<A
+ HREF="java_model_agc_tan.html">
+<IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A
+ HREF="java_model_addrange.html">GRBModel.addRange()</A>
+<B> Up:</B> <A
+ HREF="java_model.html">GRBModel</A>
+<B> Previous:</B> <A
+ HREF="java_model_agc_tan.html">GRBModel.addGenConstrTan()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

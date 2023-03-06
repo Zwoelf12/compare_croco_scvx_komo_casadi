@@ -123,6 +123,7 @@ class SCvx():
 
       x = cp.Variable((T, stateDim))
       u = cp.Variable((T, actionDim))
+      p = cp.Variable(1)
       nu = cp.Variable((T - 1, stateDim))
       if nObstacles == 0:
         nus = cp.Variable((T, 1))
@@ -130,10 +131,12 @@ class SCvx():
         nus = cp.Variable((T, nObstacles))
       nuIC = cp.Variable(stateDim)
       nuTC = cp.Variable(stateDim)
-      nuMC = cp.Variable(stateDim)
-      p = cp.Variable(1)
+      if intermediate_states is not None:
+        nuMC = cp.Variable(stateDim)
+        Pf = cp.Variable(3)
+      else:
+        Pf = cp.Variable(2)
       P = cp.Variable(T)
-      Pf = cp.Variable(3)
       dx_lq = cp.Variable(T)
       du_lq = cp.Variable(T)
       dp_lq = cp.Variable(1)
@@ -146,7 +149,8 @@ class SCvx():
       nus.value = nusprev
       nuIC.value = nuICprev
       nuTC.value = nuTCprev
-      nuMC.value = nuMCprev
+      if intermediate_states is not None:
+        nuMC.value = nuMCprev
       P.value = Pprev
       Pf.value = Pfprev
       dx_lq.value = dx_lqprev
@@ -171,7 +175,7 @@ class SCvx():
         prevNLCost = self.calc_aug_nl_cost(xprev, uprev, pprev, x0, xf, intermediate_states, T, CHandler)
 
       # define objective
-      cp_objective = self.define_objective(u_ph, p_ph, P, Pf, nu, nus, nuIC, nuTC, nuMC)
+      cp_objective = self.define_objective(u_ph, p_ph, P, Pf, nu, nus, nuIC, nuTC, nuMC, intermediate_states)
 
       # define constraints
       constraints = self.define_constraints(x_ph, u_ph, p_ph,
@@ -328,7 +332,7 @@ class SCvx():
 
 ###################################################################################################################################################################################
 
-  def define_objective(self, u, p, P, Pf, nu, nus, nuIC, nuTC, nuMC):
+  def define_objective(self, u, p, P, Pf, nu, nus, nuIC, nuTC, nuMC, intermediate_states):
 
     inputs = self.robot.dt * cp.sum(u**2) # penalty on inputs
 
@@ -338,7 +342,9 @@ class SCvx():
       slackCost = runningSlackCost + terminalSlackCost # penalty for slack
     else:
       runningSlackCost = self.lam * self.robot.dt * (cp.norm(self.E @ nu.T, 1) + cp.norm(nus, 1))
-      terminalSlackCost = self.lam * (cp.norm(nuIC,1) + cp.norm(nuTC,1) + cp.norm(nuMC,1))
+      terminalSlackCost = self.lam * (cp.norm(nuIC,1) + cp.norm(nuTC,1))
+      if intermediate_states is not None:
+        terminalSlackCost += self.lam * cp.norm(nuMC,1)
       slackCost = runningSlackCost + terminalSlackCost # penalty for slack
 
     time = (p/self.tf_max)**2 # penalty on time dilation
@@ -384,8 +390,6 @@ class SCvx():
 
           mc_viol = np.max(np.vstack(violations), axis = 0)
 
-    else:
-      mc_viol = np.zeros(x_ph.shape[1])
 
     P = np.zeros(T)
     for t in range(T - 1):
@@ -417,7 +421,10 @@ class SCvx():
 
     P[T-1] = np.linalg.norm(oc_viol[T-1], 1)
 
-    Pf = np.array([np.linalg.norm(ic_viol, 1), np.linalg.norm(tc_viol, 1), np.linalg.norm(mc_viol, 1)])
+
+    Pf = np.array([np.linalg.norm(ic_viol, 1), np.linalg.norm(tc_viol, 1)])
+    if intermediate_states is not None:
+      np.append(Pf,np.linalg.norm(mc_viol, 1))
 
     inputs = self.robot.dt * np.sum(u_ph ** 2)
 
@@ -429,7 +436,9 @@ class SCvx():
       slackCost = runningSlackCost + terminalSlackCost
     else:
       runningSlackCost = self.lam * self.robot.dt * (np.linalg.norm(self.E @ dc_viol.T, 1) + np.linalg.norm(oc_viol, 1))
-      terminalSlackCost = self.lam * (np.linalg.norm(ic_viol, 1) + np.linalg.norm(tc_viol, 1) + np.linalg.norm(mc_viol, 1))
+      terminalSlackCost = self.lam * (np.linalg.norm(ic_viol, 1) + np.linalg.norm(tc_viol, 1))
+      if intermediate_states is not None:
+        terminalSlackCost += self.lam * np.linalg.norm(mc_viol, 1)
       slackCost = runningSlackCost + terminalSlackCost  # penalty for slack
 
     time = (p_ph / self.tf_max) ** 2
@@ -621,9 +630,10 @@ class SCvx():
       )
 
       # add constraints on helper variable for cost calculation (intermediate condition slack)
-      constraints.append(
-        cp.norm(nuMC, 1) <= Pf[2]
-      )
+      if intermediate_states is not None:
+        constraints.append(
+          cp.norm(nuMC, 1) <= Pf[2]
+        )
 
     return constraints
 

@@ -1,0 +1,149 @@
+<!DOCTYPE HTML>
+
+<!--Converted with LaTeX2HTML 2021.2 (Released July 1, 2021) -->
+<HTML lang="en">
+<HEAD>
+<TITLE>Model.addGenConstrLogistic()</TITLE>
+<META NAME="description" CONTENT="Model.addGenConstrLogistic()">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="viewport" CONTENT="width=device-width, initial-scale=1.0">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2021.2">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="py_model_agc_pow.html">
+<LINK REL="previous" HREF="py_model_agc_loga.html">
+<LINK REL="next" HREF="py_model_agc_pow.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A
+ HREF="py_model_agc_pow.html">
+<IMG WIDTH="37" HEIGHT="24" ALT="next" SRC="next.png"></A> 
+<A
+ HREF="py_model.html">
+<IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up.png"></A> 
+<A
+ HREF="py_model_agc_loga.html">
+<IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A
+ HREF="py_model_agc_pow.html">Model.addGenConstrPow()</A>
+<B> Up:</B> <A
+ HREF="py_model.html">Model</A>
+<B> Previous:</B> <A
+ HREF="py_model_agc_loga.html">Model.addGenConstrLogA()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A ID="SECTION0001121800000000000000"></A>
+<A ID="pythonmethod:Model.addGenConstrLogistic"></A>
+<BR>
+Model.addGenConstrLogistic()
+</H3><SPAN CLASS="FOOTNOTESIZE">
+<SPAN CLASS="LARGE">
+<FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">addGenConstrLogistic</SPAN></FONT></SPAN> ( xvar, yvar, name="", options="" )
+
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">Add a new general constraint of type <SPAN  CLASS="texttt">GRB.GENCONSTR_LOGISTIC</SPAN> to a model.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">A logistic function constraint states that the relationship <!-- MATH
+ $y = \frac{1}{1 + e^{-x}}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 3.41ex; vertical-align: -1.11ex; " SRC="img3.svg"
+ ALT="$y = \frac{1}{1 + e^{-x}}$"></SPAN>
+should hold for variables <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.46ex; vertical-align: -0.12ex; " SRC="img4.svg"
+ ALT="$x$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.91ex; vertical-align: -0.57ex; " SRC="img5.svg"
+ ALT="$y$"></SPAN>.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">
+A piecewise-linear approximation of the function is
+added to the model.  The details of the approximation are controlled
+using the following four attributes (or using the
+parameters with the same names):
+<A HREF="funcpieces.html#attr:FuncPieces">FuncPieces</A>,
+<A HREF="funcpieceerror.html#attr:FuncPieceError">FuncPieceError</A>,
+<A HREF="funcpiecelength.html#attr:FuncPieceLength">FuncPiecesLength</A>, and
+<A HREF="funcpieceratio.html#attr:FuncPieceRatio">FuncPieceRatio</A>.
+For details, consult the
+<A HREF="constraints.html#subsubsection:GenConstrFunction">General Constraint</A>
+discussion.
+
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">xvar (Var)</SPAN>: The <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.46ex; vertical-align: -0.12ex; " SRC="img4.svg"
+ ALT="$x$"></SPAN> variable.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">yvar (Var)</SPAN>: The <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.91ex; vertical-align: -0.57ex; " SRC="img5.svg"
+ ALT="$y$"></SPAN> variable.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">name (string, optional)</SPAN>: Name for the new general constraint.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"> <SPAN  CLASS="textbf">options (string, optional)</SPAN>: 
+A string that can be used to set the attributes that control
+the piecewise-linear approximation of this function constraint.
+To assign a value to an attribute, follow the attribute
+name with an equal sign and the desired value (with no spaces).
+Assignments for different attributes should be separated by spaces
+(e.g. "FuncPieces=-1 FuncPieceError=0.001").
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">
+<SPAN CLASS="LARGE"><SPAN  CLASS="textbf">Return value:</SPAN></SPAN>
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE">New general constraint.
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"><SPAN CLASS="LARGE"><B>Example usage:</B></SPAN></SPAN><PRE>
+  # y = 1 / (1 + exp(-x))
+  gc = model.addGenConstrLogistic(x, y)
+</PRE><SPAN CLASS="FOOTNOTESIZE">
+</SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"></SPAN>
+<P>
+<SPAN CLASS="FOOTNOTESIZE"></SPAN>
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A
+ HREF="py_model_agc_pow.html">
+<IMG WIDTH="37" HEIGHT="24" ALT="next" SRC="next.png"></A> 
+<A
+ HREF="py_model.html">
+<IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up.png"></A> 
+<A
+ HREF="py_model_agc_loga.html">
+<IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A
+ HREF="py_model_agc_pow.html">Model.addGenConstrPow()</A>
+<B> Up:</B> <A
+ HREF="py_model.html">Model</A>
+<B> Previous:</B> <A
+ HREF="py_model_agc_loga.html">Model.addGenConstrLogA()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>
