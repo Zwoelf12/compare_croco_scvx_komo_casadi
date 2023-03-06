@@ -88,9 +88,7 @@ if only_visualize == False:
         print("solving optimization problem with KOMO...")
         solution = optProb.solve_problem()
         solution.time_dil = optProb.tf_max
-        solution.initial_x = optProb.initial_x
-        solution.initial_u = optProb.initial_u
-        solution.initial_p = optProb.initial_p
+        solution.optimization_problem = optProb
 
         print("solver time KOMO: {}".format(solution.time))
 
@@ -123,9 +121,7 @@ if only_visualize == False:
         # solve Problem with scvx
         print("solving optimization problem with SCVX...")
         solution = optProb.solve_problem()
-        solution.initial_x = optProb.initial_x
-        solution.initial_u = optProb.initial_u
-        solution.initial_p = optProb.initial_p
+        solution.optimization_problem = optProb
 
         print("solver time SCVX: {}".format(solution.time))
 
@@ -160,9 +156,7 @@ if only_visualize == False:
         # solve Problem with casadi
         print("solving optimization problem with CASADI ...")
         solution = optProb.solve_problem()
-        solution.initial_x = optProb.initial_x
-        solution.initial_u = optProb.initial_u
-        solution.initial_p = optProb.initial_p
+        solution.optimization_problem = optProb
 
         print("solver time CASADI: {}".format(solution.time))
 

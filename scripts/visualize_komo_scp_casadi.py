@@ -2,6 +2,7 @@ from optimization import opt_utils as ou
 from visualization.report_visualization import report_compare
 from optimization import problem_setups
 from visualization.animation_visualization import animate_fM
+from visualization.initial_guess_visualization import visualize_initial_guess
 
 list_of_solvers = ["KOMO", "SCVX", "CASADI"]
 animate_solution = "SCVX"
@@ -29,6 +30,9 @@ solutions = ou.load_opt_output(prob_name, nr_motors, list_of_solvers)
 
 # visualize solutions
 report_compare(solutions, list_of_solvers)
+
+visualize_initial_guess(solutions[list_of_solvers[0]], )
+
 
 # for solver_name in list_of_solvers:
 sol = solutions[animate_solution]
