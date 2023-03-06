@@ -255,6 +255,7 @@ class SCvx():
       NUIC_.append(nuIC.value)
       NUTC_.append(nuTC.value)
       NUMC_.append(nuMC.value)
+      print("intermediate constraints violations True: ", np.linalg.norm(nuMC.value, 1))
       lin_cost.append(prob_value)
       nonlin_cost.append(nlCost)
 
@@ -419,6 +420,8 @@ class SCvx():
     Pf = np.array([np.linalg.norm(ic_viol, 1), np.linalg.norm(tc_viol, 1), np.linalg.norm(mc_viol, 1)])
 
     inputs = self.robot.dt * np.sum(u_ph ** 2)
+
+    print("intermediate constraints violations augmented: ", np.linalg.norm(mc_viol, 1))
 
     if self.useHelperVars:
       runningSlackCost = np.sum(self.lam * self.robot.dt * P)
