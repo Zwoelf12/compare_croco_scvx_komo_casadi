@@ -25,6 +25,51 @@ def visualize_initial_guess(traj,x0,xf,xm,obs):
 
     set_axes_equal(ax)
 
+    fig, axs = plt.subplots(2, 2)
+
+    ax1 = axs[0, 0]
+    ax2 = axs[0, 1]
+    ax3 = axs[1, 0]
+    ax4 = axs[1, 1]
+
+    # plot positions
+    ax1.plot(traj[:, :3])
+    legend_ax1 = ["$p_x$", "$p_y$", "$p_z$"]
+
+    # plot velocities
+    ax2.plot(traj[:, 3:6])
+    legend_ax2 = ["$v_x$", "$v_y$", "$v_z$"]
+
+    # plot quaternions
+    ax3.plot(traj[:, 6:10])
+    legend_ax3 = ["$q_1$", "$q_2$", "$q_3$", "$q_4$"]
+
+    # plot rotational velocities
+    ax4.plot(traj[:, 10:13])
+    legend_ax4 = ["$\omega_x$", "$\omega_y$", "$\omega_z$"]
+
+    # make legend
+    ax1.legend(legend_ax1)
+    ax2.legend(legend_ax2)
+    ax3.legend(legend_ax3)
+    ax4.legend(legend_ax4)
+
+    ax1.set_xlabel("step #")
+    ax1.set_ylabel("positions [m]")
+    ax1.set_title("position comparision")
+
+    ax2.set_xlabel("step #")
+    ax2.set_ylabel("velocities [m/s]")
+    ax2.set_title("velocity comparision")
+
+    ax3.set_xlabel("step #")
+    ax3.set_ylabel("quaternion [1]")
+    ax3.set_title("quaternion comparision")
+
+    ax4.set_xlabel("step #")
+    ax4.set_ylabel("rotational velocities [rad/s]")
+    ax4.set_title("rotational velocities comparision")
+
     plt.show()
 
 def set_axes_equal(ax):

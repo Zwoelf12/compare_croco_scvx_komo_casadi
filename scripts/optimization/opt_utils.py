@@ -16,6 +16,9 @@ class OptSolution():
         self.time_cvxpy = time_cvxpy # time spend in the cvxpy interface
         self.time_cvx_solver = time_cvx_solver # time taken only by the convex solver
         self.constr_viol = constr_viol # constraint violation of KOMO
+        self.initial_x = None
+        self.initial_u = None
+        self.initial_p = None
 
 class Obstacle():
     def __init__(self, type, shape, pos, quat):
