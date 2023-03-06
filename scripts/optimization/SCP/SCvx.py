@@ -225,9 +225,12 @@ class SCvx():
       trajCrit = np.linalg.norm(p.value - pprev, 1) + np.max(np.linalg.norm(x.value - xprev, 1, 1)) # criterion following Malyuta et. al. looks only at trajectory change
       costCrit = np.abs(prevNLCost - prob_value) / np.abs(prevNLCost) # criterion with respect to optimal value
 
+      print("problem value: ", prob_value)
+      print("nonlinear cost: ", nlCost)
       print("part 1 tajCrit: ", np.linalg.norm(p.value - pprev, 1))
       print("part 2 tajCrit: ", np.max(np.linalg.norm(x.value - xprev, 1, 1)))
       print("costCrit: ", costCrit)
+
 
       if costCrit < self.eps or trajCrit < self.eps_t:
         stop_flag = True
