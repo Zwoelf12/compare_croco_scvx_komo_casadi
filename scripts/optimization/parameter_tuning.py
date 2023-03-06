@@ -7,7 +7,7 @@ class SCVX_parameter():
         if prob_name == "simple_flight_wo_obs":
 
             # user defined parameter
-            self.lam = 1e2  # weight 3 slack in cost
+            self.lam = 1e3  # weight 3 slack in cost
             self.alp = 0.  # weight for time in cost
             self.bet = 1e3  # weight for input in cost
             self.gam = 0.  # weight ratio between input and time penalty
