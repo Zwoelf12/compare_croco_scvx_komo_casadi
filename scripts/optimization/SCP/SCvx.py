@@ -390,6 +390,8 @@ class SCvx():
 
           mc_viol = np.max(np.vstack(violations), axis = 0)
 
+        print("intermediate constraints violations augmented: ", np.linalg.norm(mc_viol, 1))
+
 
     P = np.zeros(T)
     for t in range(T - 1):
@@ -427,8 +429,6 @@ class SCvx():
       np.append(Pf,np.linalg.norm(mc_viol, 1))
 
     inputs = self.robot.dt * np.sum(u_ph ** 2)
-
-    print("intermediate constraints violations augmented: ", np.linalg.norm(mc_viol, 1))
 
     if self.useHelperVars:
       runningSlackCost = np.sum(self.lam * self.robot.dt * P)
