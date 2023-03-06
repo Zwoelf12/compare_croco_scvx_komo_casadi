@@ -29,6 +29,7 @@ class OptProblem():
             for obs in self.obs:
                 self.CHandler.addObject(obs.type, obs.shape, obs.pos, obs.quat)
 
+
         if self.algorithm == "SCVX":
 
             Scvx = SCvx(self.robot,self.prob_name)

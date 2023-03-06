@@ -10,7 +10,7 @@ from visualization.initial_guess_visualization import visualize_initial_guess
 
 only_visualize = False
 list_of_solvers = ["KOMO","SCVX","CASADI"]
-vis_init_guess = False
+vis_init_guess = True
 
 # choose which problem should be solved
 prob = 1
@@ -68,6 +68,7 @@ if only_visualize == False:
         visualize_initial_guess(optProb.initial_x, optProb.x0, optProb.xf, optProb.intermediate_states, optProb.obs)
 
     if "KOMO" in list_of_solvers:
+
         ######## solve problem with KOMO #######
         
         optProb.robot = multirotor_full_model_komo_scp.Multicopter(nr_motors, arm_length, prob_setup.t2w)
@@ -105,6 +106,7 @@ if only_visualize == False:
                            int_error)
 
     if "SCVX" in list_of_solvers:
+
         ######## solve problem with SCVX #######
         optProb.algorithm = "SCVX"
 

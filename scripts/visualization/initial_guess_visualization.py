@@ -7,9 +7,10 @@ def visualize_initial_guess(traj,x0,xf,xm,obs):
     fig = plt.figure()
     ax = fig.add_subplot(1,1,1,projection = "3d")
 
-    for x in xm:
-        if "pos" in x.type:
-            ax.scatter3D(x.value[0], x.value[1], x.value[2], marker="o", facecolor="r")
+    if xm is not None:
+        for x in xm:
+            if "pos" in x.type:
+                ax.scatter3D(x.value[0], x.value[1], x.value[2], marker="o", facecolor="r")
 
     ax.scatter3D(x0[0], x0[1],x0[2], marker = "o", facecolor = "r")
     ax.scatter3D(xf[0], xf[1],xf[2], marker = "o", facecolor = "r")
@@ -34,19 +35,21 @@ def visualize_initial_guess(traj,x0,xf,xm,obs):
 
     # plot positions
     ax1.plot(traj[:, :3])
-    legend_ax1 = ["$p_x$", "$p_y$", "$p_z$"]
+    legend_ax1 = ["p_x", "p_y", "p_z"]
 
     # plot velocities
     ax2.plot(traj[:, 3:6])
-    legend_ax2 = ["$v_x$", "$v_y$", "$v_z$"]
+    legend_ax2 = ["v_x", "v_y", "v_z"]
 
     # plot quaternions
     ax3.plot(traj[:, 6:10])
-    legend_ax3 = ["$q_1$", "$q_2$", "$q_3$", "$q_4$"]
+    legend_ax3 = ["q_1", "q_2", "q_3", "q_4"]
+
+    print(np.linalg.norm(traj[:, 6:10], axis=1))
 
     # plot rotational velocities
     ax4.plot(traj[:, 10:13])
-    legend_ax4 = ["$\omega_x$", "$\omega_y$", "$\omega_z$"]
+    legend_ax4 = ["w_x", "w_y", "w_z"]
 
     # make legend
     ax1.legend(legend_ax1)
@@ -54,19 +57,19 @@ def visualize_initial_guess(traj,x0,xf,xm,obs):
     ax3.legend(legend_ax3)
     ax4.legend(legend_ax4)
 
-    ax1.set_xlabel("step #")
+    ax1.set_xlabel("step %#")
     ax1.set_ylabel("positions [m]")
     ax1.set_title("position comparision")
 
-    ax2.set_xlabel("step #")
+    ax2.set_xlabel("step %#")
     ax2.set_ylabel("velocities [m/s]")
     ax2.set_title("velocity comparision")
 
-    ax3.set_xlabel("step #")
+    ax3.set_xlabel("step %#")
     ax3.set_ylabel("quaternion [1]")
     ax3.set_title("quaternion comparision")
 
-    ax4.set_xlabel("step #")
+    ax4.set_xlabel("step %#")
     ax4.set_ylabel("rotational velocities [rad/s]")
     ax4.set_title("rotational velocities comparision")
 

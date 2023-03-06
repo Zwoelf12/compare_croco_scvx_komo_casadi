@@ -52,7 +52,7 @@ def simple_flight_wo_obs():
     setup.t_steps_croco = 30
     setup.t_steps_casadi = 30
 
-    setup.noise = 0.05
+    setup.noise = 0.01
 
     setup.t2w = 1.4
 

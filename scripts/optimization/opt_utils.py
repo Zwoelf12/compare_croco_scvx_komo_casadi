@@ -341,7 +341,6 @@ def calc_initial_guess(robot, timesteps, noise_factor, xf, x0, intermediate_poin
     # initial time dilation
     initial_p = (tf_min + tf_max) / 2
 
-
     if intermediate_points is not None:
         # sort intermedtiate states in ascending order
         intermediate_points.sort(key=lambda x: x.timing)
@@ -404,11 +403,6 @@ def calc_initial_guess(robot, timesteps, noise_factor, xf, x0, intermediate_poin
     initial_x[:, 0:3] += interpolated_positions
     initial_x[:, 6:10] += interpolated_quaternions
 
-    # normalize quaternions
-    Q = initial_x[:, 6:10]
-    Q_norm = np.linalg.norm(initial_x[:, 6:10], axis=1)
-    initial_x[:, 6:10] = (Q.T / Q_norm).T
-
     # add gravity compensation
     initial_u[:, :] += (9.81 * robot.mass) / robot.nrMotors
 
@@ -420,6 +414,11 @@ def calc_initial_guess(robot, timesteps, noise_factor, xf, x0, intermediate_poin
     orient_noise_euler = np.random.normal(0, 2*np.pi * noise_factor, (T,3))
     orient_noise_quat = rowan.from_euler(orient_noise_euler[:,0], orient_noise_euler[:,1], orient_noise_euler[:,2])
     initial_x[1:-1, 6:10] += orient_noise_quat[1:-1]
+
+    # normalize quaternions
+    Q = initial_x[:, 6:10]
+    Q_norm = np.linalg.norm(initial_x[:, 6:10], axis=1)
+    initial_x[:, 6:10] = (Q.T / Q_norm).T
 
     # rotational velocities
     initial_x[1:-1, 10:] += np.random.normal(0, state_range[10:] * noise_factor, initial_x[:, 10:].shape)[1:-1]
