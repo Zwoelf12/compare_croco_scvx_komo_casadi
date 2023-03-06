@@ -1,5 +1,5 @@
 ** compiled at:     Mar  3 2023 13:47:32
-** execution start: 2023-03-06 16:51:03:927932
+** execution start: 2023-03-06 17:22:05:456449
 /home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.cpp:initCmdLine:602(1) ** cmd line arguments: 'rai-pybind -python '
 /home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.cpp:initCmdLine:606(1) ** run path: '/home/wrehberg/compare_croco_scvx_komo_casadi/scripts'
 /home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/graph.cpp:initParameters:1356(3) opening config file 'rai.cfg'
@@ -14,7 +14,7 @@ opt/stopEvals:1e+07}
 /home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/ry/ry.cpp:init_LogToPythonConsole:34(0) initializing ry log callback
 /home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.cpp:cd_start:1045(3) entering path '/home/wrehberg/compare_croco_scvx_komo_casadi/scripts'
 /home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.cpp:cd_file:1053(3) entering path '/tmp' from '/home/wrehberg/compare_croco_scvx_komo_casadi/scripts'
-/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.cpp:getIs:1082(3) opening input file 'flex_quad4su34s8ifile.g'
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.cpp:getIs:1082(3) opening input file 'flex_quadwvqvhebtfile.g'
 /home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.cpp:cd_start:1045(3) entering path '/home/wrehberg/compare_croco_scvx_komo_casadi/scripts'
 /home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/KOMO/../Core/util.ipp:getParameterBase:28(3)         KOMO/verbose =     1 [i] (graph)
 /home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/KOMO/../Core/util.ipp:getParameterBase:35(3) KOMO/animateOptimization =     0 [i] (default)
@@ -1496,6 +1496,64 @@ opt/stopEvals:1e+07}
 /home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
 /home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
 /home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
-** execution stop: 2023-03-06 16:51:18:284054
-** real time: 14.3561sec
-** CPU time: 17.0028
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+/home/wrehberg/compare_croco_scvx_komo_casadi/deps/rai/rai/Core/util.ipp:getParameterBase:35(3)              gravity =  9.81 [d] (default)
+** execution stop: 2023-03-06 17:22:18:833488
+** real time: 13.3771sec
+** CPU time: 16.0323
