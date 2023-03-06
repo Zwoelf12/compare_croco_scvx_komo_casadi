@@ -94,7 +94,7 @@ class SCvx():
     else:
       nObstacles = 0
 
-    initial_guess = self.get_initial_guess(initial_x, initial_u, initial_p, T, nObstacles)
+    initial_guess = self.get_initial_guess(initial_x, initial_u, initial_p, intermediate_states, T, nObstacles)
 
     xprev = initial_guess.x
     uprev = initial_guess.u
@@ -683,7 +683,7 @@ class SCvx():
   ###################################################################################################################################################################################
   
 
-  def get_initial_guess(self,initial_x, initial_u, initial_p, T, nObstacles):
+  def get_initial_guess(self,initial_x, initial_u, initial_p, intermediate_states, T, nObstacles):
 
     class initial_guess():
       def __init__(self):
@@ -713,9 +713,13 @@ class SCvx():
       i_g.nus = np.random.normal(0, 1e-12, (T, nObstacles))
     i_g.nuIC = np.random.normal(0, 1e-12, (self.robot.max_x.shape[0]))
     i_g.nuTC = np.random.normal(0, 1e-12, (self.robot.max_x.shape[0]))
-    i_g.nuMC = np.random.normal(0, 1e-12, (self.robot.max_x.shape[0]))
+    if intermediate_states is not None:
+      i_g.nuMC = np.random.normal(0, 1e-12, (self.robot.max_x.shape[0]))
     i_g.P = np.random.normal(0,1e-12,(T))
-    i_g.Pf = np.random.normal(0,1e-12,(3))
+    if intermediate_states is not None:
+      i_g.Pf = np.random.normal(0,1e-12,(3))
+    else:
+      i_g.Pf = np.random.normal(0,1e-12,(2))
     i_g.dx_lq = np.random.normal(0,1e-12,(T))
     i_g.du_lq = np.random.normal(0,1e-12,(T))
     i_g.dp_lq = np.random.normal(0, 1e-12, (1))
