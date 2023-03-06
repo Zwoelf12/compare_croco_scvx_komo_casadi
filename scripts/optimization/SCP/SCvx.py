@@ -25,9 +25,9 @@ class SCvx():
     parameter = SCVX_parameter(prob_name)
 
     # user defined parameter
-    self.lam = 1e3 # weight 3 slack in cost
+    self.lam = 1e2 # weight 3 slack in cost
     self.alp = 0.  # weight for time in cost
-    self.bet = 1e2 # weight for input in cost
+    self.bet = 1e3 # weight for input in cost
     self.gam = 0.  # weight ratio between input and time penalty
     self.adapWeightsFac = 1e1 # determines by how much the slack cost is decreased and the problem cost is increased when slack is in a reasonable range
     self.weightsFac = 1 
