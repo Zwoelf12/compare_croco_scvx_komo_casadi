@@ -135,6 +135,7 @@ class SCvx():
         nuMC = cp.Variable(stateDim)
         Pf = cp.Variable(3)
       else:
+        nuMC = None
         Pf = cp.Variable(2)
       P = cp.Variable(T)
       dx_lq = cp.Variable(T)
