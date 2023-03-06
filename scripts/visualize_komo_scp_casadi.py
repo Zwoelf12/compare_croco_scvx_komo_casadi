@@ -31,8 +31,8 @@ solutions = ou.load_opt_output(prob_name, nr_motors, list_of_solvers)
 # visualize solutions
 report_compare(solutions, list_of_solvers)
 
-optProb = solutions[list_of_solvers[0]].optimization_problem
-visualize_initial_guess(optProb.inital_x, optProb.x0, optProb.xf, optProb.intermediate_states, optProb.obs)
+sol = solutions[list_of_solvers[0]]
+visualize_initial_guess(sol.inital_x, optProb.x0, optProb.xf, optProb.intermediate_states, optProb.obs)
 
 # for solver_name in list_of_solvers:
 sol = solutions[animate_solution]

@@ -52,10 +52,12 @@ class Opt_processData():
         self.int_err_small_dt = None # integration error indicating to small stepsize
         self.x0 = None # starting point
         self.xf = None # end point
+        self.intermediate_states = None # intermediate states
+        self.initial_x = None # initial states
+        self.initial_u = None  # initial actions
         self.t_dil = None # optimized time dilation
         self.time = None # time needed to solve the nonconvex problem
         self.time_cvx_solver = None # time needed by the convex solver to solve the convex subproblem
-        self.optimization_problem = None
 
 def extract_sol_dI(C, komo, phases, timeStepspP, timepP, startPoint, quad_names):
 
@@ -235,13 +237,15 @@ def save_opt_output(optProb,
                     int_error):
 
         opt_processData = Opt_processData()
-        opt_processData.optimization_problem = optProb
         opt_processData.robot = optProb.robot
         opt_processData.data = data
         opt_processData.int_err = int_error
         opt_processData.obs = optProb.obs
         opt_processData.x0 = optProb.x0
         opt_processData.xf = optProb.xf
+        opt_processData.intermediate_states = optProb.intermediate_states
+        opt_processData.initial_x = optProb.initial_x
+        opt_processData.initial_u = optProb.initial_u
         opt_processData.t_dil = solution.time_dil
         opt_processData.time = solution.time
 
