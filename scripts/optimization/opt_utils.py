@@ -16,7 +16,6 @@ class OptSolution():
         self.time_cvxpy = time_cvxpy # time spend in the cvxpy interface
         self.time_cvx_solver = time_cvx_solver # time taken only by the convex solver
         self.constr_viol = constr_viol # constraint violation of KOMO
-        self.optimization_problem = None
 
 class Obstacle():
     def __init__(self, type, shape, pos, quat):
@@ -56,6 +55,7 @@ class Opt_processData():
         self.t_dil = None # optimized time dilation
         self.time = None # time needed to solve the nonconvex problem
         self.time_cvx_solver = None # time needed by the convex solver to solve the convex subproblem
+        self.optimization_problem = None
 
 def extract_sol_dI(C, komo, phases, timeStepspP, timepP, startPoint, quad_names):
 
@@ -235,6 +235,7 @@ def save_opt_output(optProb,
                     int_error):
 
         opt_processData = Opt_processData()
+        opt_processData.optimization_problem = optProb
         opt_processData.robot = optProb.robot
         opt_processData.data = data
         opt_processData.int_err = int_error
