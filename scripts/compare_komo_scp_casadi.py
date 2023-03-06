@@ -13,7 +13,7 @@ list_of_solvers = ["KOMO","SCVX","CASADI"]
 vis_init_guess = False
 
 # choose which problem should be solved
-prob = 3
+prob = 4
 if prob == 1:
     prob_setup = problem_setups.simple_flight_wo_obs()
     prob_name = "simple_flight_wo_obs"
