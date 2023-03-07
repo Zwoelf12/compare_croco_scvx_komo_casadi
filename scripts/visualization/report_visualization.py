@@ -6,6 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.ticker import PercentFormatter
 from matplotlib.colors import ListedColormap
+import os
 
 # line cyclers adapted to colourblind people
 from cycler import cycler
@@ -99,7 +100,7 @@ def report_compare(solutions, list_of_solvers):
 		nTime_steps[solver_name] = solutions[solver_name].data.shape[0]
 		time_points[solver_name] = np.linspace(0,t_dil,nTime_steps[solver_name])
 
-	fig, axs = plt.subplots(2, 2)
+	fig_states, axs = plt.subplots(2, 2)
 
 	ax1 = axs[0, 0]
 	ax2 = axs[0, 1]
@@ -155,7 +156,7 @@ def report_compare(solutions, list_of_solvers):
 	ax4.set_title("rotational velocities comparision")
 
 	# plot the trajectory obtained by the optimizer
-	plt.figure()
+	fig_traj = plt.figure()
 	ax = plt.axes(projection='3d')
 	colors = ["r","b","g","k"]
 	for i, solver_name in zip(range(nSolvers),list_of_solvers):
@@ -185,12 +186,12 @@ def report_compare(solutions, list_of_solvers):
 
 	# plot integration error
 	if nSolvers <= 2:
-		fig, axs = plt.subplots(1, nSolvers)
+		fig_int_err, axs = plt.subplots(1, nSolvers)
 		if nSolvers == 1:
 			axs = [axs]
 
 	else:
-		fig, axs = plt.subplots(1, nSolvers)
+		fig_int_err, axs = plt.subplots(1, nSolvers)
 
 	for i,solver_name in zip(range(nSolvers),list_of_solvers):
 		int_error = solutions[solver_name].int_err
@@ -209,16 +210,16 @@ def report_compare(solutions, list_of_solvers):
 
 	# plot actions
 	if nSolvers == 1:
-		fig, axs = plt.subplots(1, 1)
+		fig_ac, axs = plt.subplots(1, 1)
 		axs = [axs]
 	elif nSolvers == 2:
-		fig, axs = plt.subplots(1, 2)
+		fig_ac, axs = plt.subplots(1, 2)
 		axs = [axs[0],axs[1]]
 	elif nSolvers == 3:
-		fig, axs = plt.subplots(1, 3)
+		fig_ac, axs = plt.subplots(1, 3)
 		axs = [axs[0],axs[1],axs[2]]
 	else:
-		fig, axs = plt.subplots(2, 2)
+		fig_ac, axs = plt.subplots(2, 2)
 		axs = [axs[0,0], axs[0,1], axs[1,0], axs[1,1]]
 
 	for i,solver_name in zip(range(nSolvers),list_of_solvers):
@@ -243,7 +244,18 @@ def report_compare(solutions, list_of_solvers):
 		axs[i].set_title("force comparision \n input cost: \n {}: {}".format(solver_name, inputCost))
 		axs[i].set_xlabel("time [s]")
 
-	plt.show()
+		# safe figures
+	plt.rcParams.update({
+  		"text.usetex": False,
+		})
+	
+	print(os.getcwd())
+	fig_states.savefig("plots/states.pdf")
+	fig_traj.savefig("plots/trajectory.pdf")
+	fig_int_err.savefig("plots/int_error.pdf")
+	fig_ac.savefig("plots/actions.pdf")
+
+	#plt.show()
 
 
 def report_noise(prob_name, path, nr_motors, t2w_vec, noise_vec, robot_type, prob_setup):
