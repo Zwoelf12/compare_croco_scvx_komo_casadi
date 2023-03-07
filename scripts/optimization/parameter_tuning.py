@@ -122,7 +122,7 @@ class KOMO_parameter():
             self.weight_input = 1e3*7
 
         elif prob_name == "complex_flight_spheres":
-            self.weight_dynamics = 1e3*5
+            self.weight_dynamics = 1e3*7
             self.weight_input = 1e2*10
 
         elif prob_name == "recovery_flight":
