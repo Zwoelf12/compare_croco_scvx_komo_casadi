@@ -8,7 +8,7 @@ list_of_solvers = ["KOMO", "SCVX", "CASADI"]
 animate_solution = "SCVX"
 
 # choose which problem should be solved
-prob = 4
+prob = 2
 if prob == 1:
     prob_setup = problem_setups.simple_flight_wo_obs()
     prob_name = "simple_flight_wo_obs"

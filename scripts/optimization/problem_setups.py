@@ -82,7 +82,7 @@ def complex_flight_spheres():
     setup.t_steps_casadi = 100
 
     obs1 = ou.Obstacle("sphere", [0.4], [0.1, -0.7, 1.2], [1, 0, 0, 0])
-    obs6 = ou.Obstacle("sphere", [0.4], [-0.1, 0.7, 1.], [1, 0, 0, 0])
+    obs6 = ou.Obstacle("sphere", [0.4], [-0.1, 0.7, 0.8], [1, 0, 0, 0])
 
     obs2 = ou.Obstacle("sphere", [0.4], [0.7, 0.3, 1.1], [1, 0, 0, 0])
     obs3 = ou.Obstacle("sphere", [0.4], [-0.7, 0.2, .8], [1, 0, 0, 0])
