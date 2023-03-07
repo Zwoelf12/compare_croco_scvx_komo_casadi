@@ -3,6 +3,7 @@ from visualization.report_visualization import report_compare
 from optimization import problem_setups
 from visualization.animation_visualization import animate_fM
 from visualization.initial_guess_visualization import visualize_initial_guess
+import subprocess as sp
 
 list_of_solvers = ["KOMO", "SCVX", "CASADI"]
 animate_solution = "SCVX"
@@ -33,6 +34,9 @@ report_compare(solutions, list_of_solvers)
 
 sol = solutions[list_of_solvers[0]]
 visualize_initial_guess(sol.initial_x, sol.x0, sol.xf, sol.intermediate_states, sol.obs)
+
+cmd = "scp -r wrehberg@130.149.82.54:/home/wrehberg/compare_croco_scvx_komo_casadi/scripts/plots /Users/WelfRehberg/PycharmProjects/workshop_paper/compare_croco_scvx_komo_casadi/scripts/plots"
+sp.run(cmd.split())
 
 # for solver_name in list_of_solvers:
 sol = solutions[animate_solution]
