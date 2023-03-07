@@ -81,16 +81,17 @@ def complex_flight_spheres():
     setup.t_steps_croco = 100
     setup.t_steps_casadi = 100
 
-    obs1 = ou.Obstacle("sphere", [0.4], [0.1, -0.7, 1.2], [1, 0, 0, 0])
-    obs6 = ou.Obstacle("sphere", [0.4], [-0.1, 0.7, 0.8], [1, 0, 0, 0])
+    obs1 = ou.Obstacle("sphere", [0.3], [-0.3, -0.45, 0.8], [1, 0, 0, 0])
+    obs2 = ou.Obstacle("sphere", [0.4], [0.1, -0.7, 1.2], [1, 0, 0, 0])
+    obs3 = ou.Obstacle("sphere", [0.4], [-0.1, 0.7, 0.8], [1, 0, 0, 0])
 
-    obs2 = ou.Obstacle("sphere", [0.4], [0.7, 0.3, 1.1], [1, 0, 0, 0])
-    obs3 = ou.Obstacle("sphere", [0.4], [-0.7, 0.2, .8], [1, 0, 0, 0])
+    obs4 = ou.Obstacle("sphere", [0.4], [0.7, 0.3, 1.1], [1, 0, 0, 0])
+    obs5 = ou.Obstacle("sphere", [0.4], [-0.7, 0.2, .8], [1, 0, 0, 0])
 
-    obs4 = ou.Obstacle("sphere", [0.4], [-0.2, 0.2, 1.6], [1, 0, 0, 0])
-    obs5 = ou.Obstacle("sphere", [0.4], [0.2, 0., .3], [1, 0, 0, 0])
+    obs6 = ou.Obstacle("sphere", [0.4], [-0.2, 0.2, 1.6], [1, 0, 0, 0])
+    obs7 = ou.Obstacle("sphere", [0.4], [0.2, 0., .3], [1, 0, 0, 0])
 
-    setup.obs = [obs1, obs2, obs3, obs4, obs5, obs6]
+    setup.obs = [obs1, obs2, obs3, obs4, obs5, obs6, obs7]
 
     setup.noise = 0.05
     setup.t2w = 1.4
