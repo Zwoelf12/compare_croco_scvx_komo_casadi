@@ -3,7 +3,6 @@ from casadi.tools import *
 import optimization.opt_utils as ou
 import pylab as pl
 import time
-from optimization.parameter_tuning import CASADI_parameter
 import subprocess
 
 def update_c_code(robot,discretization_method):
@@ -48,11 +47,9 @@ def update_c_code(robot,discretization_method):
 
 
 
-def solve(robot, x0, xf, intermediate_states, t_final, obs, initial_x, initial_u, num_timesteps, discretization_method, use_c_code, prob_name):
+def solve(robot, x0, xf, intermediate_states, t_final, obs, initial_x, initial_u, num_timesteps, discretization_method, use_c_code, alg_par):
 
     opt = casadi.Opti() # generate optimization problem
-
-    parameter = CASADI_parameter(prob_name) # tuning parameter for IPOPT have to be identified
 
     ## define states and control
     nMotors = len(robot.min_u)
@@ -68,8 +65,6 @@ def solve(robot, x0, xf, intermediate_states, t_final, obs, initial_x, initial_u
         f = robot.step_RK
         if use_c_code:
             f = external("f", "step_RK.so")
-
-        print(f)
     elif discretization_method == "euler":
         f = robot.step_euler
         if use_c_code:

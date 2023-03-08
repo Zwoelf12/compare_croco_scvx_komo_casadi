@@ -62,11 +62,11 @@ def complex_flight_spheres():
 
     setup = Prob_setup()
 
-    setup.x0 = np.array([0.1, -1.3, 1.,
+    setup.x0 = np.array([-0.1, -1.3, 1.,
                          0., 0., 0.,
                          1., 0., 0., 0.,
                          0., 0., 0.],
-                         dtype=np.float64)  # from -0.5 to 0.5 and 0.5 hight diff works for full model # 0.71,0.71 for 90°
+                         dtype=np.float64) 
 
     setup.xf = np.array([-0.1, 1.3, 1.,
                          0., 0., 0.,
@@ -81,17 +81,28 @@ def complex_flight_spheres():
     setup.t_steps_croco = 100
     setup.t_steps_casadi = 100
 
-    obs1 = ou.Obstacle("sphere", [0.3], [-0.3, -0.45, 0.8], [1, 0, 0, 0])
-    obs2 = ou.Obstacle("sphere", [0.4], [0.1, -0.7, 1.2], [1, 0, 0, 0])
-    obs3 = ou.Obstacle("sphere", [0.4], [-0.1, 0.7, 0.8], [1, 0, 0, 0])
+    
+    obs1 = ou.Obstacle("sphere", [0.4], [0.1, -0.7, 1.3], [1, 0, 0, 0])
+    obs2 = ou.Obstacle("sphere", [0.4], [-0.1, 0.7, 0.8], [1, 0, 0, 0])
 
-    obs4 = ou.Obstacle("sphere", [0.4], [0.7, 0.3, 1.1], [1, 0, 0, 0])
-    obs5 = ou.Obstacle("sphere", [0.4], [-0.7, 0.2, .8], [1, 0, 0, 0])
+    obs3 = ou.Obstacle("sphere", [0.4], [0.5, 0.3, 1.1], [1, 0, 0, 0])
+    obs4 = ou.Obstacle("sphere", [0.4], [-0.7, 0.2, .8], [1, 0, 0, 0])
 
-    obs6 = ou.Obstacle("sphere", [0.4], [-0.2, 0.2, 1.6], [1, 0, 0, 0])
-    obs7 = ou.Obstacle("sphere", [0.4], [0.2, 0., .3], [1, 0, 0, 0])
+    obs5 = ou.Obstacle("sphere", [0.4], [-0.2, 0.2, 1.6], [1, 0, 0, 0])
+    obs6 = ou.Obstacle("sphere", [0.4], [0, 0., .3], [1, 0, 0, 0])
 
-    setup.obs = [obs1, obs2, obs3, obs4, obs5, obs6, obs7]
+    """
+    obs1 = ou.Obstacle("sphere", [0.4], [0., -0.7, 1.], [1, 0, 0, 0])
+    obs2 = ou.Obstacle("sphere", [0.4], [1., 0., 1.], [1, 0, 0, 0])
+    obs3 = ou.Obstacle("sphere", [0.4], [-1., 0., 1.], [1, 0, 0, 0])
+    obs4 = ou.Obstacle("sphere", [0.4], [0., 0., 1.7], [1, 0, 0, 0])
+    obs5 = ou.Obstacle("sphere", [0.4], [0., 0., .3], [1, 0, 0, 0])
+    obs6 = ou.Obstacle("sphere", [0.4], [0., 0.7, 1.], [1, 0, 0, 0])
+    """
+
+    #obs7 = ou.Obstacle("sphere", [0.3], [-0.3, -0.45, 0.8], [1, 0, 0, 0])
+
+    setup.obs = [obs1, obs2, obs3, obs4, obs5, obs6]#, obs7]
 
     setup.noise = 0.05
     setup.t2w = 1.4
@@ -146,21 +157,21 @@ def flip():
     xm_1 = intermediate_state(["quat"],
                               np.array([0., 0.725, 1.,
                                         0., 0., 0.,
-                                        0., 0., -1., 0.,
+                                        .71, 0., -.71, 0.,
                                         0., 0., 0.], dtype=np.float64),
                               30)
 
-    xm_2 = intermediate_state(["pos"],
+    xm_2 = intermediate_state(["quat"],
                               np.array([0., 1., 1.5,
                                         0., 0., 0.,
-                                        .71, 0., -.71, 0.,
+                                        1., 0., 0., 0.,
                                         0., 0., 0.], dtype=np.float64),
                               20)
 
-    xm_3 = intermediate_state(["pos"],
+    xm_3 = intermediate_state(["quat"],
                               np.array([0., 0.5, 1.5,
                                         0., 0., 0.,
-                                        .71, 0., .71, 0.,
+                                        0., 0., -1., 0.,
                                         0., 0., 0.], dtype=np.float64),
                               40)
 

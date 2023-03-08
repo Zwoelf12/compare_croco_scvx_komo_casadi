@@ -118,12 +118,12 @@ class KOMO_parameter():
     def __init__(self, prob_name):
 
         if prob_name == "simple_flight_wo_obs":
-            self.weight_dynamics = 1e2*0.1
-            self.weight_input = 1e3*7
+            self.weight_dynamics = 1e1
+            self.weight_input = 1e2
 
         elif prob_name == "complex_flight_spheres":
-            self.weight_dynamics = 1e3*7
-            self.weight_input = 1e2*10
+            self.weight_dynamics = 1e3
+            self.weight_input = 1e2
 
         elif prob_name == "recovery_flight":
             self.weight_dynamics = 1e2 * 0.1

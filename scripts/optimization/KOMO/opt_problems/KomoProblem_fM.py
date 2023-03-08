@@ -3,7 +3,6 @@ sys.path += ['../build/deps/rai']
 import libry as ry
 import numpy as np
 from physics.multirotor_models import multirotor_flex_komo
-from optimization.parameter_tuning import KOMO_parameter
 
 def fullModel_flight(phases,
                   timeStepspP,
@@ -13,13 +12,12 @@ def fullModel_flight(phases,
                   intermediate_states,
                   obstacles,
                   robot,
-                  prob_name,
+                  alg_par,
                   initial_x,
                   initial_u):
 
 
     C = multirotor_flex_komo.build_copter(robot.nrMotors, robot.arm_length)
-    
 
     C.addObject(name='target',
                 parent='world',
@@ -45,8 +43,6 @@ def fullModel_flight(phases,
 
     thrust_to_torque = robot.t2t
     max_force_per_motor = robot.max_u[0]
-
-    parameter = KOMO_parameter(prob_name)
 
     komo = C.komo(phases, timeStepspP, timepP, 2, True)
 
@@ -145,13 +141,19 @@ def fullModel_flight(phases,
     #                  target=[], order=1, deltaFromStep=+0, deltaToStep=+1)
 
     # follow dynamic equations
-    komo.addObjective(times=[], feature=ry.FS.NewtonEuler, frames=["drone"], type=ry.OT.eq, scale=[parameter.weight_dynamics], target=[],
+    komo.addObjective(times=[], feature=ry.FS.NewtonEuler, frames=["drone"], type=ry.OT.eq, scale=[alg_par.weight_dynamics], target=[],
                       order=2, deltaFromStep=+2, deltaToStep=-1)
 
     # add costs on input
     for m in range(robot.nrMotors):
         komo.addObjective(times=[], feature=ry.FS.fex_Force, frames=['world', "m" + str(m+1)], type=ry.OT.sos,
-                          scale=[parameter.weight_input], target=[], order=0, deltaFromStep=+0, deltaToStep=+0)
+                          scale=[alg_par.weight_input], target=[], order=0, deltaFromStep=+0, deltaToStep=+0)
+
+        komo.addObjective(times=[], feature=ry.FS.fex_Force, frames=['world', "m" + str(m+1)], type=ry.OT.sos,
+                          scale=[1e1], target=[], order=1, deltaFromStep=+0, deltaToStep=+0)
+
+        komo.addObjective(times=[], feature=ry.FS.fex_Force, frames=['world', "m" + str(m+1)], type=ry.OT.sos,
+                          scale=[1e-1], target=[], order=2, deltaFromStep=+0, deltaToStep=+0)
                           
     # add limits to forces which where defined when the forces where added
     komo.addObjective(times=[], feature=ry.FS.qLimits, frames=['world'], type=ry.OT.ineq,

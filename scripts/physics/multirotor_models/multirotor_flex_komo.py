@@ -119,7 +119,6 @@ def build_copter(nrMotors,r):
 
 
     tmp.seek(0)
-    print(tmp.read())
 
     C.addFile(tmp.name)
     tmp.close()

@@ -5,10 +5,9 @@ from jax import jacfwd, jit, config
 config.update("jax_enable_x64", True)
 import time
 from optimization.opt_utils import OptSolution, calc_initial_guess
-from optimization.parameter_tuning import SCVX_parameter
 
 class SCvx():
-  def __init__(self, robot, prob_name):
+  def __init__(self, robot,alg_par):
 
     self.useScaling = True
     self.useHelperVars = True
@@ -22,32 +21,30 @@ class SCvx():
     # inflate robot to avoid corner cutting
     self.robot.arm_length = robot.arm_length
 
-    parameter = SCVX_parameter(prob_name)
-
     # user defined parameter
-    self.lam = parameter.lam # weight 3 slack in cost
-    self.alp = parameter.alp  # weight for time in cost
-    self.bet = parameter.bet # weight for input in cost
-    self.gam = parameter.gam  # weight ratio between input and time penalty
-    self.adapWeightsFac = parameter.adapWeightsFac # determines by how much the slack cost is decreased and the problem cost is increased when slack is in a reasonable range
-    self.weightsFac = parameter.weightsFac
-    self.E = parameter.E #weight matrix for dynamic slack
+    self.lam = alg_par.lam # weight 3 slack in cost
+    self.alp = alg_par.alp  # weight for time in cost
+    self.bet = alg_par.bet # weight for input in cost
+    self.gam = alg_par.gam  # weight ratio between input and time penalty
+    self.adapWeightsFac = alg_par.adapWeightsFac # determines by how much the slack cost is decreased and the problem cost is increased when slack is in a reasonable range
+    self.weightsFac = alg_par.weightsFac
+    self.E = alg_par.E #weight matrix for dynamic slack
     # when to update trust region
-    self.roh0 = parameter.roh0
-    self.roh1 = parameter.roh1
-    self.roh2 = parameter.roh2
+    self.roh0 = alg_par.roh0
+    self.roh1 = alg_par.roh1
+    self.roh2 = alg_par.roh2
     # growth and shrink parameter for trust region
-    self.bgr = parameter.bgr
-    self.bsh = parameter.bsh
+    self.bgr = alg_par.bgr
+    self.bsh = alg_par.bsh
     # initial trust region and minimal and maximal trust region radius
-    self.eta = parameter.eta
-    self.eta0 = parameter.eta0
-    self.eta1 = parameter.eta1
+    self.eta = alg_par.eta
+    self.eta0 = alg_par.eta0
+    self.eta1 = alg_par.eta1
     # stopping criterion
-    self.eps = parameter.eps
-    self.eps_t = parameter.eps_t
+    self.eps = alg_par.eps
+    self.eps_t = alg_par.eps_t
     # norm order for trust region
-    self.q = parameter.q
+    self.q = alg_par.q
 
     # build A & B Matrices and f
     self.constructA = jit(jacfwd(robot.step, 0))

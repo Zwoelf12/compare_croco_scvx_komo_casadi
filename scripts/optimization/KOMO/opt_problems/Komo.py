@@ -5,7 +5,7 @@ import time
 
 def solve(phases, time_steps_per_phase,
                time_per_phase, x0, xf, intermediate_states, obs,
-               robot, initial_x, initial_u, prob_name):
+               robot, initial_x, initial_u, alg_par):
 
     if robot.type == "dI":
         C, komo = KomoProblem_dI.doubleIntegrator_flight(phases, time_steps_per_phase,
@@ -24,7 +24,7 @@ def solve(phases, time_steps_per_phase,
     elif robot.type == "fM":
         C, komo = KomoProblem_fM.fullModel_flight(phases, time_steps_per_phase,
                                                      time_per_phase, x0, xf, intermediate_states, obs,
-                                                     robot, prob_name, initial_x, initial_u)
+                                                     robot, alg_par, initial_x, initial_u)
 
         # solve optimization problem
         ts = time.time()

@@ -35,9 +35,6 @@ report_compare(solutions, list_of_solvers)
 sol = solutions[list_of_solvers[0]]
 visualize_initial_guess(sol.initial_x, sol.x0, sol.xf, sol.intermediate_states, sol.obs)
 
-cmd = "scp -r wrehberg@130.149.82.54:/home/wrehberg/compare_croco_scvx_komo_casadi/scripts/plots /Users/WelfRehberg/PycharmProjects/workshop_paper/compare_croco_scvx_komo_casadi/scripts/plots"
-sp.run(cmd.split())
-
 # for solver_name in list_of_solvers:
 sol = solutions[animate_solution]
 animate_fM(sol.data,sol.obs)

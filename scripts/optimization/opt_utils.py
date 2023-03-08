@@ -223,7 +223,7 @@ def save_opt_output_all(optProb,
         prob_name += "_fM_8m"
 
     # save data
-    path = "./data_scvx_komo_comparision/"
+    path = "data/"
 
     filename = path + prob_name
 
@@ -234,7 +234,8 @@ def save_opt_output(optProb,
                     prob_name,
                     solution,
                     data,
-                    int_error):
+                    int_error,
+                    alg_pars = None):
 
         opt_processData = Opt_processData()
         opt_processData.robot = optProb.robot
@@ -264,35 +265,50 @@ def save_opt_output(optProb,
             prob_name += "_8m"
 
         # save data
-        path = "./data/data_comparision/"
+        path = "data/"
 
         filename = path + prob_name
 
         if optProb.algorithm == "SCVX":
+            if alg_pars is not None:
+                filename += "_lam_" + str(alg_pars.lam).replace(".","_")
+                filename += "_bet_" + str(alg_pars.bet).replace(".","_")
             save_object(filename + "_SCVX", opt_processData)
         elif optProb.algorithm == "KOMO":
+            if alg_pars is not None:
+                filename += "_wd_" + str(alg_pars.weight_dynamics).replace(".","_")
+                filename += "_wi_" + str(alg_pars.weight_input).replace(".","_")
+            print(filename + "_KOMO")
             save_object(filename + "_KOMO", opt_processData)
+
         elif optProb.algorithm == "CASADI":
             save_object(filename + "_CASADI", opt_processData)
 
 
 def load_object(filename):
     with open(filename, "rb") as input_file:
-        print(filename)
         sol = pickle.load(input_file)
     return sol
 
-def load_opt_output(prob_name, nrMotors, list_of_solvers):
+def load_opt_output(prob_name, nrMotors, solver_name, alg_pars = None):
 
-    path = "./data/data_comparision/"
+    path = "data/"
 
-    solutions = {}
-    for solver_name in list_of_solvers:
-        filename = prob_name + "_{}m".format(nrMotors) + "_" + solver_name
-        sol_now = load_object(path + filename)
-        solutions[solver_name] = sol_now
+    filename = prob_name + "_{}m".format(nrMotors)
 
-    return solutions
+    if alg_pars is not None:
+        if solver_name == "KOMO":
+            filename += "_wd_" + str(alg_pars.weight_dynamics)
+            filename += "_wi_" + str(alg_pars.weight_input)
+        if solver_name == "SCVX":
+            filename += "_lam_" + str(alg_pars.lam)
+            filename += "_bet_" + str(alg_pars.bet)
+
+    filename += "_" + solver_name
+    
+    solution = load_object(path + filename)
+        
+    return solution
 
 def gen_yaml_files(init_x,init_u,obs,x0,xf,robot):
     init_x = init_x.tolist()
@@ -320,8 +336,6 @@ def gen_yaml_files(init_x,init_u,obs,x0,xf,robot):
     with open("../scripts/temp/env.yaml", mode="wt", encoding="utf-8") as file:
         yaml.dump(env, file, default_flow_style=None, sort_keys=False)
         yaml.dump(rob, file, default_flow_style=None, sort_keys=False)
-
-
 
 
 def calc_initial_guess(robot, timesteps, noise_factor, xf, x0, intermediate_points, tf_min, tf_max):
@@ -396,7 +410,6 @@ def calc_initial_guess(robot, timesteps, noise_factor, xf, x0, intermediate_poin
 
         return positions, quaternions
 
-
     ## use interpolation between start and end point as initial guess
     # interpolate positions and quaternions
     interpolated_positions, interpolated_quaternions = calc_interpolation(positions_fixed, position_timing, quaternions_fixed, quaternion_timing)
@@ -430,3 +443,16 @@ def calc_initial_guess(robot, timesteps, noise_factor, xf, x0, intermediate_poin
     initial_p += np.random.normal(initial_p, noise_factor, 1)
 
     return initial_x, initial_u, initial_p
+
+def print_search_result(s_r,solver_name):
+    for r in s_r:
+        print(" ")
+        print("#########################")
+        if solver_name == "KOMO":
+            print("w_d: {}, w_i: {}".format(r["w_d"], r["w_i"]))
+        elif solver_name == "SCVX":
+            print("lam: {}, bet: {}".format(r["lam"], r["bet"]))
+        print("cost: {}".format(r["cost"][0]))
+        print("success: {}".format(r["check"][0]))
+        print("solver time: {}".format(r["time"][0]))
+        #print("#########################")
