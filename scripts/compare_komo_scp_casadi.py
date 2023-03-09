@@ -7,7 +7,7 @@ from visualization.report_visualization import report_compare
 from optimization import problem_setups
 from visualization.animation_visualization import animate_fM
 from visualization.initial_guess_visualization import visualize_initial_guess
-from optimization.parameter_tuning import KOMO_parameter,SCVX_parameter,CASADI_parameter
+from optimization.algorithm_parameters import KOMO_parameter,SCVX_parameter,CASADI_parameter
 import numpy as np
 
 def run_optimization(prob_name, prob_setup, list_of_solvers, alg_parameters, parameter_search = False):
@@ -229,7 +229,7 @@ if __name__ == "__main__":
     list_of_solvers = ["KOMO","SCVX","CASADI"]
 
     # choose which problem should be solved
-    prob = 2
+    prob = 4
 
     if prob == 1:
         prob_setup = problem_setups.simple_flight_wo_obs()

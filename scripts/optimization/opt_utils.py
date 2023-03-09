@@ -3,6 +3,7 @@ from physics.multirotor_models.multirotor_full_model_komo_scp import calc_rot_ve
 import pickle
 import rowan
 import yaml
+import matplotlib.pyplot as plt
 
 class OptSolution():
     def __init__(self, states, actions, time=None, nu=None, opt_val=None, num_iter=None, tdil=None, time_cvxpy=None, time_cvx_solver=None, constr_viol = 0):
@@ -444,15 +445,60 @@ def calc_initial_guess(robot, timesteps, noise_factor, xf, x0, intermediate_poin
 
     return initial_x, initial_u, initial_p
 
-def print_search_result(s_r,solver_name):
+def vis_search_result(s_r,solver_name):
+    par_1 = []
+    par_2 = []
+    costs = []
+    times = []
+    success = []
     for r in s_r:
         print(" ")
         print("#########################")
         if solver_name == "KOMO":
             print("w_d: {}, w_i: {}".format(r["w_d"], r["w_i"]))
+            par_1.append(r["w_d"])
+            par_2.append(r["w_i"])
         elif solver_name == "SCVX":
             print("lam: {}, bet: {}".format(r["lam"], r["bet"]))
+            par_1.append(r["lam"])
+            par_2.append(r["bet"])
         print("cost: {}".format(r["cost"][0]))
+        costs.append(r["cost"][0])
         print("success: {}".format(r["check"][0]))
+        success.append(r["check"][0])
         print("solver time: {}".format(r["time"][0]))
+        times.append(r["time"][0])
         #print("#########################")
+    
+    plt.rcParams.update({
+  		"text.usetex": False,
+		})
+
+    fig, axs = plt.subplots(1, 2)
+
+    p1 = axs[0].scatter(par_1, par_2, c = costs, marker="o", cmap="autumn")    
+    p2 = axs[1].scatter(par_1, par_2, c = times, marker="o", cmap="autumn")    
+
+    for i in range(len(par_1)):
+        if not success[i]:
+            axs[1].scatter(par_1[i], par_2[i], c = "k", marker ="x")
+            axs[0].scatter(par_1[i], par_2[i], c = "k", marker ="x")
+
+    if solver_name == "KOMO":
+        axs[0].set_xlabel("w_d")
+        axs[0].set_ylabel("w_i")
+        axs[1].set_xlabel("w_d")
+        axs[1].set_ylabel("w_i")
+    elif solver_name == "SCVX":
+        axs[0].set_xlabel("lam")
+        axs[0].set_ylabel("bet")
+        axs[1].set_xlabel("lam")
+        axs[1].set_ylabel("bet")
+
+    axs[0].set_title("costs")
+    axs[1].set_title("time")
+
+    plt.colorbar(p1, ax=axs[0])
+    plt.colorbar(p2, ax=axs[1])
+
+    fig.savefig("plots/parameter_search.pdf")

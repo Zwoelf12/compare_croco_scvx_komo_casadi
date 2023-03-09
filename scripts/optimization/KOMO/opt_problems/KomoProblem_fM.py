@@ -109,6 +109,10 @@ def fullModel_flight(phases,
                 if "quat" in i_s.type:
                     komo.addObjective(times=[i_s.timing/timeStepspP], feature=ry.FS.quaternion, frames=['drone'], type=ry.OT.eq,
                                       scale=[1e2], target=i_s.value[6:10])
+            
+            if "vel" in i_s.type:
+                komo.addObjective(times=[i_s.timing/timeStepspP], feature=ry.FS.position, frames=['drone'], type=ry.OT.eq, order=1,
+                                      scale=[1e2, 1e2, 1e2], target=i_s.value[3:6])
 
 
     if robot.nrMotors != 2 and robot.nrMotors != 3:
@@ -149,11 +153,11 @@ def fullModel_flight(phases,
         komo.addObjective(times=[], feature=ry.FS.fex_Force, frames=['world', "m" + str(m+1)], type=ry.OT.sos,
                           scale=[alg_par.weight_input], target=[], order=0, deltaFromStep=+0, deltaToStep=+0)
 
-        komo.addObjective(times=[], feature=ry.FS.fex_Force, frames=['world', "m" + str(m+1)], type=ry.OT.sos,
-                          scale=[1e1], target=[], order=1, deltaFromStep=+0, deltaToStep=+0)
+        #komo.addObjective(times=[], feature=ry.FS.fex_Force, frames=['world', "m" + str(m+1)], type=ry.OT.sos,
+        #                  scale=[1e1], target=[], order=1, deltaFromStep=+0, deltaToStep=+0)
 
-        komo.addObjective(times=[], feature=ry.FS.fex_Force, frames=['world', "m" + str(m+1)], type=ry.OT.sos,
-                          scale=[1e-1], target=[], order=2, deltaFromStep=+0, deltaToStep=+0)
+        #komo.addObjective(times=[], feature=ry.FS.fex_Force, frames=['world', "m" + str(m+1)], type=ry.OT.sos,
+        #                  scale=[1e-1], target=[], order=2, deltaFromStep=+0, deltaToStep=+0)
                           
     # add limits to forces which where defined when the forces where added
     komo.addObjective(times=[], feature=ry.FS.qLimits, frames=['world'], type=ry.OT.ineq,

@@ -62,12 +62,12 @@ class Multicopter():
 		self.t_dil_casadi = None
 		self.g = 9.81  # not signed
 
-		self.min_x = np.array([-1.5, -1.5, 0,
+		self.min_x = np.array([-2.5, -2.5, 0,
 							  -3, -3, -3,
 							  -1.001, -1.001, -1.001, -1.001,
 							   -35*0.7, -35*0.7, -35*0.7],dtype=np.float32)
 
-		self.max_x = np.array([1.5, 1.5, 2,
+		self.max_x = np.array([2.5, 2.5, 3,
 							   3, 3, 3,
 							    1.001, 1.001, 1.001, 1.001,
 							   35*0.7, 35*0.7, 35*0.7], dtype=np.float32)

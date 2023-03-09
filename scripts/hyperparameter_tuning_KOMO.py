@@ -1,14 +1,14 @@
 from optimization.parallelization import Multiprocess, build_arg_combinations
 from compare_komo_scp_casadi import run_optimization, visualize_optimization
 from optimization import problem_setups
-from optimization.parameter_tuning import KOMO_parameter,SCVX_parameter,CASADI_parameter
+from optimization.algorithm_parameters import KOMO_parameter,SCVX_parameter,CASADI_parameter
 from optimization import opt_utils as ou
 
 list_of_solvers = ["KOMO"]
-search = True
+search = False
 
 # choose which problem should be solved
-prob = 2
+prob = 4
 
 if prob == 1:
     prob_setup = problem_setups.simple_flight_wo_obs()
@@ -28,8 +28,8 @@ filename = "data/parameter_search/" + prob_name + "_4m_KOMO"
 if search:
     # KOMO: iterate over different weight_dynamics, weight_inputs 
 
-    all_weight_dynamic = [1e1, 1e2, 1e3, 1e4]
-    all_weight_input = [1e1, 1e2, 1e3, 1e4]
+    all_weight_dynamic = [1e1*0.8, 1e1*0.9, 1e1, 1e1*2, 1e1*3, 1e1*4, 1e1*5]
+    all_weight_input = [1e3*2, 1e3*3, 1e3*4, 1e3*5, 1e3*6, 1e3*7, 1e3*8]
     all_args_KOMO = build_arg_combinations([all_weight_dynamic,all_weight_input], 1, "all")
 
     # build list of all parameters for run optimization function
@@ -68,7 +68,7 @@ if search:
 
 search_result = ou.load_object(filename)
 
-ou.print_search_result(search_result, "KOMO")
+ou.vis_search_result(search_result, "KOMO")
 
 """
 solutions = {}

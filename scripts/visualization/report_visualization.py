@@ -6,7 +6,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.ticker import PercentFormatter
 from matplotlib.colors import ListedColormap
-import os
 
 # line cyclers adapted to colourblind people
 from cycler import cycler
@@ -249,7 +248,6 @@ def report_compare(solutions, list_of_solvers):
   		"text.usetex": False,
 		})
 	
-	print(os.getcwd())
 	fig_states.savefig("plots/states.pdf")
 	fig_traj.savefig("plots/trajectory.pdf")
 	fig_int_err.savefig("plots/int_error.pdf")
