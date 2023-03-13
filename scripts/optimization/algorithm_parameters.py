@@ -88,7 +88,7 @@ class SCVX_parameter():
         elif prob_name == "flip":
 
             # user defined parameter
-            self.lam = 1e3*5  # weight 3 slack in cost
+            self.lam = 1e3*3  # weight 3 slack in cost
             self.alp = 0.  # weight for time in cost
             self.bet = 1e3  # weight for input in cost
             self.gam = 0.  # weight ratio between input and time penalty
@@ -131,8 +131,8 @@ class KOMO_parameter():
 
         elif prob_name == "flip":
             self.weight_dynamics = 1e1
-            self.weight_input = 1e3 * 3
-
+            self.weight_input = 1e3
+            
 
 class CASADI_parameter():
 

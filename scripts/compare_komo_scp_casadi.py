@@ -117,7 +117,7 @@ def run_optimization(prob_name, prob_setup, list_of_solvers, alg_parameters, par
         par = ou.Parameter_scvx()
         par.max_num_iter = 50
         par.num_time_steps = t_steps_scvx
-        optProb.robot.dt = 1/(par.num_time_steps-1)
+        optProb.robot.dt = 1/(par.num_time_steps)
         print("dt SCVX: {}".format(optProb.robot.dt * optProb.tf_max))
         optProb.par = par
         optProb.alg_par = alg_parameters["SCVX"]

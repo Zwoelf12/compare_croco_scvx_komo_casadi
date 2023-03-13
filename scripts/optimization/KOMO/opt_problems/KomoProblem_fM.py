@@ -16,7 +16,6 @@ def fullModel_flight(phases,
                   initial_x,
                   initial_u):
 
-
     C = multirotor_flex_komo.build_copter(robot.nrMotors, robot.arm_length)
 
     C.addObject(name='target',
@@ -37,6 +36,8 @@ def fullModel_flight(phases,
     J = np.array([robot.J[0], 0, 0,
                   0, robot.J[1], 0,
                   0, 0, robot.J[2]])
+    
+    print("komo J: ", J)
 
     multiCopter.setMass(robot.mass)  # to make sure that all methods use the same mass
     multiCopter.setInertia(J, robot.mass)
@@ -102,16 +103,16 @@ def fullModel_flight(phases,
     if intermediate_states is not None:
         for i_s in intermediate_states:
             if "pos" in i_s.type:
-                komo.addObjective(times=[i_s.timing/timeStepspP], feature=ry.FS.position, frames=['drone'], type=ry.OT.eq,
+                komo.addObjective(times=[(i_s.timing+1)/timeStepspP], feature=ry.FS.position, frames=['drone'], type=ry.OT.eq,
                                   scale=[1e2], target=i_s.value[:3])
 
             if robot.nrMotors != 2 and robot.nrMotors != 3:
                 if "quat" in i_s.type:
-                    komo.addObjective(times=[i_s.timing/timeStepspP], feature=ry.FS.quaternion, frames=['drone'], type=ry.OT.eq,
+                    komo.addObjective(times=[(i_s.timing+1)/timeStepspP], feature=ry.FS.quaternion, frames=['drone'], type=ry.OT.eq,
                                       scale=[1e2], target=i_s.value[6:10])
             
             if "vel" in i_s.type:
-                komo.addObjective(times=[i_s.timing/timeStepspP], feature=ry.FS.position, frames=['drone'], type=ry.OT.eq, order=1,
+                komo.addObjective(times=[(i_s.timing+1)/timeStepspP], feature=ry.FS.position, frames=['drone'], type=ry.OT.eq, order=1,
                                       scale=[1e2, 1e2, 1e2], target=i_s.value[3:6])
 
 

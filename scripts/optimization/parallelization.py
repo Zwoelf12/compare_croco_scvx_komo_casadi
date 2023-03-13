@@ -8,7 +8,7 @@ from pathlib import Path
 class Multiprocess():
     def __init__(self, task, args, repetitions = 1, combination = None):
         """
-        task : task that shpuld be carried out
+        task : task that should be carried out
         args : list of lists of arguments that should be passed to task
         repetitions : how often should the set of arguments be applied
         combination : defines if all combinations should be used or just the in args defined

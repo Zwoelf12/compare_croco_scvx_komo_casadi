@@ -52,7 +52,7 @@ def simple_flight_wo_obs():
     setup.t_steps_croco = 100
     setup.t_steps_casadi = 100
 
-    setup.noise = 0.01
+    setup.noise = 0.0
 
     setup.t2w = 1.4
 
@@ -155,10 +155,10 @@ def flip():
                                         0., 0., 0.], dtype=np.float64),
                               45)
 
-    xm_2 = intermediate_state(["vel"],
+    xm_2 = intermediate_state(["quat"],
                               np.array([0., 0.725, 1.5,
-                                        0., -1.5, 0.,
-                                        .71, .71, 0., 0.,
+                                        0., -2, 0.,
+                                        0., 1., 0., 0.,#.71, .71, 0., 0.,
                                         0., 0., 0.], dtype=np.float64),
                               50)
 
@@ -169,7 +169,7 @@ def flip():
                                         0., 0., 0.], dtype=np.float64),
                               55)
 
-    setup.intermediate_states = [xm_1,xm_2,xm_3]
+    setup.intermediate_states = [xm_2]#[xm_1,xm_2,xm_3]
 
     setup.t_steps_scvx = 100
     setup.t_steps_komo = 100

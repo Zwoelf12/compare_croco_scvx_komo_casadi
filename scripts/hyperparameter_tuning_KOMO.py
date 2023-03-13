@@ -5,7 +5,7 @@ from optimization.algorithm_parameters import KOMO_parameter,SCVX_parameter,CASA
 from optimization import opt_utils as ou
 
 list_of_solvers = ["KOMO"]
-search = False
+search = True
 
 # choose which problem should be solved
 prob = 4
@@ -28,8 +28,8 @@ filename = "data/parameter_search/" + prob_name + "_4m_KOMO"
 if search:
     # KOMO: iterate over different weight_dynamics, weight_inputs 
 
-    all_weight_dynamic = [1e1*0.8, 1e1*0.9, 1e1, 1e1*2, 1e1*3, 1e1*4, 1e1*5]
-    all_weight_input = [1e3*2, 1e3*3, 1e3*4, 1e3*5, 1e3*6, 1e3*7, 1e3*8]
+    all_weight_dynamic = [1e0, 1e1, 1e2,1e3,1e4,1e5]# [1e0, 1e0*3, 1e0*7, 1e1, 1e1*3, 1e1*5] #[1e1*0.8, 1e1*0.9, 1e1, 1e1*2, 1e1*3, 1e1*4, 1e1*5]  #[1e0, 1e1, 1e2,1e3,1e4,1e5]
+    all_weight_input = [1e0, 1e1, 1e2,1e3,1e4,1e5] #[1e3*0.9, 1e3, 1e3*2, 1e3*3, 1e3*4] #[1e3*2, 1e3*3, 1e3*4, 1e3*5, 1e3*6, 1e3*7, 1e3*8]  #[1e0, 1e1, 1e2,1e3,1e4,1e5]
     all_args_KOMO = build_arg_combinations([all_weight_dynamic,all_weight_input], 1, "all")
 
     # build list of all parameters for run optimization function

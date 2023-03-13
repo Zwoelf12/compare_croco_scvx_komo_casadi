@@ -144,13 +144,89 @@ def extract_sol_fM(C, komo, phases, timeStepspP, timepP, startPoint, nrMotors, m
 
             # avoid sign flip in quaternion
             if np.dot(q_tm1, q_t) < 0:
+                qt = -q_t
+                #qt[0] = -q_t[0]
+                #print("q_tm1: ", q_tm1)
+                #print("q_t: ", q_t)
+                #print("dot product: ", np.dot(q_tm1, q_t))
+            else:
+                qt = q_t
+
+            w_t = calc_rot_vel(qt, q_tm1, dt)
+            trajectory_omega[t, :, mc_nr] = w_t #qrotate(qconjugate(q_t),w_t)
+
+    # first derivative (x(t)-x(t-dt))/dt to calculate linear velocity at t
+    trajectory_vel_lin[1:] = (trajectory_pos[1:, :3] - trajectory_pos[0:-1, :3]) / dt
+
+    # combine positions and velocities
+    states = np.hstack((trajectory_pos[:, 0:3, :], trajectory_vel_lin[:, 0:3, :], trajectory_pos[:, 3:,:], trajectory_omega[:,:,:]))
+    actions = forces[2:]
+    actions[-1] *= np.nan # set unused action to nan
+
+    # to use more than one quadcopter change that
+    states = states[:,:,0]
+    actions = actions[:,:,0]*(-timeStepspP/timepP) # give actions correct units
+
+    solution = OptSolution(states, actions, constr_viol=komo.getConstraintViolations())
+
+    return solution
+
+#####################
+
+def extract_sol_fM_(C, komo, phases, timeStepspP, timepP, startPoint, nrMotors, mc_names):
+
+    # timestep size
+    dt = timepP/timeStepspP
+    print("komo dt in extract fm: ", dt)
+
+    # get nr of timesteps, states, multicopter, actions
+    n_timesteps = phases*timeStepspP
+    n_states = komo.getPathFrames().shape[2]
+    n_multi_copter = len(mc_names)
+    n_actions = nrMotors
+
+    # initialize arrays
+    sz_s = (n_timesteps, n_states, n_multi_copter)
+    trajectory_pos = np.zeros(n_timesteps * n_states * n_multi_copter).reshape(*sz_s)
+
+    sz_a = (n_timesteps + 2, n_actions, n_multi_copter)
+    forces = np.zeros((n_timesteps+2) * n_actions * n_multi_copter).reshape(*sz_a)
+
+    sz_w = (n_timesteps, 3, n_multi_copter)
+    trajectory_omega = np.zeros(n_timesteps * 3 * n_multi_copter).reshape(sz_w)
+    trajectory_vel_lin = np.zeros(n_timesteps * 3 * n_multi_copter).reshape(sz_w)
+
+    # add inital conditions for velocities
+    trajectory_omega[0] = startPoint[10:, np.newaxis]
+    trajectory_vel_lin[0] = startPoint[3:6, np.newaxis]
+
+    # extract solutions for each multicopter
+    for mc_nr in range(len(mc_names)):
+        # get copter index
+        idx_copter = [idx for idx in range(len(C.getFrameNames())) if mc_names[mc_nr] in C.getFrameNames()[idx]]
+        # extract copter positions
+        trajectory_pos_mc_nr = komo.getPathFrames()[:, idx_copter[0], :]
+        trajectory_pos[:, :, mc_nr] = trajectory_pos_mc_nr
+
+        # extract forces
+        forces_mc_nr = np.array([f["force"] for f in komo.getForceInteractions()])
+        forces_mc_nr = np.reshape(forces_mc_nr, (-1, n_actions))
+        forces[:, :, mc_nr] = forces_mc_nr
+
+        # calculate rotational velocity from quaternions
+        for t in range(1, n_timesteps):
+            q_tm1 = trajectory_pos[t - 1, 3:, mc_nr]
+            q_t = trajectory_pos[t, 3:, mc_nr]
+
+            # avoid sign flip in quaternion
+            if np.dot(q_tm1, q_t) < 0:
                 qt = q_t
                 qt[0] = -q_t[0]
             else:
                 qt = q_t
 
             w_t = calc_rot_vel(qt, q_tm1, dt)
-            trajectory_omega[t, :, mc_nr] = w_t #qrotate(qconjugate(q_t),w_t)
+            trajectory_omega[t, :, mc_nr] = w_t
 
     # first derivative (x(t)-x(t-dt))/dt to calculate linear velocity at t
     trajectory_vel_lin[1:] = (trajectory_pos[1:, :3] - trajectory_pos[0:-1, :3]) / dt
@@ -480,6 +556,7 @@ def vis_search_result(s_r,solver_name):
     p2 = axs[1].scatter(par_1, par_2, c = times, marker="o", cmap="autumn")    
 
     for i in range(len(par_1)):
+        print(success[i])
         if not success[i]:
             axs[1].scatter(par_1[i], par_2[i], c = "k", marker ="x")
             axs[0].scatter(par_1[i], par_2[i], c = "k", marker ="x")
