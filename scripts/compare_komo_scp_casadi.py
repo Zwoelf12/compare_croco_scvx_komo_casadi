@@ -4,7 +4,7 @@ from optimization.check.check_solution import check_solution
 from physics.multirotor_models import multirotor_full_model_komo_scp
 from physics.multirotor_models import multirotor_full_model_casadi
 from visualization.report_visualization import report_compare
-from optimization import problem_setups
+from optimization.problem_setups import Prob_setup
 from visualization.animation_visualization import animate_fM
 from visualization.initial_guess_visualization import visualize_initial_guess
 from optimization.algorithm_parameters import KOMO_parameter,SCVX_parameter,CASADI_parameter
@@ -46,6 +46,9 @@ def run_optimization(prob_name, prob_setup, list_of_solvers, alg_parameters, par
                                                                                     optProb.tf_min,
                                                                                     optProb.tf_max)
 
+
+    i_g = {"init_x": optProb.initial_x, "init_u": optProb.initial_u}
+    ou.save_object("data/initial_guess_" + prob_name, i_g)
 
     #if vis_init_guess:
     #    visualize_initial_guess(optProb.initial_x, optProb.x0, optProb.xf, optProb.intermediate_states, optProb.obs)
@@ -224,25 +227,14 @@ def visualize_optimization(prob_name,list_of_solvers):
 
 if __name__ == "__main__":
 
-    run = True
+    run = False
     visualize = True
     list_of_solvers = ["KOMO","SCVX","CASADI"]
 
     # choose which problem should be solved
-    prob = 4
-
-    if prob == 1:
-        prob_setup = problem_setups.simple_flight_wo_obs()
-        prob_name = "simple_flight_wo_obs"
-    elif prob == 2:
-        prob_setup = problem_setups.complex_flight_spheres()
-        prob_name = "complex_flight_spheres"
-    elif prob == 3:
-        prob_setup = problem_setups.recovery_flight()
-        prob_name = "recovery_flight"
-    elif prob == 4:
-        prob_setup = problem_setups.flip()
-        prob_name = "flip"
+    prob = 3
+    prob_setup = Prob_setup(prob)
+    prob_name = prob_setup.name
 
     alg_parameters = {"KOMO":KOMO_parameter(prob_name),
                       "SCVX":SCVX_parameter(prob_name),

@@ -1,6 +1,6 @@
 from optimization.parallelization import Multiprocess, build_arg_combinations
 from compare_komo_scp_casadi import run_optimization, visualize_optimization
-from optimization import problem_setups
+from optimization.problem_setups import Prob_setup
 from optimization.algorithm_parameters import KOMO_parameter,SCVX_parameter,CASADI_parameter
 from optimization import opt_utils as ou
 
@@ -9,27 +9,16 @@ search = True
 
 # choose which problem should be solved
 prob = 4
-
-if prob == 1:
-    prob_setup = problem_setups.simple_flight_wo_obs()
-    prob_name = "simple_flight_wo_obs"
-elif prob == 2:
-    prob_setup = problem_setups.complex_flight_spheres()
-    prob_name = "complex_flight_spheres"
-elif prob == 3:
-    prob_setup = problem_setups.recovery_flight()
-    prob_name = "recovery_flight"
-elif prob == 4:
-    prob_setup = problem_setups.flip()
-    prob_name = "flip"
+prob_setup = Prob_setup(prob)
+prob_name = prob_setup.name
 
 filename = "data/parameter_search/" + prob_name + "_4m_KOMO"
 
 if search:
     # KOMO: iterate over different weight_dynamics, weight_inputs 
 
-    all_weight_dynamic = [1e0, 1e1, 1e2,1e3,1e4,1e5]# [1e0, 1e0*3, 1e0*7, 1e1, 1e1*3, 1e1*5] #[1e1*0.8, 1e1*0.9, 1e1, 1e1*2, 1e1*3, 1e1*4, 1e1*5]  #[1e0, 1e1, 1e2,1e3,1e4,1e5]
-    all_weight_input = [1e0, 1e1, 1e2,1e3,1e4,1e5] #[1e3*0.9, 1e3, 1e3*2, 1e3*3, 1e3*4] #[1e3*2, 1e3*3, 1e3*4, 1e3*5, 1e3*6, 1e3*7, 1e3*8]  #[1e0, 1e1, 1e2,1e3,1e4,1e5]
+    all_weight_dynamic = [1e0, 1e0*3, 1e0*7, 1e1, 1e1*3, 1e1*5]# [1e0, 1e0*3, 1e0*7, 1e1, 1e1*3, 1e1*5] #[1e1*0.8, 1e1*0.9, 1e1, 1e1*2, 1e1*3, 1e1*4, 1e1*5]  #[1e0, 1e1, 1e2,1e3,1e4,1e5]
+    all_weight_input = [1e3*0.9, 1e3, 1e3*2, 1e3*3, 1e3*4] #[1e3*0.9, 1e3, 1e3*2, 1e3*3, 1e3*4] #[1e3*2, 1e3*3, 1e3*4, 1e3*5, 1e3*6, 1e3*7, 1e3*8]  #[1e0, 1e1, 1e2,1e3,1e4,1e5]
     all_args_KOMO = build_arg_combinations([all_weight_dynamic,all_weight_input], 1, "all")
 
     # build list of all parameters for run optimization function

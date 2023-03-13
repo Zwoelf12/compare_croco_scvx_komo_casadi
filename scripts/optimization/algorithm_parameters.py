@@ -4,7 +4,7 @@ class SCVX_parameter():
 
     def __init__(self, prob_name):
 
-        if prob_name == "simple_flight_wo_obs":
+        if prob_name == "simple_flight":
 
             # user defined parameter
             self.lam = 1e2  # weight 3 slack in cost
@@ -31,7 +31,7 @@ class SCVX_parameter():
             # norm order for trust region
             self.q = "inf"
 
-        elif prob_name == "complex_flight_spheres":
+        elif prob_name == "obstacle_flight":
 
             # user defined parameter
             self.lam = 1e3  # weight 3 slack in cost
@@ -117,11 +117,11 @@ class KOMO_parameter():
 
     def __init__(self, prob_name):
 
-        if prob_name == "simple_flight_wo_obs":
+        if prob_name == "simple_flight":
             self.weight_dynamics = 1e1
             self.weight_input = 1e2
 
-        elif prob_name == "complex_flight_spheres":
+        elif prob_name == "obstacle_flight":
             self.weight_dynamics = 1e1
             self.weight_input = 1e3
 
@@ -130,18 +130,18 @@ class KOMO_parameter():
             self.weight_input = 1e3 * 3
 
         elif prob_name == "flip":
-            self.weight_dynamics = 1e1
-            self.weight_input = 1e3
+            self.weight_dynamics = 1e0*7
+            self.weight_input = 1e3*2
             
 
 class CASADI_parameter():
 
     def __init__(self, prob_name):
 
-        if prob_name == "simple_flight_wo_obs":
+        if prob_name == "simple_flight":
             self.par = None
 
-        elif prob_name == "complex_flight_spheres":
+        elif prob_name == "obstacle_flight":
             self.par = None
 
         elif prob_name == "recovery_flight":

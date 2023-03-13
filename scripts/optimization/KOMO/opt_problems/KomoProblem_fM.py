@@ -36,8 +36,6 @@ def fullModel_flight(phases,
     J = np.array([robot.J[0], 0, 0,
                   0, robot.J[1], 0,
                   0, 0, robot.J[2]])
-    
-    print("komo J: ", J)
 
     multiCopter.setMass(robot.mass)  # to make sure that all methods use the same mass
     multiCopter.setInertia(J, robot.mass)
