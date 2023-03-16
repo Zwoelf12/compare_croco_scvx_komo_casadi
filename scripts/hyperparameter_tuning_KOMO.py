@@ -1,5 +1,5 @@
 from optimization.parallelization import Multiprocess, build_arg_combinations
-from compare_komo_scp_casadi import run_optimization, visualize_optimization
+from optimization_handler import run_optimization, visualize_optimization
 from optimization.problem_setups import Prob_setup
 from optimization.algorithm_parameters import KOMO_parameter,SCVX_parameter,CASADI_parameter
 from optimization import opt_utils as ou

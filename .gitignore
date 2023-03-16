@@ -152,3 +152,6 @@ About
 %% KOMO
 z.log.global
 scripts/z.log.global
+
+%% Data
+scripts/data/all_runs

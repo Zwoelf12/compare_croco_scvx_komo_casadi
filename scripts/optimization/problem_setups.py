@@ -40,6 +40,8 @@ class Prob_setup():
             self.recovery_flight()
         elif prob_nr == 4:
             self.flip()
+        elif prob_nr == 5:
+            self.loop()
         else:
             print("unknown problem")
 
@@ -191,6 +193,63 @@ class Prob_setup():
         self.noise = 0.01
 
         self.t2w = 1.4
-    
+
+    def loop(self):
+
+        self.name = "loop"
+
+        self.x0 = np.array([0., 0., 1.,
+                            0., 0., 0.,
+                            1, 0, 0., 0.,
+                            0., 0., 0.],
+                            dtype=np.float64)
+
+        self.xf = np.array([0., 0., 1.,
+                            0., 0., 0.,
+                            1., 0., 0., 0.,
+                            0., 0., 0.], dtype=np.float64)
+
+        xm_1 = intermediate_state(["pos"],
+                                np.array([1, 1, 1.5,
+                                            0., 0., 1.6,
+                                            1., 0., 0., 0.,
+                                            0., 0., 0.], dtype=np.float64),
+                                20)
+
+        xm_2 = intermediate_state(["pos"],
+                                np.array([-1, 1, 1.5,
+                                            0., -2, 0.,
+                                            0., 1., 0., 0.,
+                                            0., 0., 0.], dtype=np.float64),
+                                40)
+
+        xm_3 = intermediate_state(["pos"],
+                                np.array([-1, -1, 1.5,
+                                            0., 0., -1.6,
+                                            0., 1., 0., 0.,
+                                            0., 0., 0.], dtype=np.float64),
+                                60)
+
+        xm_4 = intermediate_state(["pos"],
+                                np.array([1, -1, 1.5,
+                                            0., 0., -1.6,
+                                            0., 1., 0., 0.,
+                                            0., 0., 0.], dtype=np.float64),
+                                80)
+        
+
+        self.intermediate_states = [xm_1,xm_2,xm_3,xm_4]
+
+        self.t_steps_scvx = 100
+        self.t_steps_komo = 100
+        self.t_steps_croco = 100
+        self.t_steps_casadi = 100
+
+        self.tf_min = 6.
+        self.tf_max = 6.
+
+        self.noise = 0.01
+
+        self.t2w = 1.4
     
     

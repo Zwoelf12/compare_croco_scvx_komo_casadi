@@ -59,6 +59,7 @@ class Opt_processData():
         self.t_dil = None # optimized time dilation
         self.time = None # time needed to solve the nonconvex problem
         self.time_cvx_solver = None # time needed by the convex solver to solve the convex subproblem
+        self.success = None # states if optimizer found a solution complying with the constraints
 
 def extract_sol_dI(C, komo, phases, timeStepspP, timepP, startPoint, quad_names):
 
@@ -312,6 +313,7 @@ def save_opt_output(optProb,
                     solution,
                     data,
                     int_error,
+                    success,
                     alg_pars = None):
 
         opt_processData = Opt_processData()
@@ -326,6 +328,7 @@ def save_opt_output(optProb,
         opt_processData.initial_u = optProb.initial_u
         opt_processData.t_dil = solution.time_dil
         opt_processData.time = solution.time
+        opt_processData.success = success
 
         if optProb.algorithm == "SCVX":
             opt_processData.time_cvx_solver = solution.time_cvx_solver

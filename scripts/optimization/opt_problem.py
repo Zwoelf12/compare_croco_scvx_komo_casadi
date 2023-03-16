@@ -19,7 +19,7 @@ class OptProblem():
         self.initial_x = None # initialization of states
         self.initial_u = None # initialization of actions
         self.initial_p = None # initialization of time_dilation
-        self.prob_name = None # short problem description
+        #self.prob_name = None # short problem description
 
     def solve_problem(self):
         

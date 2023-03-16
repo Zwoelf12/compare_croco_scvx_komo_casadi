@@ -6,6 +6,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.ticker import PercentFormatter
 from matplotlib.colors import ListedColormap
+import seaborn as sns
+import pandas as pd
+from matplotlib.ticker import FormatStrFormatter
+from stl import mesh
+from mpl_toolkits import mplot3d
+import rowan
+import copy
+import matplotlib.patches as mpatches
 
 # line cyclers adapted to colourblind people
 from cycler import cycler
@@ -21,6 +29,9 @@ standard_cycler = (cycler(color=["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#1
 
 bw_cycler = cycler(color=["0","0.05","0.1","0.15","0.2","0.25","0.3","0.35","0.4","0.45","0.5"])
 
+fancy_cycler = (cycler(color=["dodgerblue", "orange", "deeppink", "magenta"])+
+				   cycler(linestyle=["-", "--", "-.", ":"]))
+
 # set line cycler
 plt.rc("axes", prop_cycle=standard_cycler)
 
@@ -30,15 +41,15 @@ plt.rcParams.update({
   "font.family": "Computer Modern Roman",
 })
 
-SMALL_SIZE = 9#12
-MEDIUM_SIZE = 10#15
-BIGGER_SIZE = 10#18
+SMALL_SIZE = 18#12
+MEDIUM_SIZE = 15#15
+BIGGER_SIZE = 18#18
 
 plt.rc('font', size=MEDIUM_SIZE)          # controls default text sizes
 plt.rc('axes', titlesize=MEDIUM_SIZE)     # fontsize of the axes title
 plt.rc('axes', labelsize=MEDIUM_SIZE)    # fontsize of the x and y labels
-plt.rc('xtick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
-plt.rc('ytick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
+plt.rc('xtick', labelsize=MEDIUM_SIZE)    # fontsize of the tick labels
+plt.rc('ytick', labelsize=MEDIUM_SIZE)    # fontsize of the tick labels
 plt.rc('legend', fontsize=SMALL_SIZE)    # legend fontsize
 plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
 
@@ -156,20 +167,15 @@ def report_compare(solutions, list_of_solvers):
 
 	# plot the trajectory obtained by the optimizer
 	fig_traj = plt.figure()
-	ax = plt.axes(projection='3d')
-	colors = ["r","b","g","k"]
+	ax = mplot3d.Axes3D(fig_traj)
+
+	colors = ["r","b","g","m"]
 	for i, solver_name in zip(range(nSolvers),list_of_solvers):
 		sol = solutions[solver_name]
 		ax.plot3D(sol.data[:, 0], sol.data[:, 1], sol.data[:, 2], colors[i] , marker = 'o', markersize=4)
-		#ax.plot3D(data_komo[:, 0], data_komo[:, 1], data_komo[:, 2], 'r', marker='o', markersize=4)
 
 	ax.scatter3D(x0[0], x0[1], x0[2], color='k')
 	ax.scatter3D(xf[0], xf[1], xf[2], color='k')
-
-	"""
-	if xm is not None:
-		ax.scatter3D(xm[0], xm[1], xm[2], color='k')
-	"""
 
 	if obstacles is not None:
 		for obs in obstacles:
@@ -183,6 +189,131 @@ def report_compare(solutions, list_of_solvers):
 	ax.set_ylim([robot.min_x[1], robot.max_x[1]])
 	ax.set_zlim([robot.min_x[2], robot.max_x[2]])
 
+	# plot trajectory obtained by the optimizer with the stl models
+	fig_model_traj = plt.figure()
+	ax = mplot3d.Axes3D(fig_model_traj)
+
+	quad_model = mesh.Mesh.from_file('physics/multirotor_models/crazyflie2.stl')
+	colors = ["k","b","g","m"]
+
+	T = len(solutions[list_of_solvers[0]].data[:,0])
+
+	for i, solver_name in zip(range(nSolvers),list_of_solvers):
+		sol = solutions[solver_name]
+		ax.plot3D(sol.data[:, 0], sol.data[:, 1], sol.data[:, 2], colors[i] , linestyle = ':', linewidth = 0.5, markersize=4)
+
+	for t in range(T):
+		for i, solver_name in zip(range(nSolvers),list_of_solvers):
+			sol = solutions[solver_name]
+			if t%(T/20) == 0 or t == T-1:
+				model = copy.deepcopy(quad_model)
+
+				quat_rot = sol.data[t,6:10]
+				rot_mat = rowan.to_matrix(quat_rot)
+				pos = sol.data[t,:3]
+				
+				model.rotate_using_matrix(rot_mat)
+				model.translate(pos)
+
+				if t == 0:
+					surf = ax.add_collection3d(mplot3d.art3d.Poly3DCollection(model.vectors, color = "dodgerblue"))
+				elif t == T-1:
+					surf = ax.add_collection3d(mplot3d.art3d.Poly3DCollection(model.vectors, color = "deeppink"))
+				else:
+					surf = ax.add_collection3d(mplot3d.art3d.Poly3DCollection(model.vectors, color = colors[i]))
+
+				surf._facecolors2d=surf._facecolor3d
+				surf._edgecolors2d=surf._edgecolor3d
+
+
+	if solutions[list_of_solvers[0]].intermediate_states is not None:
+		for i_s in solutions[list_of_solvers[0]].intermediate_states:
+			model = copy.deepcopy(quad_model)
+
+			quat_rot = solutions[list_of_solvers[0]].data[i_s.timing,6:10]
+			rot_mat = rowan.to_matrix(quat_rot)
+			pos = solutions[list_of_solvers[0]].data[i_s.timing,:3]
+			
+			model.rotate_using_matrix(rot_mat)
+			model.translate(pos)
+
+			surf = ax.add_collection3d(mplot3d.art3d.Poly3DCollection(model.vectors, color = "orange"))
+
+			surf._facecolors2d=surf._facecolor3d
+			surf._edgecolors2d=surf._edgecolor3d
+
+	if obstacles is not None:
+		for obs in obstacles:
+			draw_obs(obs.type, obs.shape, obs.pos, ax)
+
+	set_axes_equal(ax)
+	ax.set_ylabel("y [m]")
+	ax.set_xlabel("x [m]")
+	ax.set_zlabel("z [m]")
+
+	init_s_color = mpatches.Patch(color='dodgerblue', label='initial state')
+	final_s_color = mpatches.Patch(color='deeppink', label='final state')
+	intermediate_s_color = mpatches.Patch(color='orange', label='intermediate state')
+	#if solutions[list_of_solvers[0]].intermediate_states is not None:
+	#	ax.legend(handles=[init_s_color,final_s_color,intermediate_s_color])
+	#else:
+	#	ax.legend(handles=[init_s_color,final_s_color])
+	#plt.legend()
+
+	ax = plt.gca()
+	xlim = ax.get_xlim()
+	ylim = ax.get_ylim()
+	zlim = ax.get_zlim()
+
+	# plot the problem description
+
+	fig_prob = plt.figure()
+	ax = mplot3d.Axes3D(fig_prob)
+
+	timings = [0,T-1]
+
+	if solutions[list_of_solvers[0]].intermediate_states is not None:
+		timings.extend([i_s.timing for i_s in solutions[list_of_solvers[0]].intermediate_states])
+
+	for t in timings:
+		model = copy.deepcopy(quad_model)
+
+		quat_rot = solutions[list_of_solvers[0]].data[t,6:10]
+		rot_mat = rowan.to_matrix(quat_rot)
+		pos = solutions[list_of_solvers[0]].data[t,:3]
+		
+		model.rotate_using_matrix(rot_mat)
+		model.translate(pos)
+
+		if t == 0:
+			surf = ax.add_collection3d(mplot3d.art3d.Poly3DCollection(model.vectors, color = "dodgerblue"))
+		elif t == T-1:
+			surf = ax.add_collection3d(mplot3d.art3d.Poly3DCollection(model.vectors, color = "deeppink"))
+		else:
+			surf = ax.add_collection3d(mplot3d.art3d.Poly3DCollection(model.vectors, color = "orange"))
+
+		surf._facecolors2d=surf._facecolor3d
+		surf._edgecolors2d=surf._edgecolor3d
+
+	if obstacles is not None:
+		for obs in obstacles:
+			draw_obs(obs.type, obs.shape, obs.pos, ax)
+
+	set_axes_equal(ax)
+
+	#if solutions[list_of_solvers[0]].intermediate_states is not None:
+	#	plt.legend(["initial state", "final state", "intermediate state"])
+	#else:
+	#	plt.legend(["initial state", "final state"])
+
+	ax = plt.gca()
+	ax.set_ylabel("y [m]")
+	ax.set_xlabel("x [m]")
+	ax.set_zlabel("z [m]")
+	ax.set_xlim(xlim)
+	ax.set_ylim(ylim)
+	ax.set_zlim(zlim)
+	
 	# plot integration error
 	if nSolvers <= 2:
 		fig_int_err, axs = plt.subplots(1, nSolvers)
@@ -239,7 +370,7 @@ def report_compare(solutions, list_of_solvers):
 
 		axs[i].legend(leg)
 		axs[i].set_ylabel("forces [N]")
-		inputCost = np.round((actions[:-1] ** 2).sum(),3)
+		inputCost = np.round((actions ** 2).sum(),3)
 		axs[i].set_title("force comparision \n input cost: \n {}: {}".format(solver_name, inputCost))
 		axs[i].set_xlabel("time [s]")
 
@@ -252,8 +383,10 @@ def report_compare(solutions, list_of_solvers):
 	fig_traj.savefig("plots/trajectory.pdf")
 	fig_int_err.savefig("plots/int_error.pdf")
 	fig_ac.savefig("plots/actions.pdf")
+	fig_model_traj.savefig("plots/model_traj.pdf")
+	fig_prob.savefig("plots/prob.pdf")
 
-	#plt.show()
+	plt.show()
 
 
 def report_noise(prob_name, path, nr_motors, t2w_vec, noise_vec, robot_type, prob_setup):
@@ -630,3 +763,256 @@ def report_noise(prob_name, path, nr_motors, t2w_vec, noise_vec, robot_type, pro
 		ax.set_yticks(np.arange(len(nr_motors)*len(t2w_vec)) + 0.5)
 		ax.set_yticklabels(y_ticks)
 		ax.set_xlabel("trials")
+
+
+def report_all(prob_names, solver_names):
+
+	success_simple_flight = {"KOMO":[], "SCVX":[], "CASADI":[]}
+	success_obstacle_flight = {"KOMO":[], "SCVX":[], "CASADI":[]}
+	success_recovery_flight = {"KOMO":[], "SCVX":[], "CASADI":[]}
+	success_flip = {"KOMO":[], "SCVX":[], "CASADI":[]}
+
+	time_simple_flight = {"KOMO":[], "SCVX":[], "CASADI":[]}
+	time_obstacle_flight = {"KOMO":[], "SCVX":[], "CASADI":[]}
+	time_recovery_flight = {"KOMO":[], "SCVX":[], "CASADI":[]}
+	time_flip = {"KOMO":[], "SCVX":[], "CASADI":[]}
+
+	cost_simple_flight = {"KOMO":[], "SCVX":[], "CASADI":[]}
+	cost_obstacle_flight = {"KOMO":[], "SCVX":[], "CASADI":[]}
+	cost_recovery_flight = {"KOMO":[], "SCVX":[], "CASADI":[]}
+	cost_flip = {"KOMO":[], "SCVX":[], "CASADI":[]}
+
+	for p_n in prob_names:
+		
+		dat = {}
+		for s_n in solver_names:
+			dat[s_n] = ou.load_object("data/all_runs/" + p_n + "_4m_" + s_n)
+
+		if "simple_flight" in p_n:
+			for s_n in solver_names:
+				success_simple_flight[s_n].append(dat[s_n].success)
+
+				if dat[s_n].success:
+					time_simple_flight[s_n].append(dat[s_n].time)
+
+					actions = dat[s_n].data[:-1,13:]
+					cost_val = np.round((actions ** 2).sum(),7)
+					#cost_val = (actions ** 2).sum()
+					cost_simple_flight[s_n].append(cost_val)
+
+		elif "obstacle_flight" in p_n:
+			for s_n in solver_names:
+				success_obstacle_flight[s_n].append(dat[s_n].success)
+
+				if dat[s_n].success:
+					time_obstacle_flight[s_n].append(dat[s_n].time)
+
+					actions = dat[s_n].data[:-1,13:]
+					cost_val = np.round((actions ** 2).sum(),7)
+					#cost_val = (actions ** 2).sum()
+					cost_obstacle_flight[s_n].append(cost_val)
+
+		elif "recovery_flight" in p_n:
+			for s_n in solver_names:
+				success_recovery_flight[s_n].append(dat[s_n].success)
+
+				if dat[s_n].success:
+					time_recovery_flight[s_n].append(dat[s_n].time)
+
+					actions = dat[s_n].data[:-1,13:]
+					cost_val = np.round((actions ** 2).sum(),7)
+					#cost_val = (actions ** 2).sum()
+					cost_recovery_flight[s_n].append(cost_val)
+
+		elif "flip" in p_n:
+			for s_n in solver_names:
+				success_flip[s_n].append(dat[s_n].success)
+
+				if dat[s_n].success:
+					time_flip[s_n].append(dat[s_n].time)
+
+					actions = dat[s_n].data[:-1,13:]
+					cost_val = np.round((actions ** 2).sum(),7)
+					#cost_val = (actions ** 2).sum()
+					cost_flip[s_n].append(cost_val)
+		
+		else:
+			print("unknown problem")
+
+	# Plot
+	kwargs = {} #dict(kde_kws={'linewidth':2})
+
+	# make pandas dataframes for better handling with seaborn
+	cost_sf_df = pd.concat([pd.DataFrame({"KOMO":cost_simple_flight["KOMO"]}),
+			    			pd.DataFrame({"SCVX":cost_simple_flight["SCVX"]}),
+							pd.DataFrame({"CASADI": cost_simple_flight["CASADI"]})], axis = 1)
+	cost_of_df = pd.concat([pd.DataFrame({"KOMO":cost_obstacle_flight["KOMO"]}),
+			    			pd.DataFrame({"SCVX":cost_obstacle_flight["SCVX"]}),
+							pd.DataFrame({"CASADI": cost_obstacle_flight["CASADI"]})], axis = 1)
+	cost_rf_df = pd.concat([pd.DataFrame({"KOMO":cost_recovery_flight["KOMO"]}),
+			    			pd.DataFrame({"SCVX":cost_recovery_flight["SCVX"]}),
+							pd.DataFrame({"CASADI": cost_recovery_flight["CASADI"]})], axis = 1)
+	cost_f_df = pd.concat([pd.DataFrame({"KOMO":cost_flip["KOMO"]}),
+			    		   pd.DataFrame({"SCVX":cost_flip["SCVX"]}),
+						   pd.DataFrame({"CASADI": cost_flip["CASADI"]})], axis = 1)
+	
+	time_sf_df = pd.concat([pd.DataFrame({"KOMO":time_simple_flight["KOMO"]}),
+			    			pd.DataFrame({"SCVX":time_simple_flight["SCVX"]}),
+							pd.DataFrame({"CASADI": time_simple_flight["CASADI"]})], axis = 1)
+	time_of_df = pd.concat([pd.DataFrame({"KOMO":time_obstacle_flight["KOMO"]}),
+			    			pd.DataFrame({"SCVX":time_obstacle_flight["SCVX"]}),
+							pd.DataFrame({"CASADI": time_obstacle_flight["CASADI"]})], axis = 1)
+	time_rf_df = pd.concat([pd.DataFrame({"KOMO":time_recovery_flight["KOMO"]}),
+			    			pd.DataFrame({"SCVX":time_recovery_flight["SCVX"]}),
+							pd.DataFrame({"CASADI": time_recovery_flight["CASADI"]})], axis = 1)
+	time_f_df = pd.concat([pd.DataFrame({"KOMO":time_flip["KOMO"]}),
+			    		   pd.DataFrame({"SCVX":time_flip["SCVX"]}),
+						   pd.DataFrame({"CASADI": time_flip["CASADI"]})], axis = 1)
+
+	
+	plt.rc("axes", prop_cycle=fancy_cycler)	
+
+	fig, axs = plt.subplots(2,2)
+	sns.histplot(cost_sf_df, element="step", stat="percent", color="deeppink",  bins = 15, legend = False, ax = axs[0,0])
+	axs[0,0].set_title("simple")
+	axs[0,0].xaxis.set_major_formatter(FormatStrFormatter('%.4f'))
+	sns.histplot(cost_of_df, element="step", stat="percent", color=["dodgerblue","orange","deeppink"], bins = 15, legend = True, ax = axs[0,1])
+	axs[0,1].set_title("obstacles")
+	axs[0,1].set_ylabel(" ")
+	sns.histplot(cost_rf_df, element="step", stat="percent", color=["dodgerblue","orange","deeppink"], bins = 15, legend = False, ax = axs[1,0])
+	axs[1,0].set_title("recovery")
+	axs[1,0].set_xlabel("optimal value")
+	sns.histplot(cost_f_df, element="step", stat="percent", color=["dodgerblue","orange","deeppink"], bins = 15, legend = False, ax = axs[1,1])
+	axs[1,1].set_title("flip")
+	axs[1,1].set_xlabel("optimal value")
+	axs[1,1].set_ylabel(" ")
+	plt.tight_layout()
+	fig.savefig("plots/costs_all.pdf")
+	plt.clf()
+
+
+	fig, axs = plt.subplots(2,2)
+	sns.boxplot(time_sf_df, ax = axs[0,0])
+	axs[0,0].set_title("simple")
+	axs[0,0].set_ylabel("time [s]")
+	sns.boxplot(time_of_df, ax = axs[0,1])
+	axs[0,1].set_title("obstacle")
+	sns.boxplot(time_rf_df, ax = axs[1,0])
+	axs[1,0].set_title("recovery")
+	axs[1,0].set_ylabel("time [s]")
+	sns.boxplot(time_f_df, ax = axs[1,1])
+	axs[1,1].set_title("flip")
+
+	plt.tight_layout()
+	fig.savefig("plots/time_all.pdf")
+	plt.clf()
+
+	n_runs = len(prob_names)/4
+	print("sr KOMO simple_flight: ", len(cost_simple_flight["KOMO"])/n_runs)
+	print("sr SCVX simple_flight: ", len(cost_simple_flight["SCVX"])/n_runs)
+	print("sr CASADI simple_flight: ", len(cost_simple_flight["CASADI"])/n_runs)
+
+	print("sr KOMO obstacle_flight: ", len(cost_obstacle_flight["KOMO"])/n_runs)
+	print("sr SCVX obstacle_flight: ", len(cost_obstacle_flight["SCVX"])/n_runs)
+	print("sr CASADI obstacle_flight: ", len(cost_obstacle_flight["CASADI"])/n_runs)
+
+	print("sr KOMO recovery_flight: ", len(cost_recovery_flight["KOMO"])/n_runs)
+	print("sr SCVX recovery_flight: ", len(cost_recovery_flight["SCVX"])/n_runs)
+	print("sr CASADI recovery_flight: ", len(cost_recovery_flight["CASADI"])/n_runs)
+
+	print("sr KOMO flip: ", len(cost_flip["KOMO"])/n_runs)
+	print("sr SCVX flip: ", len(cost_flip["SCVX"])/n_runs)
+	print("sr CASADI flip: ", len(cost_flip["CASADI"])/n_runs)
+
+	"""
+	# make pandas dataframes for better handling with seaborn
+	cost_sf_df = pd.DataFrame({"KOMO":cost_simple_flight["KOMO"],
+			    			   "SCVX":cost_simple_flight["SCVX"],
+							   "CASADI": cost_simple_flight["CASADI"]})
+	cost_of_df = pd.DataFrame({"KOMO":cost_obstacle_flight["KOMO"],
+			    			   "SCVX":cost_obstacle_flight["SCVX"],
+							   "CASADI": cost_obstacle_flight["CASADI"]})
+	cost_rf_df = pd.DataFrame({"KOMO":cost_recovery_flight["KOMO"],
+			    			   "SCVX":cost_recovery_flight["SCVX"],
+							   "CASADI": cost_recovery_flight["CASADI"]})
+	cost_f_df = pd.DataFrame({"KOMO":cost_flip["KOMO"],
+			    			   "SCVX":cost_flip["SCVX"],
+							   "CASADI": cost_flip["CASADI"]})
+	
+	time_sf_df = pd.DataFrame({"KOMO":time_simple_flight["KOMO"],
+			    			   "SCVX":time_simple_flight["SCVX"],
+							   "CASADI": time_simple_flight["CASADI"]})
+	time_of_df = pd.DataFrame({"KOMO":time_obstacle_flight["KOMO"],
+			    			   "SCVX":time_obstacle_flight["SCVX"],
+							   "CASADI": time_obstacle_flight["CASADI"]})
+	time_rf_df = pd.DataFrame({"KOMO":time_recovery_flight["KOMO"],
+			    			   "SCVX":time_recovery_flight["SCVX"],
+							   "CASADI": time_recovery_flight["CASADI"]})
+	time_f_df = pd.DataFrame({"KOMO":time_flip["KOMO"],
+			    			   "SCVX":time_flip["SCVX"],
+							   "CASADI": time_flip["CASADI"]})
+
+	
+
+	fig, axs = plt.subplots(2,2)
+	sns.barplot(time_sf_df, errorbar = "sd", ax = axs[0,0])
+	sns.barplot(time_of_df, errorbar = "sd", ax = axs[0,1])
+	sns.barplot(time_rf_df, errorbar = "sd", ax = axs[1,0])
+	sns.barplot(time_f_df, errorbar = "sd", ax = axs[1,1])
+
+	plt.legend()
+	fig.savefig("plots/time_all.pdf")
+	plt.clf()
+
+
+
+
+
+	fig, axs = plt.subplots(2,2)
+
+	# plot costs
+	# plot simple flight costs 
+	sns.histplot(cost_simple_flight["KOMO"], element="step", color="dodgerblue", label="KOMO", ax = axs[0,0], kde = True, **kwargs)
+	sns.histplot(cost_simple_flight["SCVX"], element="step", color="orange", label="SCVX", ax = axs[0,1], kde = True, **kwargs)
+	sns.histplot(cost_simple_flight["CASADI"], element="step", color="deeppink", ax = axs[1,0], label="CASADI", kde = True, **kwargs)
+
+	plt.legend()
+	fig.savefig("plots/costs_simple.pdf")
+	plt.clf()
+
+	fig, axs = plt.subplots(2,2)
+
+	# plot costs
+	# plot simple flight costs 
+	sns.histplot(cost_obstacle_flight["KOMO"], element="step", color="dodgerblue", label="KOMO", ax = axs[0,0], kde = True, **kwargs)
+	sns.histplot(cost_obstacle_flight["SCVX"], element="step", color="orange", label="SCVX", ax = axs[0,1], kde = True, **kwargs)
+	sns.histplot(cost_obstacle_flight["CASADI"], element="step", color="deeppink", ax = axs[1,0], label="CASADI", kde = True, **kwargs)
+
+	plt.legend()
+	fig.savefig("plots/costs_obstacle.pdf")
+	plt.clf()
+
+	fig, axs = plt.subplots(2,2)
+
+	# plot costs
+	# plot simple flight costs 
+	sns.histplot(cost_recovery_flight["KOMO"], element="step", color="dodgerblue", label="KOMO", ax = axs[0,0], kde = True, **kwargs)
+	sns.histplot(cost_recovery_flight["SCVX"], element="step", color="orange", label="SCVX", ax = axs[0,1], kde = True, **kwargs)
+	sns.histplot(cost_recovery_flight["CASADI"], element="step", color="deeppink", ax = axs[1,0], label="CASADI", kde = True, **kwargs)
+
+	plt.legend()
+	fig.savefig("plots/costs_recovery.pdf")
+	plt.clf()
+
+	fig, axs = plt.subplots(2,2)
+
+	# plot costs
+	# plot simple flight costs 
+	sns.histplot(cost_flip["KOMO"], element="step", color="dodgerblue", label="KOMO", ax = axs[0,0], kde = True, **kwargs)
+	sns.histplot(cost_flip["SCVX"], element="step", color="orange", label="SCVX", ax = axs[0,1], kde = True, **kwargs)
+	sns.histplot(cost_flip["CASADI"], element="step", color="deeppink", ax = axs[1,0], label="CASADI", kde = True, **kwargs)
+
+	plt.legend()
+	fig.savefig("plots/costs_flip.pdf")
+	plt.clf()
+	"""

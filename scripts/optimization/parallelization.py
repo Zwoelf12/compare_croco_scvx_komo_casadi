@@ -17,8 +17,10 @@ class Multiprocess():
         self.arg_combinations = build_arg_combinations(args, repetitions, combination)
 
     def run_processes(self):
-        print("running {} tasks on {} cpus in parallel".format(len(self.arg_combinations),mp.cpu_count()-1))
-        with mp.Pool(mp.cpu_count()-1) as pool:
+        n_cpus = mp.cpu_count()-1
+        n_cpus = 10
+        print("running {} tasks on {} cpus in parallel".format(len(self.arg_combinations),n_cpus))
+        with mp.Pool(n_cpus) as pool:
             asyn_results = pool.starmap_async(self.task, self.arg_combinations)
             results = asyn_results.get()
         return results

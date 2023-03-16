@@ -26,6 +26,8 @@ def visualize_initial_guess(traj,x0,xf,xm,obs):
 
     set_axes_equal(ax)
 
+    fig.savefig("plots/initial_trajectory.pdf")
+
     fig, axs = plt.subplots(2, 2)
 
     ax1 = axs[0, 0]
@@ -44,8 +46,6 @@ def visualize_initial_guess(traj,x0,xf,xm,obs):
     # plot quaternions
     ax3.plot(traj[:, 6:10])
     legend_ax3 = ["q_1", "q_2", "q_3", "q_4"]
-
-    print(np.linalg.norm(traj[:, 6:10], axis=1))
 
     # plot rotational velocities
     ax4.plot(traj[:, 10:13])
@@ -73,7 +73,9 @@ def visualize_initial_guess(traj,x0,xf,xm,obs):
     ax4.set_ylabel("rotational velocities [rad/s]")
     ax4.set_title("rotational velocities comparision")
 
-    plt.show()
+    fig.savefig("plots/initial_x.pdf")
+
+    
 
 def set_axes_equal(ax):
     '''Make axes of 3D plot have equal scale so that spheres appear as spheres,

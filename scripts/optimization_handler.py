@@ -47,11 +47,11 @@ def run_optimization(prob_name, prob_setup, list_of_solvers, alg_parameters, par
                                                                                     optProb.tf_max)
 
 
-    i_g = {"init_x": optProb.initial_x, "init_u": optProb.initial_u}
-    ou.save_object("data/initial_guess_" + prob_name, i_g)
+    #i_g = {"init_x": optProb.initial_x, "init_u": optProb.initial_u}
+    #ou.save_object("data/initial_guess_" + prob_name, i_g)
 
-    #if vis_init_guess:
-    #    visualize_initial_guess(optProb.initial_x, optProb.x0, optProb.xf, optProb.intermediate_states, optProb.obs)
+    if True:
+        visualize_initial_guess(optProb.initial_x, optProb.x0, optProb.xf, optProb.intermediate_states, optProb.obs)
 
     checks = []
     costs = []
@@ -95,6 +95,7 @@ def run_optimization(prob_name, prob_setup, list_of_solvers, alg_parameters, par
                             solution,
                             data,
                             int_error,
+                            check,
                             optProb.alg_par)
             
             checks.append(check)
@@ -106,7 +107,8 @@ def run_optimization(prob_name, prob_setup, list_of_solvers, alg_parameters, par
                             prob_name,
                             solution,
                             data,
-                            int_error)
+                            int_error,
+                            check)
 
         
     if "SCVX" in list_of_solvers:
@@ -143,6 +145,7 @@ def run_optimization(prob_name, prob_setup, list_of_solvers, alg_parameters, par
                             solution,
                             data,
                             int_error,
+                            check,
                             optProb.alg_par)
 
             checks.append(check)
@@ -154,7 +157,8 @@ def run_optimization(prob_name, prob_setup, list_of_solvers, alg_parameters, par
                             prob_name,
                             solution,
                             data,
-                            int_error)
+                            int_error,
+                            check)
         
     if "CASADI" in list_of_solvers:
 
@@ -192,6 +196,7 @@ def run_optimization(prob_name, prob_setup, list_of_solvers, alg_parameters, par
                             solution,
                             data,
                             int_error,
+                            check,
                             optProb.alg_par)
             
             checks.append(check)
@@ -203,7 +208,8 @@ def run_optimization(prob_name, prob_setup, list_of_solvers, alg_parameters, par
                             prob_name,
                             solution,
                             data,
-                            int_error)
+                            int_error,
+                            check)
     
     if parameter_search:        
         return {"check":checks, "cost":costs, "time":times}
@@ -221,18 +227,18 @@ def visualize_optimization(prob_name,list_of_solvers):
     report_compare(solutions,list_of_solvers)
 
     #for solver_name in list_of_solvers:
-    #    sol = solutions[solver_name]
-    #    animate_fM(sol.data,sol.obs)
+    #sol = solutions["KOMO"]
+    #animate_fM(sol.data,sol.obs)
 
 
 if __name__ == "__main__":
 
     run = False
     visualize = True
-    list_of_solvers = ["KOMO","SCVX","CASADI"]
+    list_of_solvers = ["KOMO"]#["KOMO","SCVX","CASADI"]
 
     # choose which problem should be solved
-    prob = 3
+    prob = 5
     prob_setup = Prob_setup(prob)
     prob_name = prob_setup.name
 
