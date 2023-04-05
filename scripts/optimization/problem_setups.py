@@ -50,24 +50,24 @@ class Prob_setup():
 
         self.name = "simple_flight"
 
-        self.x0 = np.array([0., 0., 1.,
+        self.x0 = np.array([-.1, -1.3, 1.,
                             0., 0., 0.,
                             1., 0., 0., 0.,
                             0., 0., 0.],
                             dtype=np.float64)
 
-        self.xf = np.array([0., 1., 1.,
+        self.xf = np.array([0.1, 1.3, 1.,
                             0., 0., 0.,
                             1., 0., 0., 0.,
                             0., 0., 0.], dtype=np.float64)
 
-        self.tf_min = 2.1
-        self.tf_max = 2.1
+        self.tf_min = 2.7
+        self.tf_max = 2.7
 
-        self.t_steps_scvx = 30
-        self.t_steps_komo = 30
-        self.t_steps_croco = 30
-        self.t_steps_casadi = 30
+        self.t_steps_scvx = 100
+        self.t_steps_komo = 100
+        self.t_steps_croco = 100
+        self.t_steps_casadi = 100
 
         self.noise = 0.01
 

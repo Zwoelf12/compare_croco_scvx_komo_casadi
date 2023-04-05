@@ -114,6 +114,7 @@ class SCvx():
     stop_flag = False
     interface_time = []
     cvx_solver_time = []
+    n_convex_iterations = []
     for itr in range(num_iterations):
 
       start_time = time.time() # start timing
@@ -202,6 +203,7 @@ class SCvx():
 
         interface_time.append(time_interface)
         cvx_solver_time.append(time_convex_solver)
+        n_convex_iterations.append(prob.solver_stats.num_iters)
 
         prob_value = prob.value
 
@@ -220,7 +222,7 @@ class SCvx():
 
         solution = OptSolution(states, actions, time_all_e - time_all_s, nu.value, prob_value, itr + 1, time_dilation, sum(interface_time), sum(cvx_solver_time))
         return solution
-
+      
       # calculate nonlinear augmented cost
       nlCost = self.calc_aug_nl_cost(x.value, u.value, p.value, x0, xf, intermediate_states, T, CHandler)
       # stopping criterion
@@ -296,7 +298,7 @@ class SCvx():
     actions[-1,:] = float("nan")
     time_dilation = self.redim_p(p.value)
 
-    solution = OptSolution(states, actions, time_all_e - time_all_s, nu.value, prob_value, itr + 1, time_dilation, sum(interface_time), sum(cvx_solver_time))
+    solution = OptSolution(states, actions, time_all_e - time_all_s, nu.value, prob_value, itr + 1, time_dilation, sum(interface_time), sum(cvx_solver_time), num_cvx_iter = sum(n_convex_iterations), hessian_evals = sum(n_convex_iterations))
     return solution
 
 ###################################################################################################################################################################################

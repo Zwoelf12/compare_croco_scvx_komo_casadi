@@ -53,7 +53,7 @@ class SCVX_parameter():
             self.eta0 = 1e-3
             self.eta1 = 100
             # stopping criterion
-            self.eps = 1e-3
+            self.eps = 1e-2
             self.eps_t = 1e-4
             # norm order for trust region
             self.q = "inf"
@@ -80,7 +80,7 @@ class SCVX_parameter():
             self.eta0 = 1e-3
             self.eta1 = 100
             # stopping criterion
-            self.eps = 1e-3
+            self.eps = 1e-2
             self.eps_t = 1e-4
             # norm order for trust region
             self.q = "inf"
@@ -107,7 +107,7 @@ class SCVX_parameter():
             self.eta0 = 1e-3
             self.eta1 = 100
             # stopping criterion
-            self.eps = 1e-3
+            self.eps = 1e-2
             self.eps_t = 1e-4
             # norm order for trust region
             self.q = "inf"
@@ -115,9 +115,9 @@ class SCVX_parameter():
         elif prob_name == "loop":
 
             # user defined parameter
-            self.lam = 1e2  # weight 3 slack in cost
+            self.lam = 1e3  # weight 3 slack in cost
             self.alp = 0.  # weight for time in cost
-            self.bet = 1e3  # weight for input in cost
+            self.bet = 1e3*7  # weight for input in cost
             self.gam = 0.  # weight ratio between input and time penalty
             self.adapWeightsFac = 1e1  # determines by how much the slack cost is decreased and the problem cost is increased when slack is in a reasonable range
             self.weightsFac = 1
@@ -134,7 +134,7 @@ class SCVX_parameter():
             self.eta0 = 1e-3
             self.eta1 = 100
             # stopping criterion
-            self.eps = 1e-3
+            self.eps = 1e-2
             self.eps_t = 1e-4
             # norm order for trust region
             self.q = "inf"
@@ -170,17 +170,27 @@ class CASADI_parameter():
     def __init__(self, prob_name):
 
         if prob_name == "simple_flight":
-            self.par = None
+            self.acceptable_constr_viol_tol = 0.01
+            self.acceptable_tol = 1e-6
+            self.acceptable_iter = 15
 
         elif prob_name == "obstacle_flight":
-            self.par = None
+            self.acceptable_constr_viol_tol = 0.01
+            self.acceptable_tol = 1e-6
+            self.acceptable_iter = 15
 
         elif prob_name == "recovery_flight":
-            self.par = None
+            self.acceptable_constr_viol_tol = 0.01
+            self.acceptable_tol = 1e-6
+            self.acceptable_iter = 15
 
         elif prob_name == "flip":
-            self.par = None
+            self.acceptable_constr_viol_tol = 0.01
+            self.acceptable_tol = 1e-6
+            self.acceptable_iter = 15
 
         elif prob_name == "loop":
-            self.par = None
+            self.acceptable_constr_viol_tol = 0.01
+            self.acceptable_tol = 1e-6
+            self.acceptable_iter = 15
 

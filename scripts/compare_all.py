@@ -5,22 +5,19 @@ from optimization.algorithm_parameters import KOMO_parameter,SCVX_parameter,CASA
 from optimization import opt_utils as ou
 from visualization.report_visualization import report_all
 
-solver_names = ["KOMO", "SCVX", "CASADI"]
-run = False
+solver_names = ["KOMO","SCVX","CASADI"]
+run = True
 vis = True
 
 # choose which problems should be solved
 nr_of_runs = 30
-probs = [1,2,3,4]
-
-#filename = "data/parameter_search/" + prob_name + "_4m_KOMO"
+probs = [2,3,4,5]
 
 # build list of all parameters for run optimization function
 all_alg_pars = []
 all_prob_names = []
 all_prob_setups = []
 all_solver_names = []
-#all_parameter_search = []
 for i in range(nr_of_runs):
     for p in probs:
 
@@ -34,7 +31,6 @@ for i in range(nr_of_runs):
         all_prob_names.append("run_" + str(i) + "_" + prob_name)
         all_prob_setups.append(prob_setup)
         all_solver_names.append(solver_names)
-        #all_parameter_search.append(False)
 
 # put all arg in one list (order is important)
 args = [all_prob_names, all_prob_setups, all_solver_names, all_alg_pars]    

@@ -113,7 +113,12 @@ def solve(robot, x0, xf, intermediate_states, t_final, obs, initial_x, initial_u
     opt.minimize(sumsqr(U)) # minimze energy
 
     ## solve optimization problem
-    opt.solver('ipopt')
+    p_opt = {}
+    s_opt = {"acceptable_constr_viol_tol":alg_par.acceptable_constr_viol_tol,
+             "acceptable_tol":alg_par.acceptable_tol,
+             "acceptable_iter":alg_par.acceptable_iter}
+    
+    opt.solver('ipopt',p_opt,s_opt)
 
     try:
         t_start_solver = time.time()
@@ -135,7 +140,7 @@ def solve(robot, x0, xf, intermediate_states, t_final, obs, initial_x, initial_u
     states = np.array(sol.value(X).T)
     actions = np.array(sol.value(U).T)
 
-    solution = ou.OptSolution(states, actions, time = t_end_solver - t_start_solver, tdil = t_final)
+    solution = ou.OptSolution(states, actions, time = t_end_solver - t_start_solver, tdil = t_final, num_iter=sol.stats()["iter_count"], hessian_evals=sol.stats()["iter_count"])
 
     """
     ## plot Jacobian

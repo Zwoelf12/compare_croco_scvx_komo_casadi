@@ -31,6 +31,12 @@
         "vector": "cpp",
         "dense_hash_map": "cpp",
         "sparse_hash_map": "cpp",
-        "sparsetable": "cpp"
+        "sparsetable": "cpp",
+        "istream": "cpp",
+        "mutex": "cpp",
+        "ostream": "cpp",
+        "stop_token": "cpp",
+        "typeinfo": "cpp",
+        "iostream": "cpp"
     }
 }

@@ -6,13 +6,15 @@ import yaml
 import matplotlib.pyplot as plt
 
 class OptSolution():
-    def __init__(self, states, actions, time=None, nu=None, opt_val=None, num_iter=None, tdil=None, time_cvxpy=None, time_cvx_solver=None, constr_viol = 0):
+    def __init__(self, states, actions, time=None, nu=None, opt_val=None, num_iter=None, tdil=None, time_cvxpy=None, time_cvx_solver=None, constr_viol = 0, num_cvx_iter = None, hessian_evals = None):
         self.states = states # optimal states
         self.actions = actions # optimal actions
         self.time = time # time needed to solve the problem
         self.nu = nu # dynamic constraint violation for scvx
         self.opt_val = opt_val # optimal problem value
         self.num_iter = num_iter # numbers of iterations until convergence
+        self.num_cvx_iter = num_cvx_iter # number of convex sub iterations
+        self.hessian_evals = hessian_evals # number of newton evaluations for KOMO
         self.time_dil = tdil # time dilation for timeoptimal calculation
         self.time_cvxpy = time_cvxpy # time spend in the cvxpy interface
         self.time_cvx_solver = time_cvx_solver # time taken only by the convex solver
@@ -60,6 +62,10 @@ class Opt_processData():
         self.time = None # time needed to solve the nonconvex problem
         self.time_cvx_solver = None # time needed by the convex solver to solve the convex subproblem
         self.success = None # states if optimizer found a solution complying with the constraints
+        self.num_iter = None # number of iterations
+        self.num_cvx_iter = None # number of convex iterations
+        self.hessian_evals = None # number of newton evaluations for KOMO
+
 
 def extract_sol_dI(C, komo, phases, timeStepspP, timepP, startPoint, quad_names):
 
@@ -329,6 +335,9 @@ def save_opt_output(optProb,
         opt_processData.t_dil = solution.time_dil
         opt_processData.time = solution.time
         opt_processData.success = success
+        opt_processData.num_iter = solution.num_iter
+        opt_processData.num_cvx_iter = solution.num_cvx_iter
+        opt_processData.hessian_evals = solution.hessian_evals
 
         if optProb.algorithm == "SCVX":
             opt_processData.time_cvx_solver = solution.time_cvx_solver
@@ -345,7 +354,7 @@ def save_opt_output(optProb,
             prob_name += "_8m"
 
         # save data
-        path = "data/"
+        path = "data/all_runs/"
 
         filename = path + prob_name
 

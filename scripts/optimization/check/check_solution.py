@@ -10,14 +10,24 @@ def check_solution(solution, optProb):
 
     robot = optProb.robot
 
-    def check_array(a, b, msg):
-        quat_diff = rowan.geometry.distance(a[6:10], b[6:10])
-        success = np.allclose(a[:6], b[:6], rtol=0.01, atol=1e-3)
-        success &= np.allclose(a[10:], b[10:], rtol=0.01, atol=0.8)
-        success &= quat_diff <= 1e-3
-        if not success:
-            print("{} \n Is: {} \n Should: {} \n Delta: {}".format(msg, a, b, a - b))
-        return success
+    if optProb.algorithm == "KOMO":
+        def check_array(a, b, msg):
+            quat_diff = rowan.geometry.distance(a[6:10], b[6:10])
+            success = np.allclose(a[:6], b[:6], rtol=0.01, atol=1e-3)
+            success &= np.allclose(a[10:], b[10:], rtol=0.01, atol=0.8)
+            success &= quat_diff <= 1e-3
+            if not success:
+                print("{} \n Is: {} \n Should: {} \n Delta: {}".format(msg, a, b, a - b))
+            return success
+    else:
+        def check_array(a, b, msg):
+            quat_diff = rowan.geometry.distance(a[6:10], b[6:10])
+            success = np.allclose(a[:6], b[:6], rtol=0.01, atol=1e-3)
+            success &= np.allclose(a[10:], b[10:], rtol=0.01, atol=1e-3)
+            success &= quat_diff <= 1e-3
+            if not success:
+                print("{} \n Is: {} \n Should: {} \n Delta: {}".format(msg, a, b, a - b))
+            return success
 
     success = True
     if states.shape[1] != len(robot.min_x):

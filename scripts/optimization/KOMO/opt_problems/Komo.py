@@ -34,6 +34,9 @@ def solve(phases, time_steps_per_phase,
         solution = extract_sol_fM(C, komo, phases, time_steps_per_phase, time_per_phase,
                                   x0, robot.nrMotors, ["drone"])
         solution.time = tf - ts
+        solution.num_iter = komo.getIterations()
+        solution.hessian_evals = komo.getEvals()
+        print("komo constraint violations: ", komo.getConstraintViolations())
 
     else:
         print("unknown robot type")

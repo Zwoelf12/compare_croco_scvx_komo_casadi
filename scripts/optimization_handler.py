@@ -46,7 +46,6 @@ def run_optimization(prob_name, prob_setup, list_of_solvers, alg_parameters, par
                                                                                     optProb.tf_min,
                                                                                     optProb.tf_max)
 
-
     #i_g = {"init_x": optProb.initial_x, "init_u": optProb.initial_u}
     #ou.save_object("data/initial_guess_" + prob_name, i_g)
 
@@ -222,6 +221,8 @@ def visualize_optimization(prob_name,list_of_solvers):
     solutions = {}
     for solver_name in list_of_solvers:
         sol_now = ou.load_opt_output(prob_name, nr_motors, solver_name)
+        print("number of iterations: ", sol_now.num_iter)
+        print("hessian evals: ", sol_now.hessian_evals)
         solutions[solver_name] = sol_now
 
     report_compare(solutions,list_of_solvers)
@@ -230,15 +231,14 @@ def visualize_optimization(prob_name,list_of_solvers):
     #sol = solutions["KOMO"]
     #animate_fM(sol.data,sol.obs)
 
-
 if __name__ == "__main__":
 
-    run = False
+    run = True
     visualize = True
-    list_of_solvers = ["KOMO"]#["KOMO","SCVX","CASADI"]
+    list_of_solvers = ["KOMO"] #["KOMO","SCVX","CASADI"]
 
     # choose which problem should be solved
-    prob = 5
+    prob = 3
     prob_setup = Prob_setup(prob)
     prob_name = prob_setup.name
 
