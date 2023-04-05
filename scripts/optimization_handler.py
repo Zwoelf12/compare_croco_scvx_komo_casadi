@@ -46,8 +46,8 @@ def run_optimization(prob_name, prob_setup, list_of_solvers, alg_parameters, par
                                                                                     optProb.tf_min,
                                                                                     optProb.tf_max)
 
-    #i_g = {"init_x": optProb.initial_x, "init_u": optProb.initial_u}
-    #ou.save_object("data/initial_guess_" + prob_name, i_g)
+    i_g = {"init_x": optProb.initial_x, "init_u": optProb.initial_u}
+    ou.save_object("data/initial_guess_" + prob_name, i_g)
 
     if True:
         visualize_initial_guess(optProb.initial_x, optProb.x0, optProb.xf, optProb.intermediate_states, optProb.obs)
@@ -238,7 +238,7 @@ if __name__ == "__main__":
     list_of_solvers = ["KOMO"] #["KOMO","SCVX","CASADI"]
 
     # choose which problem should be solved
-    prob = 3
+    prob = 5
     prob_setup = Prob_setup(prob)
     prob_name = prob_setup.name
 

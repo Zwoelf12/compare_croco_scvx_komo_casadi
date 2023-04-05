@@ -2,7 +2,7 @@ import yaml
 from optimization import opt_utils as ou
 import numpy as np
 
-probs = ["flip", "obstacle_flight", "simple_flight", "recovery_flight"]
+probs = ["flip", "obstacle_flight", "simple_flight", "recovery_flight", "loop"]
 solver_names = ["KOMO","SCVX","CASADI"]
 
 for p in probs:
@@ -11,6 +11,8 @@ for p in probs:
     init_x = i_g["init_x"].tolist()
     init_u = i_g["init_u"].tolist()[:-1]
     dat = {'states': init_x,'actions': init_u}
+
+    print(p)
 
     with open("../scripts/data/data_quim/data_quim_yaml/guess_" + p + ".yaml", mode="wt", encoding="utf-8") as file:
         yaml.dump(dat, file, default_flow_style=None, sort_keys=False)

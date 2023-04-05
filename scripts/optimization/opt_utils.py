@@ -354,7 +354,7 @@ def save_opt_output(optProb,
             prob_name += "_8m"
 
         # save data
-        path = "data/all_runs/"
+        path = "data/"
 
         filename = path + prob_name
 
