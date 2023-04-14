@@ -187,7 +187,7 @@ class Multicopter():
 
 		# rotational velocity
 		# w(t) = w(t-1) + J⁻¹(Tau(t-1) - w(t-1)xJw(t-1))*dt = w(t-1) + w_dot(t-1)
-		omega_dot = (self.inv_J * (tau_u - np.cross(self.J * omega, omega)))
+		omega_dot = (self.inv_J * (tau_u - np.cross(omega, self.J * omega)))
 		omega_next = omega + omega_dot * dt
 
 		# quaternions

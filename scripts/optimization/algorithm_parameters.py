@@ -194,3 +194,26 @@ class CASADI_parameter():
             self.acceptable_tol = 1e-6
             self.acceptable_iter = 15
 
+class CROCO_parameter():
+
+    def __init__(self, prob_name):
+
+        if prob_name == "simple_flight":
+            self.max_iter = 100
+            self.weight_goal = 200
+
+        elif prob_name == "obstacle_flight":
+            self.max_iter = 50
+            self.weight_goal = 200
+
+        elif prob_name == "recovery_flight":
+            self.max_iter = 400
+            self.weight_goal = 400
+
+        elif prob_name == "flip":
+            self.max_iter = 600
+            self.weight_goal = 600
+        
+        elif prob_name == "loop":
+            self.max_iter = 100
+            self.weight_goal = 200

@@ -2,6 +2,7 @@ from optimization.KOMO.opt_problems import KomoProblem_fM
 from optimization.KOMO.opt_problems import KomoProblem_dI
 from optimization.opt_utils import extract_sol_dI, extract_sol_fM
 import time
+import numpy as np
 
 def solve(phases, time_steps_per_phase,
                time_per_phase, x0, xf, intermediate_states, obs,
@@ -36,7 +37,7 @@ def solve(phases, time_steps_per_phase,
         solution.time = tf - ts
         solution.num_iter = komo.getIterations()
         solution.hessian_evals = komo.getEvals()
-        print("komo constraint violations: ", komo.getConstraintViolations())
+        solution.hessian = komo.getHessian()
 
     else:
         print("unknown robot type")

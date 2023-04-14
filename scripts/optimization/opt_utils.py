@@ -6,7 +6,7 @@ import yaml
 import matplotlib.pyplot as plt
 
 class OptSolution():
-    def __init__(self, states, actions, time=None, nu=None, opt_val=None, num_iter=None, tdil=None, time_cvxpy=None, time_cvx_solver=None, constr_viol = 0, num_cvx_iter = None, hessian_evals = None):
+    def __init__(self, states, actions, time=None, nu=None, opt_val=None, num_iter=None, tdil=None, time_cvxpy=None, time_cvx_solver=None, constr_viol = 0, num_cvx_iter = None, hessian_evals = None, hessian = None):
         self.states = states # optimal states
         self.actions = actions # optimal actions
         self.time = time # time needed to solve the problem
@@ -15,6 +15,7 @@ class OptSolution():
         self.num_iter = num_iter # numbers of iterations until convergence
         self.num_cvx_iter = num_cvx_iter # number of convex sub iterations
         self.hessian_evals = hessian_evals # number of newton evaluations for KOMO
+        self.hessian = hessian
         self.time_dil = tdil # time dilation for timeoptimal calculation
         self.time_cvxpy = time_cvxpy # time spend in the cvxpy interface
         self.time_cvx_solver = time_cvx_solver # time taken only by the convex solver
@@ -45,6 +46,11 @@ class Parameter_komo():
         self.time_per_phase = None # time per phase in seconds
         self.noise = None # noise used for initialization
 
+class Parameter_croco():
+    def __init__(self):
+        self.max_iter = None # max number of iterations
+        self.weight_goal = None # weight on goal constraint
+
 class Opt_processData():
     def __init__(self):
         self.robot = None # used dynamic model
@@ -65,6 +71,7 @@ class Opt_processData():
         self.num_iter = None # number of iterations
         self.num_cvx_iter = None # number of convex iterations
         self.hessian_evals = None # number of newton evaluations for KOMO
+        self.hessian = None # Hessian of the optimization problem
 
 
 def extract_sol_dI(C, komo, phases, timeStepspP, timepP, startPoint, quad_names):
@@ -338,6 +345,7 @@ def save_opt_output(optProb,
         opt_processData.num_iter = solution.num_iter
         opt_processData.num_cvx_iter = solution.num_cvx_iter
         opt_processData.hessian_evals = solution.hessian_evals
+        opt_processData.hessian = solution.hessian
 
         if optProb.algorithm == "SCVX":
             opt_processData.time_cvx_solver = solution.time_cvx_solver
@@ -354,7 +362,7 @@ def save_opt_output(optProb,
             prob_name += "_8m"
 
         # save data
-        path = "data/"
+        path = "data/all_runs/"
 
         filename = path + prob_name
 
@@ -372,6 +380,9 @@ def save_opt_output(optProb,
 
         elif optProb.algorithm == "CASADI":
             save_object(filename + "_CASADI", opt_processData)
+
+        elif optProb.algorithm == "CROCO":
+            save_object(filename + "_CROCO", opt_processData)
 
 
 def load_object(filename):
@@ -427,7 +438,7 @@ def gen_yaml_files(init_x,init_u,obs,x0,xf,robot):
         yaml.dump(rob, file, default_flow_style=None, sort_keys=False)
 
 
-def calc_initial_guess(robot, timesteps, noise_factor, xf, x0, intermediate_points, tf_min, tf_max):
+def calc_initial_guess(robot, timesteps, noise_factor, xf, x0, intermediate_points, tf_min, tf_max, initial_guess_type):
 
     T = timesteps
 
@@ -499,11 +510,16 @@ def calc_initial_guess(robot, timesteps, noise_factor, xf, x0, intermediate_poin
 
         return positions, quaternions
 
-    ## use interpolation between start and end point as initial guess
-    # interpolate positions and quaternions
-    interpolated_positions, interpolated_quaternions = calc_interpolation(positions_fixed, position_timing, quaternions_fixed, quaternion_timing)
-    initial_x[:, 0:3] += interpolated_positions
-    initial_x[:, 6:10] += interpolated_quaternions
+    if initial_guess_type == 1:
+        # use upright orientation and initial position as initial guess
+        initial_x[:,0:3] = x0[0:3]
+        initial_x[:,6:10] = np.array([1,0,0,0])
+    elif initial_guess_type == 2:
+        ## use interpolation between start and end point as initial guess
+        # interpolate positions and quaternions
+        interpolated_positions, interpolated_quaternions = calc_interpolation(positions_fixed, position_timing, quaternions_fixed, quaternion_timing)
+        initial_x[:, 0:3] += interpolated_positions
+        initial_x[:, 6:10] += interpolated_quaternions
 
     # add gravity compensation
     initial_u[:, :] += (9.81 * robot.mass) / robot.nrMotors

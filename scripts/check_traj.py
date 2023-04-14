@@ -11,6 +11,7 @@ import numpy as np
 prob = 3
 prob_setup = Prob_setup(prob)
 prob_name = prob_setup.name
+print("prob name: ", prob_setup.name)
 
 # define optimization problem
 optProb = OptProblem()
@@ -37,8 +38,7 @@ optProb.algorithm = "SCVX"
 optProb.robot = multirotor_full_model_komo_scp.Multicopter(nr_motors, arm_length, prob_setup.t2w)
 
 optProb.robot.dt = 1/prob_setup.t_steps_croco
-print(optProb.robot.dt * optProb.tf_max)
-#input(" ")
+print("dt: ", optProb.robot.dt * optProb.tf_max)
 
 optProb.CHandler = collisionHandler(optProb.robot)
 optProb.CHandler.obs_data = optProb.obs
@@ -53,7 +53,7 @@ with open("data/data_quim/data_quim_yaml/croco_recovery.yaml", 'r') as stream:
 states = np.array(data_loaded["states"])#["states"])
 actions = np.vstack([np.array(data_loaded["actions"]), np.array([np.nan,np.nan,np.nan,np.nan])])#["actions"]), np.array([np.nan,np.nan,np.nan,np.nan])])
 
-#data_load = ou.load_object("data/obstacle_flight_4m_SCVX")
+#data_load = ou.load_object("data/flip_4m_SCVX")
 #states = data_load.data[:,:13]
 #actions = data_load.data[:,13:]
 

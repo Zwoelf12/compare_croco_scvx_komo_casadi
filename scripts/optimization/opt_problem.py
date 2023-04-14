@@ -2,6 +2,7 @@ from physics.collision.collisionHandler import collisionHandler
 from optimization.KOMO.opt_problems import Komo
 from optimization.SCP.SCvx import SCvx
 from optimization.CASADI import Casadi
+from optimization.CROCO import Croco
 
 class OptProblem():
     def __init__(self):
@@ -19,7 +20,7 @@ class OptProblem():
         self.initial_x = None # initialization of states
         self.initial_u = None # initialization of actions
         self.initial_p = None # initialization of time_dilation
-        #self.prob_name = None # short problem description
+        self.prob_name = None # short problem description
 
     def solve_problem(self):
         
@@ -76,6 +77,15 @@ class OptProblem():
                                     self.par.discretization_method,
                                     self.par.use_c_code,
                                     self.alg_par)
+        
+        elif self.algorithm == "CROCO":
+            
+            solution = Croco.solve(self.prob_name,
+                                   self.initial_x,
+                                   self.initial_u,
+                                   self.tf_max,
+                                   self.alg_par.max_iter,
+                                   self.alg_par.weight_goal)
 
         else:
             print("unknown algorithm")

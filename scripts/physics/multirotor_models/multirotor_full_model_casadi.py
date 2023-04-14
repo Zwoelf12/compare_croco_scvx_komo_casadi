@@ -190,8 +190,8 @@ class Multicopter():
 
 		# quaternions
 		# q(t) = q(t-1) + 0.5*q(t-1)w(t-1)
-		q_next = qnormalize(qintegrate(q, qrotate(q, omega), dt))
-
+		q_dot = 0.5*qmultiply(q, np.concatenate((np.array([0]),omega)))
+		q_next = q + q_dot * dt #qnormalize(qintegrate(q, qrotate(q, omega), dt))
 
 		return np.concatenate((pos_next, vel_next, q_next, omega_next))
 

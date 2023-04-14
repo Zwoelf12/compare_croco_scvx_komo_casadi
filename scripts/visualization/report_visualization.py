@@ -4,6 +4,7 @@ import rowan
 from numpy import *
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.ticker as mticker
 from matplotlib.ticker import PercentFormatter
 from matplotlib.colors import ListedColormap
 import seaborn as sns
@@ -15,6 +16,8 @@ import rowan
 import copy
 import matplotlib.patches as mpatches
 from coloraide import Color
+import pylab as ply
+import matplotlib
 
 # line cyclers adapted to colourblind people
 from cycler import cycler
@@ -30,7 +33,7 @@ standard_cycler = (cycler(color=["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#1
 
 bw_cycler = cycler(color=["0","0.05","0.1","0.15","0.2","0.25","0.3","0.35","0.4","0.45","0.5"])
 
-fancy_cycler = (cycler(color=["dodgerblue", "orange", "deeppink", "magenta"])+
+fancy_cycler = (cycler(color=["dodgerblue", "orange", "deeppink", "limegreen"])+
 				   cycler(linestyle=["-", "--", "-.", ":"]))
 
 # set line cycler
@@ -42,9 +45,9 @@ plt.rcParams.update({
   "font.family": "Computer Modern Roman",
 })
 
-SMALL_SIZE = 18#12
-MEDIUM_SIZE = 15#15
-BIGGER_SIZE = 18#18
+SMALL_SIZE = 24#12
+MEDIUM_SIZE = 26#15
+BIGGER_SIZE = 28#18
 
 plt.rc('font', size=MEDIUM_SIZE)          # controls default text sizes
 plt.rc('axes', titlesize=MEDIUM_SIZE)     # fontsize of the axes title
@@ -211,7 +214,7 @@ def report_compare(solutions, list_of_solvers):
 	for t in range(T):
 		for i, solver_name in zip(range(nSolvers),list_of_solvers):
 			sol = solutions[solver_name] #5, 10, 20
-			if t%(T/20) == 0 or t == T-1:# or t == 9 or t == 72:
+			if t%(T/5) == 0 or t == T-1 or t == 9 or t == 72:
 				model = copy.deepcopy(quad_model)
 
 				quat_rot = sol.data[t,6:10]
@@ -281,17 +284,17 @@ def report_compare(solutions, list_of_solvers):
 			draw_obs(obs.type, obs.shape, obs.pos, ax)
 
 	set_axes_equal(ax)
-	ax.set_ylabel("y [m]")
-	ax.set_xlabel("x [m]")
-	ax.set_zlabel("z [m]")
+	ax.set_ylabel("\ny [m]")
+	ax.set_xlabel("\nx [m]")
+	ax.set_zlabel("\nz [m]")
 
 	init_s_color = mpatches.Patch(color='dodgerblue', label='initial state')
 	final_s_color = mpatches.Patch(color='deeppink', label='final state')
 	intermediate_s_color = mpatches.Patch(color='orange', label='intermediate state')
-	#if solutions[list_of_solvers[0]].intermediate_states is not None:
-	#	ax.legend(handles=[init_s_color,final_s_color,intermediate_s_color])
-	#else:
-	#	ax.legend(handles=[init_s_color,final_s_color])
+	if solutions[list_of_solvers[0]].intermediate_states is not None:
+		ax.legend(handles=[init_s_color,final_s_color,intermediate_s_color])
+	else:
+		ax.legend(handles=[init_s_color,final_s_color])
 	
 	#plt.legend()
 
@@ -428,7 +431,21 @@ def report_compare(solutions, list_of_solvers):
 		axs[i].set_title("force comparision \n input cost: \n {}: {}".format(solver_name, inputCost))
 		axs[i].set_xlabel("time [s]")
 
-		# safe figures
+
+	"""
+	# plot hessians
+	if "CASADI" in list_of_solvers:
+		fig_HCas = plt.figure()
+		ply.spy(np.array(solutions["CASADI"].hessian))
+		fig_HCas.savefig("plots/hessian_casadi.pdf",bbox_inches='tight')
+
+	if "KOMO" in list_of_solvers:
+		fig_HKom = plt.figure()
+		ply.spy(np.array(solutions["KOMO"].hessian))
+		fig_HKom.savefig("plots/hessian_komo.pdf",bbox_inches='tight')
+	"""
+
+	# safe figures
 	plt.rcParams.update({
   		"text.usetex": False,
 		})
@@ -439,8 +456,6 @@ def report_compare(solutions, list_of_solvers):
 	fig_ac.savefig("plots/actions.pdf",bbox_inches='tight')
 	fig_model_traj.savefig("plots/model_traj.pdf",bbox_inches='tight')
 	fig_prob.savefig("plots/prob.pdf",bbox_inches='tight')
-
-	#plt.show()
 
 
 def report_noise(prob_name, path, nr_motors, t2w_vec, noise_vec, robot_type, prob_setup):
@@ -821,37 +836,25 @@ def report_noise(prob_name, path, nr_motors, t2w_vec, noise_vec, robot_type, pro
 
 def report_all(prob_names, solver_names):
 
-	SMALL_SIZE = 18#12
-	MEDIUM_SIZE = 15#15
-	BIGGER_SIZE = 18#18
+	success_obstacle_flight = {"KOMO":[], "SCVX":[], "CASADI":[], "CROCO":[]}
+	success_recovery_flight = {"KOMO":[], "SCVX":[], "CASADI":[], "CROCO":[]}
+	success_flip = {"KOMO":[], "SCVX":[], "CASADI":[], "CROCO":[]}
+	success_loop = {"KOMO":[], "SCVX":[], "CASADI":[], "CROCO":[]}
 
-	plt.rc('font', size=MEDIUM_SIZE)          # controls default text sizes
-	plt.rc('axes', titlesize=MEDIUM_SIZE)     # fontsize of the axes title
-	plt.rc('axes', labelsize=MEDIUM_SIZE)    # fontsize of the x and y labels
-	plt.rc('xtick', labelsize=MEDIUM_SIZE)    # fontsize of the tick labels
-	plt.rc('ytick', labelsize=MEDIUM_SIZE)    # fontsize of the tick labels
-	plt.rc('legend', fontsize=SMALL_SIZE)    # legend fontsize
-	plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
+	time_obstacle_flight = {"KOMO":[], "SCVX":[], "CASADI":[], "CROCO":[]}
+	time_recovery_flight = {"KOMO":[], "SCVX":[], "CASADI":[], "CROCO":[]}
+	time_flip = {"KOMO":[], "SCVX":[], "CASADI":[], "CROCO":[]}
+	time_loop = {"KOMO":[], "SCVX":[], "CASADI":[], "CROCO":[]}
 
-	success_obstacle_flight = {"KOMO":[], "SCVX":[], "CASADI":[]}
-	success_recovery_flight = {"KOMO":[], "SCVX":[], "CASADI":[]}
-	success_flip = {"KOMO":[], "SCVX":[], "CASADI":[]}
-	success_loop = {"KOMO":[], "SCVX":[], "CASADI":[]}
+	cost_obstacle_flight = {"KOMO":[], "SCVX":[], "CASADI":[], "CROCO":[]}
+	cost_recovery_flight = {"KOMO":[], "SCVX":[], "CASADI":[], "CROCO":[]}
+	cost_flip = {"KOMO":[], "SCVX":[], "CASADI":[], "CROCO":[]}
+	cost_loop = {"KOMO":[], "SCVX":[], "CASADI":[], "CROCO":[]}
 
-	time_obstacle_flight = {"KOMO":[], "SCVX":[], "CASADI":[]}
-	time_recovery_flight = {"KOMO":[], "SCVX":[], "CASADI":[]}
-	time_flip = {"KOMO":[], "SCVX":[], "CASADI":[]}
-	time_loop = {"KOMO":[], "SCVX":[], "CASADI":[]}
-
-	cost_obstacle_flight = {"KOMO":[], "SCVX":[], "CASADI":[]}
-	cost_recovery_flight = {"KOMO":[], "SCVX":[], "CASADI":[]}
-	cost_flip = {"KOMO":[], "SCVX":[], "CASADI":[]}
-	cost_loop = {"KOMO":[], "SCVX":[], "CASADI":[]}
-
-	hEvals_obstacle_flight = {"KOMO":[], "SCVX":[], "CASADI":[]}
-	hEvals_recovery_flight = {"KOMO":[], "SCVX":[], "CASADI":[]}
-	hEvals_flip = {"KOMO":[], "SCVX":[], "CASADI":[]}
-	hEvals_loop = {"KOMO":[], "SCVX":[], "CASADI":[]}
+	nIter_obstacle_flight = {"KOMO":[], "SCVX":[], "CASADI":[], "CROCO":[]}
+	nIter_recovery_flight = {"KOMO":[], "SCVX":[], "CASADI":[], "CROCO":[]}
+	nIter_flip = {"KOMO":[], "SCVX":[], "CASADI":[], "CROCO":[]}
+	nIter_loop = {"KOMO":[], "SCVX":[], "CASADI":[], "CROCO":[]}
 
 	for p_n in prob_names:
 		
@@ -870,7 +873,7 @@ def report_all(prob_names, solver_names):
 					cost_val = np.round((actions ** 2).sum(),7)
 					#cost_val = (actions ** 2).sum()
 					cost_obstacle_flight[s_n].append(cost_val)
-					hEvals_obstacle_flight[s_n].append(dat[s_n].hessian_evals)
+					nIter_obstacle_flight[s_n].append(dat[s_n].num_iter)
 
 		elif "recovery_flight" in p_n:
 			for s_n in solver_names:
@@ -883,7 +886,7 @@ def report_all(prob_names, solver_names):
 					cost_val = np.round((actions ** 2).sum(),7)
 					#cost_val = (actions ** 2).sum()
 					cost_recovery_flight[s_n].append(cost_val)
-					hEvals_recovery_flight[s_n].append(dat[s_n].hessian_evals)
+					nIter_recovery_flight[s_n].append(dat[s_n].num_iter)
 
 		elif "flip" in p_n:
 			for s_n in solver_names:
@@ -896,7 +899,7 @@ def report_all(prob_names, solver_names):
 					cost_val = np.round((actions ** 2).sum(),7)
 					#cost_val = (actions ** 2).sum()
 					cost_flip[s_n].append(cost_val)
-					hEvals_flip[s_n].append(dat[s_n].hessian_evals)
+					nIter_flip[s_n].append(dat[s_n].num_iter)
 
 		elif "loop" in p_n:
 			for s_n in solver_names:
@@ -909,27 +912,32 @@ def report_all(prob_names, solver_names):
 					cost_val = np.round((actions ** 2).sum(),7)
 					#cost_val = (actions ** 2).sum()
 					cost_loop[s_n].append(cost_val)
-					hEvals_loop[s_n].append(dat[s_n].hessian_evals)
+					nIter_loop[s_n].append(dat[s_n].num_iter)
 		
 		else:
 			print("unknown problem")
 
 	n_runs = int(len(prob_names)/4)
 
+	solver_names_correct = {"KOMO":"KOMO",
+			 				"SCVX":"DC (SCvx)",
+							"CROCO":"DDP",
+							"CASADI":"DC (CasADi)"}
+
 	# Plot
 	costs = [cost_obstacle_flight, cost_recovery_flight, cost_flip, cost_loop]
 	times = [time_obstacle_flight, time_recovery_flight, time_flip, time_loop]
-	hEvals = [hEvals_obstacle_flight, hEvals_recovery_flight, hEvals_flip, hEvals_loop]
+	nIter = [nIter_obstacle_flight, nIter_recovery_flight, nIter_flip, nIter_loop]
 
 	all_dataframes = []
-	for c,t,h in zip(costs,times,hEvals):
+	for c,t,i in zip(costs,times,nIter):
 
 		data_frames = []
 		for s_n in solver_names:
-			names = pd.DataFrame({"Solver":[s_n for _ in range(n_runs)]})
-			data_c = pd.DataFrame({"Cost":c[s_n]})
-			data_t = pd.DataFrame({"Time [s]":t[s_n]})
-			data_h = pd.DataFrame({"\# Hessian Evaluations":h[s_n]})
+			names = pd.DataFrame({"Solver":[solver_names_correct[s_n] for _ in range(n_runs)]})
+			data_c = pd.DataFrame({"Cost":c[s_n]}).astype(float)
+			data_t = pd.DataFrame({"Time [s]":t[s_n]}).astype(float)
+			data_h = pd.DataFrame({"\# Iterations":i[s_n]}).astype(float)
 			data_frames.append(pd.concat([data_c,data_t,data_h,names], axis = 1))
 
 		df = pd.concat(data_frames,axis = 0)
@@ -940,15 +948,32 @@ def report_all(prob_names, solver_names):
 
 	########################################################################################################################################################################
 	# cost plots
+
+	SMALL_SIZE = 19#18#12
+	MEDIUM_SIZE = 24#15#15
+	BIGGER_SIZE = 24#18#18
+
+	plt.rc('font', size=MEDIUM_SIZE)          # controls default text sizes
+	plt.rc('axes', titlesize=MEDIUM_SIZE)     # fontsize of the axes title
+	plt.rc('axes', labelsize=MEDIUM_SIZE)    # fontsize of the x and y labels
+	plt.rc('xtick', labelsize=MEDIUM_SIZE)    # fontsize of the tick labels
+	plt.rc('ytick', labelsize=MEDIUM_SIZE)    # fontsize of the tick labels
+	plt.rc('legend', fontsize=SMALL_SIZE)    # legend fontsize
+	plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
 	
 	kwargs = {"element":"step"}
 
-	print(all_dataframes[3].to_string())
+	#print(all_dataframes[0].to_string())
+	#print(all_dataframes[1].to_string())
+	#print(all_dataframes[2].to_string())
+	#print(all_dataframes[3].to_string())
 
 	plt.figure()
 	sns.displot(all_dataframes[0], x = "Cost", hue="Solver", kind="hist", stat="percent", common_norm = False, legend = False, **kwargs)
 	plt.xlabel("Cost")
 	plt.legend([], [], frameon=False)
+	fig_width, fig_height = plt.gcf().get_size_inches()
+	plt.gcf().set_size_inches(fig_width, fig_height*0.7)
 	plt.tight_layout()
 
 	plt.savefig("plots/cost_s1.pdf")
@@ -956,7 +981,14 @@ def report_all(prob_names, solver_names):
 	plt.figure()
 	sns.displot(all_dataframes[1], x = "Cost", hue="Solver", kind="hist", stat="percent", common_norm = False, legend = False, **kwargs)
 	plt.xlabel("Cost")
-	plt.legend([], [], frameon=False)
+	KOMO_leg = mpatches.Patch(color='dodgerblue', label=solver_names_correct['KOMO'])
+	SCVX_leg = mpatches.Patch(color='orange', label=solver_names_correct['SCVX'])
+	CASADI_leg = mpatches.Patch(color='deeppink', label=solver_names_correct['CASADI'])
+	CROCO_leg = mpatches.Patch(color='limegreen', label=solver_names_correct['CROCO'])
+	ax = plt.gca()
+	ax.legend(handles=[KOMO_leg,SCVX_leg,CASADI_leg,CROCO_leg])
+	fig_width, fig_height = plt.gcf().get_size_inches()
+	plt.gcf().set_size_inches(fig_width, fig_height*0.7)
 	plt.tight_layout()
 
 	plt.savefig("plots/cost_s2.pdf")
@@ -964,7 +996,10 @@ def report_all(prob_names, solver_names):
 	plt.figure()
 	sns.displot(all_dataframes[2], x = "Cost", hue="Solver", kind="hist", stat="percent", common_norm = False, legend = False, **kwargs)
 	plt.xlabel("Cost")
-	plt.legend(solver_names)
+	plt.legend([], [], frameon=False)
+	#plt.legend([solver_names_correct[solver_names[0]],solver_names_correct[solver_names[1]],solver_names_correct[solver_names[2]],solver_names_correct[solver_names[3]]])
+	fig_width, fig_height = plt.gcf().get_size_inches()
+	plt.gcf().set_size_inches(fig_width, fig_height*0.7)
 	plt.tight_layout()
 
 	plt.savefig("plots/cost_s4.pdf")
@@ -973,21 +1008,63 @@ def report_all(prob_names, solver_names):
 	sns.displot(all_dataframes[3], x = "Cost", hue="Solver", kind="hist", stat="percent", common_norm = False, legend = False, **kwargs)
 	plt.xlabel("Cost")
 	plt.legend([], [], frameon=False)
+	fig_width, fig_height = plt.gcf().get_size_inches()
+	plt.gcf().set_size_inches(fig_width, fig_height*0.7)
 	plt.tight_layout()
 
 	plt.savefig("plots/cost_s3.pdf")
 
 	########################################################################################################################################################################
 	# time plots
+
+	print("scenario: 1")
+	print("KOMO: mean: {}, std: {}".format(np.mean(all_dataframes[0]["Time [s]"][:30]), np.std(all_dataframes[0]["Time [s]"][:30])))
+	print("SCVX: mean: {}, std: {}".format(np.mean(all_dataframes[0]["Time [s]"][30:60]), np.std(all_dataframes[0]["Time [s]"][30:60])))
+	print("CASADI: mean: {}, std: {}".format(np.mean(all_dataframes[0]["Time [s]"][60:90]), np.std(all_dataframes[0]["Time [s]"][60:90])))
+	print("CROCO: mean: {}, std: {}".format(np.mean(all_dataframes[0]["Time [s]"][90:120]), np.std(all_dataframes[0]["Time [s]"][90:120])))
+
+	print("scenario: 2")
+	print("KOMO: mean: {}, std: {}".format(np.mean(all_dataframes[1]["Time [s]"][:30]), np.std(all_dataframes[1]["Time [s]"][:30])))
+	print("SCVX: mean: {}, std: {}".format(np.mean(all_dataframes[1]["Time [s]"][30:60]), np.std(all_dataframes[1]["Time [s]"][30:60])))
+	print("CASADI: mean: {}, std: {}".format(np.mean(all_dataframes[1]["Time [s]"][60:90]), np.std(all_dataframes[1]["Time [s]"][60:90])))
+	print("CROCO: mean: {}, std: {}".format(np.mean(all_dataframes[1]["Time [s]"][90:120]), np.std(all_dataframes[1]["Time [s]"][90:120])))
+
+	print("scenario: 3")
+	print("KOMO: mean: {}, std: {}".format(np.mean(all_dataframes[2]["Time [s]"][:30]), np.std(all_dataframes[2]["Time [s]"][:30])))
+	print("SCVX: mean: {}, std: {}".format(np.mean(all_dataframes[2]["Time [s]"][30:60]), np.std(all_dataframes[2]["Time [s]"][30:60])))
+	print("CASADI: mean: {}, std: {}".format(np.mean(all_dataframes[2]["Time [s]"][60:90]), np.std(all_dataframes[2]["Time [s]"][60:90])))
+	print("CROCO: mean: {}, std: {}".format(np.mean(all_dataframes[2]["Time [s]"][90:120]), np.std(all_dataframes[2]["Time [s]"][90:120])))
+
+	print("scenario: 4")
+	print("KOMO: mean: {}, std: {}".format(np.mean(all_dataframes[3]["Time [s]"][:30]), np.std(all_dataframes[3]["Time [s]"][:30])))
+	print("SCVX: mean: {}, std: {}".format(np.mean(all_dataframes[3]["Time [s]"][30:60]), np.std(all_dataframes[3]["Time [s]"][30:60])))
+	print("CASADI: mean: {}, std: {}".format(np.mean(all_dataframes[3]["Time [s]"][60:90]), np.std(all_dataframes[3]["Time [s]"][60:90])))
+	print("CROCO: mean: {}, std: {}".format(np.mean(all_dataframes[3]["Time [s]"][90:120]), np.std(all_dataframes[3]["Time [s]"][90:120])))
+
+	SMALL_SIZE = 26#18#12
+	MEDIUM_SIZE = 28#15#15
+	BIGGER_SIZE = 28#18#18
+
+	plt.rc('font', size=MEDIUM_SIZE)          # controls default text sizes
+	plt.rc('axes', titlesize=MEDIUM_SIZE)     # fontsize of the axes title
+	plt.rc('axes', labelsize=MEDIUM_SIZE)    # fontsize of the x and y labels
+	plt.rc('xtick', labelsize=MEDIUM_SIZE)    # fontsize of the tick labels
+	plt.rc('ytick', labelsize=MEDIUM_SIZE)    # fontsize of the tick labels
+	plt.rc('legend', fontsize=SMALL_SIZE)    # legend fontsize
+	plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
 	
 	fig = plt.figure()
 	#sns.histplot(all_dataframes[0], x = "time", hue="Solver", element="step", stat="percent",  bins = 15, legend = False)
 	sns.boxplot(all_dataframes[0], x = "Time [s]", y = "Solver")
 	plt.xlabel("Time [s]")
 	plt.ylabel(" ")
+	plt.xscale('log') 
+	ax = plt.gca()
+	ax.xaxis.set_minor_locator(mticker.LogLocator(numticks=999, subs=(.2, .4, .6, .8)))
+
 	#plt.legend([], [], frameon=False)
 	plt.tight_layout()
-
+	
 	fig.savefig("plots/time_s1.pdf")
 
 	fig = plt.figure()
@@ -995,6 +1072,7 @@ def report_all(prob_names, solver_names):
 	sns.boxplot(all_dataframes[1], x = "Time [s]", y = "Solver")
 	plt.xlabel("Time [s]")
 	plt.ylabel(" ")
+	plt.xscale('log') 
 	#plt.legend([], [], frameon=False)
 	plt.tight_layout()
 
@@ -1005,6 +1083,7 @@ def report_all(prob_names, solver_names):
 	sns.boxplot(all_dataframes[2], x = "Time [s]", y = "Solver")
 	plt.xlabel("Time [s]")
 	plt.ylabel(" ")
+	plt.xscale('log') 
 	#plt.legend(solver_names)
 	plt.tight_layout()
 
@@ -1015,6 +1094,9 @@ def report_all(prob_names, solver_names):
 	sns.boxplot(all_dataframes[3], x = "Time [s]", y = "Solver")
 	plt.xlabel("Time [s]")
 	plt.ylabel(" ")
+	plt.xscale('log') 
+	ax = plt.gca()
+	ax.xaxis.set_minor_locator(mticker.LogLocator(numticks=999, subs=(.2, .4, .6, .8)))
 	#plt.legend([], [], frameon=False)
 	plt.tight_layout()
 
@@ -1026,43 +1108,53 @@ def report_all(prob_names, solver_names):
 	
 	fig = plt.figure()
 	#sns.histplot(all_dataframes[0], x = "hEvals", hue="Solver", element="step", stat="percent",  bins = 15, legend = False)
-	sns.boxplot(all_dataframes[0], x = "\# Hessian Evaluations", y = "Solver")
-	plt.xlabel("\# Hessian Evaluations")
+	sns.boxplot(all_dataframes[0], x = "\# Iterations", y = "Solver")
+	plt.xlabel("\# Iterations")
 	plt.ylabel(" ")
+	plt.xscale('log') 
 	#plt.legend([], [], frameon=False)
 	plt.tight_layout()
 
-	fig.savefig("plots/hEvals_s1.pdf")
+	fig.savefig("plots/nIter_s1.pdf")
 
 	fig = plt.figure()
 	#sns.histplot(all_dataframes[1], x = "hEvals", hue="Solver", element="step", stat="percent",  bins = 15, legend = False)
-	sns.boxplot(all_dataframes[1], x = "\# Hessian Evaluations", y = "Solver")
-	plt.xlabel("\# Hessian Evaluations")
+	sns.boxplot(all_dataframes[1], x = "\# Iterations", y = "Solver")
+	plt.xlabel("\# Iterations")
 	plt.ylabel(" ")
+	plt.xscale('log') 
+	plt.xlim([100,1500])
 	#plt.legend([], [], frameon=False)
 	plt.tight_layout()
 
-	fig.savefig("plots/hEvals_s2.pdf")
+	fig.savefig("plots/nIter_s2.pdf")
 
 	fig = plt.figure()
 	#sns.histplot(all_dataframes[2], x = "hEvals", hue="Solver", element="step", stat="percent",  bins = 15, legend = False)
-	sns.boxplot(all_dataframes[2], x = "\# Hessian Evaluations", y = "Solver")
-	plt.xlabel("\# Hessian Evaluations")
+	sns.boxplot(all_dataframes[2], x = "\# Iterations", y = "Solver")
+	plt.xlabel("\# Iterations")
 	plt.ylabel(" ")
+	plt.xscale('log') 
+	plt.xlim([250,1500])
+	#print(plt.xticks)
 	#plt.legend(solver_names)
 	plt.tight_layout()
+	plt.xticks([300,400,600,1000], [r'$3 \times 10^2$','','', '$10^3$'])  # Set text labels.
 
-	fig.savefig("plots/hEvals_s4.pdf")
+	fig.savefig("plots/nIter_s4.pdf")
 
 	fig = plt.figure()
 	#sns.histplot(all_dataframes[3], x = "hEvals", hue="Solver", element="step", stat="percent",  bins = 15, legend = False)
-	sns.boxplot(all_dataframes[3], x = "\# Hessian Evaluations", y = "Solver")
-	plt.xlabel("\# Hessian Evaluations")
+	sns.boxplot(all_dataframes[3], x = "\# Iterations", y = "Solver")
+	plt.xlabel("\# Iterations")
 	plt.ylabel(" ")
+	plt.xscale('log') 
+	plt.xlim([40,1000])
 	#plt.legend([], [], frameon=False)
 	plt.tight_layout()
 
-	fig.savefig("plots/hEvals_s3.pdf")
+	fig.savefig("plots/nIter_s3.pdf")
+
 
 
 	########################################################################################################################################################################
@@ -1108,18 +1200,22 @@ def report_all(prob_names, solver_names):
 	print("sr KOMO obstacle_flight: ", len(cost_obstacle_flight["KOMO"])/n_runs)
 	print("sr SCVX obstacle_flight: ", len(cost_obstacle_flight["SCVX"])/n_runs)
 	print("sr CASADI obstacle_flight: ", len(cost_obstacle_flight["CASADI"])/n_runs)
+	print("sr CROCO obstacle_flight: ", len(cost_obstacle_flight["CROCO"])/n_runs)
 
 	print("sr KOMO recovery_flight: ", len(cost_recovery_flight["KOMO"])/n_runs)
 	print("sr SCVX recovery_flight: ", len(cost_recovery_flight["SCVX"])/n_runs)
 	print("sr CASADI recovery_flight: ", len(cost_recovery_flight["CASADI"])/n_runs)
+	print("sr CROCO recovery_flight: ", len(cost_recovery_flight["CROCO"])/n_runs)
 
 	print("sr KOMO flip: ", len(cost_flip["KOMO"])/n_runs)
 	print("sr SCVX flip: ", len(cost_flip["SCVX"])/n_runs)
 	print("sr CASADI flip: ", len(cost_flip["CASADI"])/n_runs)
+	print("sr CROCO flip: ", len(cost_flip["CROCO"])/n_runs)
 
 	print("sr KOMO loop: ", len(cost_loop["KOMO"])/n_runs)
 	print("sr SCVX loop: ", len(cost_loop["SCVX"])/n_runs)
 	print("sr CASADI loop: ", len(cost_loop["CASADI"])/n_runs)
+	print("sr CROCO loop: ", len(cost_loop["CROCO"])/n_runs)
 
 	"""
 	fig, axs = plt.subplots(2,2)

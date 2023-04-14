@@ -7,7 +7,7 @@ from visualization.report_visualization import report_compare
 from optimization.problem_setups import Prob_setup
 from visualization.animation_visualization import animate_fM
 from visualization.initial_guess_visualization import visualize_initial_guess
-from optimization.algorithm_parameters import KOMO_parameter,SCVX_parameter,CASADI_parameter
+from optimization.algorithm_parameters import KOMO_parameter,SCVX_parameter,CASADI_parameter, CROCO_parameter
 import numpy as np
 
 def run_optimization(prob_name, prob_setup, list_of_solvers, alg_parameters, parameter_search = False):
@@ -37,6 +37,11 @@ def run_optimization(prob_name, prob_setup, list_of_solvers, alg_parameters, par
     t_steps_komo = prob_setup.t_steps_komo
     t_steps_casadi = prob_setup.t_steps_casadi
 
+    if "flip" in prob_name or "recovery" in prob_name:
+        initial_guess_type = 1
+    else:
+        initial_guess_type = 2
+
     optProb.initial_x, optProb.initial_u, optProb.initial_p = ou.calc_initial_guess(multirotor_full_model_komo_scp.Multicopter(nr_motors, arm_length, prob_setup.t2w),
                                                                                     t_steps_scvx,
                                                                                     prob_setup.noise,
@@ -44,10 +49,12 @@ def run_optimization(prob_name, prob_setup, list_of_solvers, alg_parameters, par
                                                                                     optProb.x0,
                                                                                     optProb.intermediate_states,
                                                                                     optProb.tf_min,
-                                                                                    optProb.tf_max)
+                                                                                    optProb.tf_max,
+                                                                                    initial_guess_type)
 
-    i_g = {"init_x": optProb.initial_x, "init_u": optProb.initial_u}
-    ou.save_object("data/initial_guess_" + prob_name, i_g)
+    #i_g = {"init_x": optProb.initial_x, "init_u": optProb.initial_u}
+    #ou.save_object("data/data_quim/fail_guess_croc_huge_noise/initial_guess_" + prob_name +"_"+ str(10), i_g)
+    #print(ou.s)
 
     if True:
         visualize_initial_guess(optProb.initial_x, optProb.x0, optProb.xf, optProb.intermediate_states, optProb.obs)
@@ -56,7 +63,7 @@ def run_optimization(prob_name, prob_setup, list_of_solvers, alg_parameters, par
     costs = []
     times = []
     if "KOMO" in list_of_solvers:
-        
+
         ######## solve problem with KOMO #######
         
         optProb.robot = multirotor_full_model_komo_scp.Multicopter(nr_motors, arm_length, prob_setup.t2w)
@@ -75,7 +82,7 @@ def run_optimization(prob_name, prob_setup, list_of_solvers, alg_parameters, par
         optProb.par = par
         optProb.alg_par = alg_parameters["KOMO"]
 
-        print("solving optimization problem with KOMO...")
+        print("solving " + prob_name + " optimization problem with KOMO...")
         solution = optProb.solve_problem()
         solution.time_dil = optProb.tf_max
         solution.optimization_problem = optProb
@@ -127,7 +134,7 @@ def run_optimization(prob_name, prob_setup, list_of_solvers, alg_parameters, par
         optProb.alg_par = alg_parameters["SCVX"]
 
         # solve Problem with scvx
-        print("solving optimization problem with SCVX...")
+        print("solving " + prob_name + " optimization problem with SCVX...")
         solution = optProb.solve_problem()
         solution.optimization_problem = optProb
 
@@ -178,7 +185,7 @@ def run_optimization(prob_name, prob_setup, list_of_solvers, alg_parameters, par
         optProb.alg_par = alg_parameters["CASADI"]
 
         # solve Problem with casadi
-        print("solving optimization problem with CASADI ...")
+        print("solving " + prob_name + " optimization problem with CASADI ...")
         solution = optProb.solve_problem()
         solution.optimization_problem = optProb
 
@@ -209,7 +216,47 @@ def run_optimization(prob_name, prob_setup, list_of_solvers, alg_parameters, par
                             data,
                             int_error,
                             check)
-    
+            
+    if "CROCO" in list_of_solvers:
+        
+        optProb.algorithm = "CROCO"
+
+        # used model
+        optProb.robot = multirotor_full_model_komo_scp.Multicopter(nr_motors, arm_length, prob_setup.t2w)
+        optProb.robot.dt = 1/prob_setup.t_steps_croco
+        print("dt croco: ", optProb.robot.dt * optProb.tf_max)
+
+        # solver parameter
+        par = ou.Parameter_croco()
+        optProb.alg_par = alg_parameters["CROCO"]
+
+        # solve problem
+        print("solving " + prob_name + " optimization problem with CROCO ...")
+        solution = optProb.solve_problem()
+        solution.optimization_problem = optProb
+
+        print("solver time CROCO: {}".format(solution.time))
+
+        # scheck solution
+        check, data, int_error, _, _ = check_solution(solution, optProb)
+        print("CROCO solution correct?: {}".format(check))
+
+        if parameter_search:
+            ou.save_opt_output(optProb,
+                            prob_name,
+                            solution,
+                            data,
+                            int_error,
+                            check)
+
+        else:
+            ou.save_opt_output(optProb,
+                            prob_name,
+                            solution,
+                            data,
+                            int_error,
+                            check)
+
     if parameter_search:        
         return {"check":checks, "cost":costs, "time":times}
 
@@ -235,7 +282,7 @@ if __name__ == "__main__":
 
     run = True
     visualize = True
-    list_of_solvers = ["KOMO"] #["KOMO","SCVX","CASADI"]
+    list_of_solvers = ["CROCO"]#,"SCVX", "KOMO","CASADI"] #["KOMO","SCVX","CASADI"]
 
     # choose which problem should be solved
     prob = 5
@@ -244,7 +291,8 @@ if __name__ == "__main__":
 
     alg_parameters = {"KOMO":KOMO_parameter(prob_name),
                       "SCVX":SCVX_parameter(prob_name),
-                      "CASADI":CASADI_parameter(prob_name)}
+                      "CASADI":CASADI_parameter(prob_name),
+                      "CROCO":CROCO_parameter(prob_name)}
 
     if run:
         run_optimization(prob_name,prob_setup,list_of_solvers,alg_parameters)

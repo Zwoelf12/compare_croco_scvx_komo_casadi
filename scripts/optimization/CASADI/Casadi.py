@@ -125,8 +125,22 @@ def solve(robot, x0, xf, intermediate_states, t_final, obs, initial_x, initial_u
         sol = opt.solve()
         t_end_solver = time.time()
 
+        states = np.array(sol.value(X).T)
+        actions = np.array(sol.value(U).T)
+
+        nIter = sol.stats()["iter_count"]
+        hEvals = sol.stats()["iter_count"]
+        hess = sol.value(hessian(opt.f+dot(opt.lam_g,opt.g),opt.x)[0])
+
     except RuntimeError:
         print("Solver failed: Converged to a point of local infeasibility")
+        states = np.zeros([num_timesteps,len(x0)])*np.nan
+        actions = np.zeros([num_timesteps-1,4])*np.nan
+        t_start_solver = np.nan
+        t_end_solver = np.nan
+        nIter = np.nan
+        hEvals = np.nan
+        hess = np.nan
         # debugging
         #index = 33
         #opt.debug.value(X)
@@ -136,11 +150,15 @@ def solve(robot, x0, xf, intermediate_states, t_final, obs, initial_x, initial_u
         #opt.debug.g_describe(index)
     except:
         print("something went wrong")
+        states = np.zeros([num_timesteps,len(x0)])*np.nan
+        actions = np.zeros([num_timesteps-1,4])*np.nan
+        t_start_solver = np.nan
+        t_end_solver = np.nan
+        nIter = np.nan
+        hEvals = np.nan
+        hess = np.nan
 
-    states = np.array(sol.value(X).T)
-    actions = np.array(sol.value(U).T)
-
-    solution = ou.OptSolution(states, actions, time = t_end_solver - t_start_solver, tdil = t_final, num_iter=sol.stats()["iter_count"], hessian_evals=sol.stats()["iter_count"])
+    solution = ou.OptSolution(states, actions, time = t_end_solver - t_start_solver, tdil = t_final, num_iter=nIter, hessian_evals= hEvals, hessian = hess)
 
     """
     ## plot Jacobian

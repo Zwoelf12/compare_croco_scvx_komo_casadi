@@ -1,12 +1,12 @@
 from optimization.parallelization import Multiprocess
 from optimization_handler import run_optimization
 from optimization.problem_setups import Prob_setup
-from optimization.algorithm_parameters import KOMO_parameter,SCVX_parameter,CASADI_parameter
+from optimization.algorithm_parameters import KOMO_parameter,SCVX_parameter,CASADI_parameter,CROCO_parameter
 from optimization import opt_utils as ou
 from visualization.report_visualization import report_all
 
-solver_names = ["KOMO","SCVX","CASADI"]
-run = True
+solver_names = ["KOMO","SCVX","CASADI","CROCO"]
+run = False
 vis = True
 
 # choose which problems should be solved
@@ -26,7 +26,8 @@ for i in range(nr_of_runs):
 
         all_alg_pars.append({"KOMO":KOMO_parameter(prob_name),
                             "SCVX":SCVX_parameter(prob_name),
-                            "CASADI":CASADI_parameter(prob_name)})
+                            "CASADI":CASADI_parameter(prob_name),
+                            "CROCO":CROCO_parameter(prob_name)})
         
         all_prob_names.append("run_" + str(i) + "_" + prob_name)
         all_prob_setups.append(prob_setup)

@@ -298,7 +298,7 @@ class SCvx():
     actions[-1,:] = float("nan")
     time_dilation = self.redim_p(p.value)
 
-    solution = OptSolution(states, actions, time_all_e - time_all_s, nu.value, prob_value, itr + 1, time_dilation, sum(interface_time), sum(cvx_solver_time), num_cvx_iter = sum(n_convex_iterations), hessian_evals = sum(n_convex_iterations))
+    solution = OptSolution(states, actions, time_all_e - time_all_s, nu.value, prob_value, sum(n_convex_iterations), time_dilation, sum(interface_time), sum(cvx_solver_time), num_cvx_iter = sum(n_convex_iterations), hessian_evals = sum(n_convex_iterations))
     return solution
 
 ###################################################################################################################################################################################
@@ -464,28 +464,21 @@ class SCvx():
                          x0, xf, intermediate_states, T, CHandler):
 
     # initial, final and intermediate constraints
-    if self.robot.type == "dI" or (self.robot.nrMotors != 2 and self.robot.nrMotors != 3):
-      constraints = [
-        x[0] == x0 + nuIC, # initial state constraint
-        x[T-1] == xf + nuTC # final state constraint
-      ]
+    constraints = [
+      x[0] == x0 + nuIC, # initial state constraint
+      x[T-1] == xf + nuTC # final state constraint
+    ]
 
-      if intermediate_states is not None:  # intermediate
-        for i_s in intermediate_states:
-          if "pos" in i_s.type:
-            constraints.append(x[i_s.timing,:3] == i_s.value[:3] + nuMC[:3])
-          if "vel" in i_s.type:
-            constraints.append(x[i_s.timing,3:6] == i_s.value[3:6] + nuMC[3:6])
-          if "quat" in i_s.type:
-            constraints.append(x[i_s.timing,6:10] == i_s.value[6:10] + nuMC[6:10])
-          if "rot_vel" in i_s.type:
-            constraints.append(x[i_s.timing,10:] == i_s.value[10:] + nuMC[10:])
-
-    else:
-      constraints = [
-        x[0] == x0 + nuIC,  # initial state constraint
-        x[T-1, :6] == xf[:6] + nuTC[:6]  # final state constraint
-      ]
+    if intermediate_states is not None:  # intermediate
+      for i_s in intermediate_states:
+        if "pos" in i_s.type:
+          constraints.append(x[i_s.timing,:3] == i_s.value[:3] + nuMC[:3])
+        if "vel" in i_s.type:
+          constraints.append(x[i_s.timing,3:6] == i_s.value[3:6] + nuMC[3:6])
+        if "quat" in i_s.type:
+          constraints.append(x[i_s.timing,6:10] == i_s.value[6:10] + nuMC[6:10])
+        if "rot_vel" in i_s.type:
+          constraints.append(x[i_s.timing,10:] == i_s.value[10:] + nuMC[10:])
 
     # add constraints on helper variables (p) for trust region calculation
     if self.useHelperVars:
@@ -532,25 +525,17 @@ class SCvx():
       ])
 
       # state constraints
-      if self.robot.type == "dI" or (self.robot.nrMotors != 2 and self.robot.nrMotors != 3):
-        
-        constraints.extend([
-          x[t] >= self.robot.min_x,
-          x[t] <= self.robot.max_x
-        ])
-      else:
-        constraints.extend([
-          x[t, :10] >= self.robot.min_x[:10],
-          x[t, :10] <= self.robot.max_x[:10]
-        ])
+      constraints.extend([
+        x[t] >= self.robot.min_x,
+        x[t] <= self.robot.max_x
+      ])
 
       # quaternion normalization (seems to be sufficient to constraint ||q||2 from above, else the constraint has to be convexified)
-      if self.robot.type == "fM":
-        if self.useQuatNormalization == True:
-          if t != 0 and t != T-1:
-            constraints.append(
-              cp.norm(x[t, 6:10], 2) <= 1
-            )
+      if self.useQuatNormalization == True:
+        if t != 0 and t != T-1:
+          constraints.append(
+            cp.norm(x[t, 6:10], 2) <= 1
+          )
 
       # Obstacle constraints
       if CHandler.obs:
